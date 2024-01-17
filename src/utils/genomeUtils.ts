@@ -4,18 +4,6 @@ import {evolutionConfig} from "@/utils/evolutionConfig";
 
 const weight_floating_point = 9000;
 
-export const generateRandomGenome = (): string => {
-    const randomBinary = () => Math.floor(Math.random() * 2);
-
-    return generateGenome({
-        sourceType: randomBinary().toString(),
-        sourceId: Array.from({ length: 7 }, randomBinary).join(''),
-        sinkType: Array.from({ length: 7 }, randomBinary).join(''),
-        sinkId: Array.from({ length: 7 }, randomBinary).join(''),
-        weight: Array.from({ length: 16 }, randomBinary).join('')
-    });
-};
-
 interface Gen {
     // 1 bit field: source of the connection is from an input sensory neuron or from an internal neuron
     sourceType: string;
@@ -34,7 +22,26 @@ interface Gen {
     weight: string;
 }
 
-export const generateGenome = (gen:Gen): string => {
+type Genome = Gen[];
+
+export const generateRandomGenome = (): string => {
+    const randomBinary = () => Math.floor(Math.random() * 2);
+
+    const genes: Genome = [];
+    for (let i = 0; i < evolutionConfig.genomeSize; i++) {
+        genes.push({
+            sourceType: randomBinary().toString(),
+            sourceId: Array.from({ length: 7 }, randomBinary).join(''),
+            sinkType: Array.from({ length: 7 }, randomBinary).join(''),
+            sinkId: Array.from({ length: 7 }, randomBinary).join(''),
+            weight: Array.from({ length: 16 }, randomBinary).join('')
+        });
+    }
+
+    return generateGenome(genes);
+};
+
+export const generateGenome = (genome:Genome): string => {
     const smallerFloatingPointWeight = (weight: string) => {
         const decimalWeight = Number(convertBase.bin2dec(weight));
         return convertBase.dec2bin((decimalWeight / weight_floating_point).toString());
@@ -45,7 +52,7 @@ export const generateGenome = (gen:Gen): string => {
         return (decimalSourceId % evolutionConfig.innerNeurons).toString(2).padStart(7, '0');
     }
 
-    const generateGene = (): string => {
+    return genome.map((gen: Gen) => {
         // 1-Bit: Quelle (0 für sensorisches Eingangsneuron, 1 für internes Neuron)
         const sourceType = gen.sourceType;
 
@@ -65,14 +72,7 @@ export const generateGenome = (gen:Gen): string => {
 
         // Hexadezimale Darstellung mit auf 8 Zeichen begrenzter Länge
         return convertBase.bin2hex(binaryGene);
-    };
-
-    const genes = [];
-    for (let i = 0; i < evolutionConfig.genomeSize; i++) {
-        genes.push(generateGene());
-    }
-
-    return genes.join(' ');
+    }).join(' ');
 };
 
 export const mutateGenome = (genome: string, mutationRate: number): string => {
