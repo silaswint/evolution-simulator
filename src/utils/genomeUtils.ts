@@ -1,13 +1,14 @@
 // src/utils/genomeUtils.ts
 export const generateRandomGenome = (genomeSize: number): string => {
-    const randomHex = () => Math.floor(Math.random() * 16).toString(16);
+    const randomHex = () => Math.floor(Math.random() * 256).toString(16).padStart(2, '0');
 
-    let randomGenome = '';
-    for (let i = 0; i < genomeSize * 8; i++) {
-        randomGenome += randomHex();
+    const randomGenome = [];
+    for (let i = 0; i < genomeSize; i++) {
+        const hexGroup = Array.from({ length: 4 }, () => randomHex()).join('');
+        randomGenome.push(hexGroup);
     }
 
-    return randomGenome;
+    return randomGenome.join(' ');
 };
 
 export const mutateGenome = (genome: string, mutationRate: number): string => {
