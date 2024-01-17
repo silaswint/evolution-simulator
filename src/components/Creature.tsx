@@ -5,16 +5,42 @@ import { evolutionConfig } from '@/utils/evolutionConfig';
 
 interface CreatureProps {
     initialPosition: { x: number; y: number };
+    secondsLeftForCurrentGeneration: number;
 }
 
-const Creature: React.FC<CreatureProps> = ({ initialPosition }) => {
+const Creature: React.FC<CreatureProps> = ({ initialPosition, secondsLeftForCurrentGeneration }) => {
     const [position, setPosition] = useState<{ x: number; y: number }>(initialPosition);
     const [genome, setGenome] = useState<string>(generateRandomGenome(evolutionConfig.genomeSize));
 
     useEffect(() => {
-        // Hier kannst du Logik für die Bewegung der Kreatur implementieren
-        // Beispiel: Bewegung basierend auf dem Genom
-    }, [position, genome]);
+        const moveCreature = () => {
+            if (secondsLeftForCurrentGeneration > 0) {
+                const movementDirection = genome.substr(0, 1); // Annahme: Das erste Gen bestimmt die Bewegungsrichtung
+
+                switch (movementDirection) {
+                    case '0':
+                        setPosition((prevPosition) => ({ ...prevPosition, x: prevPosition.x - 1 }));
+                        break;
+                    case '1':
+                        setPosition((prevPosition) => ({ ...prevPosition, x: prevPosition.x + 1 }));
+                        break;
+                    case '2':
+                        setPosition((prevPosition) => ({ ...prevPosition, y: prevPosition.y - 1 }));
+                        break;
+                    case '3':
+                        setPosition((prevPosition) => ({ ...prevPosition, y: prevPosition.y + 1 }));
+                        break;
+                    default:
+                    // Keine Bewegung
+                }
+            }
+        };
+
+        const moveInterval = setInterval(moveCreature, 1); // Annahme: Bewegung alle 1 Millisekunde
+
+        // Cleanup-Funktion für die Aufhebung des Intervalls beim Entfernen der Komponente
+        return () => clearInterval(moveInterval);
+    }, [genome, secondsLeftForCurrentGeneration]);
 
     return (
         <div
