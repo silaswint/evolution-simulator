@@ -1,7 +1,6 @@
 // src/components/Creature.tsx
 import React, { useState, useEffect } from 'react';
 import { generateRandomGenome } from '@/utils/genomeUtils';
-import { evolutionConfig } from '@/utils/evolutionConfig';
 
 interface CreatureProps {
     initialPosition: { x: number; y: number };
@@ -10,7 +9,7 @@ interface CreatureProps {
 
 const Creature: React.FC<CreatureProps> = ({ initialPosition, secondsLeftForCurrentGeneration }) => {
     const [position, setPosition] = useState<{ x: number; y: number }>(initialPosition);
-    const [genome, setGenome] = useState<string>(generateRandomGenome(evolutionConfig.genomeSize));
+    const [genome, setGenome] = useState<string>(generateRandomGenome());
 
     useEffect(() => {
         const moveCreature = () => {
@@ -52,6 +51,7 @@ const Creature: React.FC<CreatureProps> = ({ initialPosition, secondsLeftForCurr
                 height: '10px',
                 backgroundColor: '#00F', // Beispiel: Blaue Farbe für die Kreatur
             }}
+            data-genome={genome}
         >
             {/* Hier könntest du zusätzliche Darstellungen oder Informationen zur Kreatur hinzufügen */}
         </div>
