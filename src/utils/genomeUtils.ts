@@ -6,6 +6,8 @@ import { Gen } from "@/utils/types/Gen";
 import {SINK_TYPE_INTERNAL_NEURON, SOURCE_TYPE_INPUT_INTERNAL_NEURON} from "@/utils/consts/brain";
 
 const weight_floating_point = 8192;
+const NUM_SENSORY_NEURONS = 21;
+const NUM_ACTION_OUTPUT_NEURONS = 17;
 
 export const generateRandomGenome = (): Genome => {
     const randomBinary = () => Math.floor(Math.random() * 2);
@@ -35,13 +37,13 @@ export const generateGenome = (genome:Genome): Genome => {
         const sourceType = gen.sourceType;
 
         // 7-Bit: Index des Eingangsneurons oder internen Neurons
-        const sourceId = Number(convertBase.bin2dec(sourceType)) === SOURCE_TYPE_INPUT_INTERNAL_NEURON ? convertBase.dec2bin((Number(convertBase.bin2dec(gen.sourceId)) % evolutionConfig.innerNeurons).toString()) : convertBase.dec2bin((Number(convertBase.bin2dec(gen.sourceId)) % 21).toString());
+        const sourceId = Number(convertBase.bin2dec(sourceType)) === SOURCE_TYPE_INPUT_INTERNAL_NEURON ? convertBase.dec2bin((Number(convertBase.bin2dec(gen.sourceId)) % evolutionConfig.innerNeurons).toString()) : convertBase.dec2bin((Number(convertBase.bin2dec(gen.sourceId)) % NUM_SENSORY_NEURONS).toString());
 
         // 1-Bit: Senke (0 für internes Neuron, 1 für Ausgangsaktionsneuron)
         const sinkType = gen.sinkType;
 
         // 7-Bit: Index des internen Neurons oder Ausgangsaktionsneurons
-        const sinkId = Number(convertBase.bin2dec(sourceType)) === SINK_TYPE_INTERNAL_NEURON ? convertBase.dec2bin((Number(convertBase.bin2dec(gen.sinkId)) % evolutionConfig.innerNeurons).toString()) : convertBase.dec2bin((Number(convertBase.bin2dec(gen.sinkId)) % 17).toString());
+        const sinkId = Number(convertBase.bin2dec(sourceType)) === SINK_TYPE_INTERNAL_NEURON ? convertBase.dec2bin((Number(convertBase.bin2dec(gen.sinkId)) % evolutionConfig.innerNeurons).toString()) : convertBase.dec2bin((Number(convertBase.bin2dec(gen.sinkId)) % NUM_ACTION_OUTPUT_NEURONS).toString());
 
         // 16-Bit: Gewicht der Verbindung
         const weight = smallerFloatingPointWeight(gen.weight);
