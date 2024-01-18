@@ -7,70 +7,60 @@ import { Genome } from "@/utils/types/Genome";
 import Modal from 'react-modal';
 import {convertBase} from "@/utils/convertBase";
 import {SINK_TYPE_INTERNAL_NEURON, SOURCE_TYPE_INPUT_INTERNAL_NEURON} from "@/utils/consts/brain";
+import {randomIntFromInterval} from "@/utils/random";
 
 interface CreatureProps {
-    initialPosition: { x: number; y: number };
     secondsLeftForCurrentGeneration: number;
     generation: number;
+    setPosition: React.Dispatch<React.SetStateAction<{[key: number]: { x: number; y: number }}>>;
+    position: {[key: number]: { x: number; y: number }};
+    id: number;
 }
 
-const randomIntFromInterval = (min:number, max:number) => {
-    return Math.floor(Math.random() * (max - min + 1) + min)
-}
+const Creature: React.FC<CreatureProps> = ({ secondsLeftForCurrentGeneration, generation, position, setPosition, id }) => {
+    if (!position[id]) {
+        return;
+    }
 
-const Creature: React.FC<CreatureProps> = ({ initialPosition, secondsLeftForCurrentGeneration, generation }) => {
-    const [position, setPosition] = useState<{ x: number; y: number }>(initialPosition);
     const [genome, setGenome] = useState<Genome>(generateRandomGenome());
 
     // Zustand, um zu verfolgen, ob das Modal geöffnet oder geschlossen ist
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
-        const moveCreature = () => {
-            if (secondsLeftForCurrentGeneration > 0) {
-                const brain = brainOfGenome({
-                    age: evolutionConfig.secondsPerGeneration - secondsLeftForCurrentGeneration,
-                    random: randomIntFromInterval(-4, 4),
-                    currentPositionY: position.y,
-                    currentPositionX: position.x,
-                    generation: generation,
-                    sizeOfMapX: evolutionConfig.mapSize.width,
-                    sizeOfMapY: evolutionConfig.mapSize.height,
-                    population: evolutionConfig.population
-                }, genome);
+        if (secondsLeftForCurrentGeneration > 0) {
+            const brain = brainOfGenome({
+                age: evolutionConfig.secondsPerGeneration - secondsLeftForCurrentGeneration,
+                random: randomIntFromInterval(-4, 4),
+                currentPositionY: position[id].y,
+                currentPositionX: position[id].x,
+                generation: generation,
+                sizeOfMapX: evolutionConfig.mapSize.width,
+                sizeOfMapY: evolutionConfig.mapSize.height,
+                population: evolutionConfig.population
+            }, genome);
 
-                const movementDirectionX = brain.moveX;
-                const movementDirectionY = brain.moveY;
+            const movementDirectionX = brain.moveX;
+            const movementDirectionY = brain.moveY;
 
-                // Kopiere die aktuelle Position, um die Änderungen zu überwachen
-                let newPosition = { ...position };
+            // Kopiere die aktuelle Position, um die Änderungen zu überwachen
+            let newPosition = { ...position };
 
-                if (movementDirectionX <= 0.5) {
-                    newPosition.x = Math.max(0, newPosition.x - 1); // Linke Grenze
-                } else if (movementDirectionX > 0.5) {
-                    newPosition.x = Math.min(evolutionConfig.mapSize.width - 10, newPosition.x + 1); // Rechte Grenze
-                } else if (movementDirectionY <= 0.5) {
-                    newPosition.y = Math.max(0, newPosition.y - 1); // Obere Grenze
-                } else if (movementDirectionY > 0.5) {
-                    newPosition.y = Math.min(evolutionConfig.mapSize.height - 10, newPosition.y + 1); // Untere Grenze
-                }
-
-                // Setze die neue Position nur, wenn sie innerhalb der Grenzen liegt
-                if (
-                    newPosition.x >= 0 &&
-                    newPosition.x <= evolutionConfig.mapSize.width - 10 &&
-                    newPosition.y >= 0 &&
-                    newPosition.y <= evolutionConfig.mapSize.height - 10
-                ) {
-                    setPosition(newPosition);
-                }
+            if (movementDirectionX <= 0.5) {
+                newPosition[id].x = Math.max(0, newPosition[id].x - 1); // Linke Grenze
+            } else if (movementDirectionX > 0.5) {
+                newPosition[id].x = Math.min(evolutionConfig.mapSize.width - 10, newPosition[id].x + 1); // Rechte Grenze
+            } else if (movementDirectionY <= 0.5) {
+                newPosition[id].y = Math.max(0, newPosition[id].y - 1); // Obere Grenze
+            } else if (movementDirectionY > 0.5) {
+                newPosition[id].y = Math.min(evolutionConfig.mapSize.height - 10, newPosition[id].y + 1); // Untere Grenze
             }
-        };
 
-        const moveInterval = setInterval(moveCreature, 1);
-
-        return () => clearInterval(moveInterval);
-    }, [genome, secondsLeftForCurrentGeneration, position]);
+            // Setze die neue Position nur, wenn sie innerhalb der Grenzen liegt
+            setPosition(newPosition);
+            console.log(newPosition);
+        }
+    }, [genome, secondsLeftForCurrentGeneration, position, evolutionConfig]);
 
 
     // Funktion zum Öffnen des Modals
@@ -83,6 +73,7 @@ const Creature: React.FC<CreatureProps> = ({ initialPosition, secondsLeftForCurr
         setIsModalOpen(false);
     };
 
+    console.log(position[id])
     return (
         <>
             {/* Kreatur-Div */}
@@ -90,8 +81,8 @@ const Creature: React.FC<CreatureProps> = ({ initialPosition, secondsLeftForCurr
                 onClick={openModal} // Öffne das Modal, wenn auf die Kreatur geklickt wird
                 style={{
                     position: 'absolute',
-                    left: `${position.x}px`,
-                    top: `${position.y}px`,
+                    left: `${position[id].x}px`,
+                    top: `${position[id].y}px`,
                     width: '10px',
                     height: '10px',
                     backgroundColor: '#00F',
