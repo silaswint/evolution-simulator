@@ -6,5 +6,5 @@ export const evolutionConfig = {
   genomeSize: 4, // Größe des Genoms pro Kreatur
   mutationRate: 0.001, // Mutationsrate (Beispiel: 0.001 bedeutet 0.1% Wahrscheinlichkeit für eine Mutation pro Gen)
   innerNeurons: 3, // Anzahl der inneren Neuronen im Genom
-  speed: 1000
+  speedInMs: 1000
 }

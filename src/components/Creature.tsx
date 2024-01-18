@@ -10,41 +10,39 @@ import { SINK_TYPE_INTERNAL_NEURON, SOURCE_TYPE_INPUT_INTERNAL_NEURON } from '@/
 import { randomIntFromInterval } from '@/utils/random'
 
 interface CreatureProps {
-  secondsLeftForCurrentGeneration: number
-  generation: number
+  secondsLeftRef: React.MutableRefObject<number>
+  generationRef: React.MutableRefObject<number>
+  populationRef: React.MutableRefObject<number>
   setPosition: React.Dispatch<React.SetStateAction<Record<number, { x: number, y: number }>>>
-  position: Record<number, { x: number, y: number }>
+  positionRef: React.MutableRefObject<Record<number, { x: number, y: number }>>
   id: number
   genome: Genome
+  speedRef: React.MutableRefObject<number>
 }
 
-const Creature: React.FC<CreatureProps> = ({ secondsLeftForCurrentGeneration, generation, position, setPosition, id, genome }) => {
+const Creature: React.FC<CreatureProps> = ({ secondsLeftRef, generationRef, positionRef, setPosition, id, genome, speedRef, populationRef }) => {
   // Zustand, um zu verfolgen, ob das Modal geöffnet oder geschlossen ist
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [speed, setSpeed] = useState(0)
-
-  setInterval(() => {
-    setSpeed(speed + 1)
-  }, evolutionConfig.speed)
 
   useEffect(() => {
-    if (secondsLeftForCurrentGeneration > 0) {
+    console.log('speedRef.current', speedRef.current)
+    if (secondsLeftRef.current > 0) {
       const brain = brainOfGenome({
-        age: evolutionConfig.secondsPerGeneration - secondsLeftForCurrentGeneration,
+        age: evolutionConfig.secondsPerGeneration - secondsLeftRef.current,
         random: randomIntFromInterval(-4, 4),
-        currentPositionY: position[id].y,
-        currentPositionX: position[id].x,
-        generation,
+        currentPositionY: positionRef.current[id].y,
+        currentPositionX: positionRef.current[id].x,
+        generation: generationRef.current,
         sizeOfMapX: evolutionConfig.mapSize.width,
         sizeOfMapY: evolutionConfig.mapSize.height,
-        population: evolutionConfig.population
+        population: populationRef.current
       }, genome)
 
       const movementDirectionX = brain.moveX
       const movementDirectionY = brain.moveY
 
       // Kopiere die aktuelle Position, um die Änderungen zu überwachen
-      const newPosition = { ...position }
+      const newPosition = { ...positionRef.current }
 
       if (movementDirectionX <= 0.5) {
         newPosition[id].x = Math.max(0, newPosition[id].x - 1) // Linke Grenze
@@ -59,7 +57,7 @@ const Creature: React.FC<CreatureProps> = ({ secondsLeftForCurrentGeneration, ge
       // Setze die neue Position nur, wenn sie innerhalb der Grenzen liegt
       setPosition(newPosition)
     }
-  }, [secondsLeftForCurrentGeneration, evolutionConfig, speed])
+  }, [speedRef.current, secondsLeftRef, populationRef, generationRef, positionRef])
 
   // Funktion zum Öffnen des Modals
   const openModal = (): void => {
@@ -78,8 +76,8 @@ const Creature: React.FC<CreatureProps> = ({ secondsLeftForCurrentGeneration, ge
                 onClick={openModal} // Öffne das Modal, wenn auf die Kreatur geklickt wird
                 style={{
                   position: 'absolute',
-                  left: `${position[id].x}px`,
-                  top: `${position[id].y}px`,
+                  left: `${positionRef.current[id].x}px`,
+                  top: `${positionRef.current[id].y}px`,
                   width: '10px',
                   height: '10px',
                   backgroundColor: '#00F'
@@ -111,7 +109,7 @@ const Creature: React.FC<CreatureProps> = ({ secondsLeftForCurrentGeneration, ge
                 {/* Hier könntest du den Inhalt deines Modals platzieren, z.B. Informationen zur Kreatur */}
                 <h2>Creature</h2>
                 <p>Genome: {genomeToHex(genome)}</p>
-                <p>Position: {position[id].x}x{position[id].y}px</p>
+                <p>Position: {positionRef.current[id].x}x{positionRef.current[id].y}px</p>
 
                 <h3>Details</h3>
                 <table>
@@ -124,8 +122,8 @@ const Creature: React.FC<CreatureProps> = ({ secondsLeftForCurrentGeneration, ge
                         <th>sink id</th>
                         <th>weight</th>
                     </tr>
-                    {genome.map(gen => {
-                      return <tr key={genomeToHex([gen])}>
+                    {genome.map((gen) => (
+                        <tr key={genomeToHex([gen])}>
                             <td>{genomeToHex([gen])}</td>
                             <td>{Number(convertBase.bin2dec(gen.sourceType)) === SOURCE_TYPE_INPUT_INTERNAL_NEURON ? 'internal neuron' : 'sensory neuron'}</td>
                             <td>{convertBase.bin2dec(gen.sourceId)}</td>
@@ -133,7 +131,7 @@ const Creature: React.FC<CreatureProps> = ({ secondsLeftForCurrentGeneration, ge
                             <td>{convertBase.bin2dec(gen.sinkId)}</td>
                             <td>{convertBase.bin2dec(gen.weight)}</td>
                         </tr>
-                    })}
+                    ))}
                     </tbody>
                 </table>
             </Modal>
