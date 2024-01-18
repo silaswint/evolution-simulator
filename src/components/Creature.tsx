@@ -11,9 +11,14 @@ import {SINK_TYPE_INTERNAL_NEURON, SOURCE_TYPE_INPUT_INTERNAL_NEURON} from "@/ut
 interface CreatureProps {
     initialPosition: { x: number; y: number };
     secondsLeftForCurrentGeneration: number;
+    generation: number;
 }
 
-const Creature: React.FC<CreatureProps> = ({ initialPosition, secondsLeftForCurrentGeneration }) => {
+const randomIntFromInterval = (min:number, max:number) => {
+    return Math.floor(Math.random() * (max - min + 1) + min)
+}
+
+const Creature: React.FC<CreatureProps> = ({ initialPosition, secondsLeftForCurrentGeneration, generation }) => {
     const [position, setPosition] = useState<{ x: number; y: number }>(initialPosition);
     const [genome, setGenome] = useState<Genome>(generateRandomGenome());
 
@@ -24,41 +29,29 @@ const Creature: React.FC<CreatureProps> = ({ initialPosition, secondsLeftForCurr
         const moveCreature = () => {
             if (secondsLeftForCurrentGeneration > 0) {
                 const brain = brainOfGenome({
-                    Slr: 0, // pheromone gradient left-right
-                    Sfd: 0, // pheromone gradient forward
-                    Sg: 0, // pheromone density
-                    Age: 0, // age
-                    Rnd: 0, // random input
-                    Blr: 0, // blockage left-right
-                    Osc: 0, // oscillator
-                    Bfc: 0, // blockage forward
-                    Plr: 0, // population gradient left-right
-                    Pop: 0, // population density
-                    Pfd: 0, // population gradient forward
-                    LPf: 0, // population long-range forward
-                    LMy: 0, // last movement Y
-                    LBf: 0, // blockage long-range forward
-                    LMx: 0, // last movement X
-                    BDy: 0, // north/south border distance
-                    Gen: 0, // genetic similarity of fwd neighbor
-                    BDx: 0, // east/west border distance
-                    Lx: 0, // east/west world location
-                    BD: 0, // nearest border distance
-                    Ly: 0, // north/south world location
+                    age: evolutionConfig.secondsPerGeneration - secondsLeftForCurrentGeneration,
+                    random: randomIntFromInterval(-4, 4),
+                    currentPositionY: position.y,
+                    currentPositionX: position.x,
+                    generation: generation,
+                    sizeOfMapX: evolutionConfig.mapSize.width,
+                    sizeOfMapY: evolutionConfig.mapSize.height,
+                    population: evolutionConfig.population
                 }, genome);
 
-                const movementDirection = brain.MvL;
+                const movementDirectionX = brain.moveX;
+                const movementDirectionY = brain.moveY;
 
                 // Kopiere die aktuelle Position, um die Änderungen zu überwachen
                 let newPosition = { ...position };
 
-                if (movementDirection < 0.25) {
+                if (movementDirectionX <= 0.5) {
                     newPosition.x = Math.max(0, newPosition.x - 1); // Linke Grenze
-                } else if (movementDirection < 0.5) {
+                } else if (movementDirectionX > 0.5) {
                     newPosition.x = Math.min(evolutionConfig.mapSize.width - 10, newPosition.x + 1); // Rechte Grenze
-                } else if (movementDirection < 0.75) {
+                } else if (movementDirectionY <= 0.5) {
                     newPosition.y = Math.max(0, newPosition.y - 1); // Obere Grenze
-                } else if (movementDirection <= 1) {
+                } else if (movementDirectionY > 0.5) {
                     newPosition.y = Math.min(evolutionConfig.mapSize.height - 10, newPosition.y + 1); // Untere Grenze
                 }
 

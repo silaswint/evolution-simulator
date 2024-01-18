@@ -6,9 +6,10 @@ import { evolutionConfig } from "@/utils/evolutionConfig";
 interface EvolutionMapProps {
     population: number;
     secondsLeftForCurrentGeneration: number;
+    generation: number;
 }
 
-const EvolutionMap: React.FC<EvolutionMapProps> = ({ population, secondsLeftForCurrentGeneration }) => {
+const EvolutionMap: React.FC<EvolutionMapProps> = ({ population, secondsLeftForCurrentGeneration, generation }) => {
     const [creatures, setCreatures] = useState<JSX.Element[]>([]);
 
     useEffect(() => {
@@ -20,11 +21,11 @@ const EvolutionMap: React.FC<EvolutionMapProps> = ({ population, secondsLeftForC
                 y: Math.random() * window.innerHeight,
             };
 
-            initialCreatures.push(<Creature key={i} initialPosition={initialPosition} secondsLeftForCurrentGeneration={secondsLeftForCurrentGeneration} />);
+            initialCreatures.push(<Creature key={i} initialPosition={initialPosition} secondsLeftForCurrentGeneration={secondsLeftForCurrentGeneration} generation={generation} />);
         }
 
         setCreatures(initialCreatures);
-    }, [population, secondsLeftForCurrentGeneration]);
+    }, [population, secondsLeftForCurrentGeneration, generation]);
 
     return (
         <div style={{ position: 'relative', width: `${evolutionConfig.mapSize.width}px`, height: `${evolutionConfig.mapSize.height}px`, overflow: 'hidden', border: '1px solid red' }}>

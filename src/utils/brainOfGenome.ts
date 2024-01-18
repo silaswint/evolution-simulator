@@ -9,47 +9,19 @@ import {
 } from "@/utils/consts/brain";
 
 interface SensoryInputs {
-    Slr: number; // pheromone gradient left-right
-    Sfd: number; // pheromone gradient forward
-    Sg: number; // pheromone density
-    Age: number; // age
-    Rnd: number; // random input
-    Blr: number; // blockage left-right
-    Osc: number; // oscillator
-    Bfc: number; // blockage forward
-    Plr: number; // population gradient left-right
-    Pop: number; // population density
-    Pfd: number; // population gradient forward
-    LPf: number; // population long-range forward
-    LMy: number; // last movement Y
-    LBf: number; // blockage long-range forward
-    LMx: number; // last movement X
-    BDy: number; // north/south border distance
-    Gen: number; // genetic similarity of fwd neighbor
-    BDx: number; // east/west border distance
-    Lx: number; // east/west world location
-    BD: number; // nearest border distance
-    Ly: number; // north/south world location
+    age: number;
+    random: number;
+    currentPositionY: number;
+    currentPositionX: number;
+    generation: number;
+    sizeOfMapX: number;
+    sizeOfMapY: number;
+    population: number;
 }
 
 interface ActionOutputs {
-    MvE: number; // Move East
-    MvW: number; // Move West
-    MvN: number; // Move North
-    MvS: number; // Move South
-    MvX: number; // Move X
-    MvY: number; // Move Y
-    Mfd: number; // Move Forward
-    Res: number; // Responsiveness
-    OSC: number; // Oscillator Period
-    SG: number; // Signal 0
-    Klf: number; // Kill Forward
-    Mrv: number; // Move Reverse
-    MvL: number; // Move Left
-    MvR: number; // Move Right
-    MRL: number; // Move Right-Left
-    Mrn: number; // Move Random
-    LPD: number; // Long Probe Distance
+    moveX: number;
+    moveY: number;
 }
 
 const generatedInnerNeurons = () => {
@@ -147,22 +119,7 @@ export const brainOfGenome = (sensory_inputs:SensoryInputs, genome: Genome): Act
     }
 
     return {
-        MvE: Math.tanh(neurons_calculated[SINK_TYPE_OUTPUT_ACTION_NEURON] && neurons_calculated[SINK_TYPE_OUTPUT_ACTION_NEURON][0]) ?? 0, // Move East
-        MvW: Math.tanh(neurons_calculated[SINK_TYPE_OUTPUT_ACTION_NEURON] && neurons_calculated[SINK_TYPE_OUTPUT_ACTION_NEURON][1]) ?? 0, // Move West
-        MvN: Math.tanh(neurons_calculated[SINK_TYPE_OUTPUT_ACTION_NEURON] && neurons_calculated[SINK_TYPE_OUTPUT_ACTION_NEURON][2]) ?? 0, // Move North
-        MvS: Math.tanh(neurons_calculated[SINK_TYPE_OUTPUT_ACTION_NEURON] && neurons_calculated[SINK_TYPE_OUTPUT_ACTION_NEURON][3]) ?? 0, // Move South
-        MvX: Math.tanh(neurons_calculated[SINK_TYPE_OUTPUT_ACTION_NEURON] && neurons_calculated[SINK_TYPE_OUTPUT_ACTION_NEURON][4]) ?? 0, // Move X
-        MvY: Math.tanh(neurons_calculated[SINK_TYPE_OUTPUT_ACTION_NEURON] && neurons_calculated[SINK_TYPE_OUTPUT_ACTION_NEURON][5]) ?? 0, // Move Y
-        Mfd: Math.tanh(neurons_calculated[SINK_TYPE_OUTPUT_ACTION_NEURON] && neurons_calculated[SINK_TYPE_OUTPUT_ACTION_NEURON][6]) ?? 0, // Move Forward
-        Res: Math.tanh(neurons_calculated[SINK_TYPE_OUTPUT_ACTION_NEURON] && neurons_calculated[SINK_TYPE_OUTPUT_ACTION_NEURON][7]) ?? 0, // Responsiveness
-        OSC: Math.tanh(neurons_calculated[SINK_TYPE_OUTPUT_ACTION_NEURON] && neurons_calculated[SINK_TYPE_OUTPUT_ACTION_NEURON][8]) ?? 0, // Oscillator Period
-        SG: Math.tanh(neurons_calculated[SINK_TYPE_OUTPUT_ACTION_NEURON] && neurons_calculated[SINK_TYPE_OUTPUT_ACTION_NEURON][9]) ?? 0, // Signal 0
-        Klf: Math.tanh(neurons_calculated[SINK_TYPE_OUTPUT_ACTION_NEURON] && neurons_calculated[SINK_TYPE_OUTPUT_ACTION_NEURON][10]) ?? 0, // Kill Forward
-        Mrv: Math.tanh(neurons_calculated[SINK_TYPE_OUTPUT_ACTION_NEURON] && neurons_calculated[SINK_TYPE_OUTPUT_ACTION_NEURON][11]) ?? 0, // Move Reverse
-        MvL: Math.tanh(neurons_calculated[SINK_TYPE_OUTPUT_ACTION_NEURON] && neurons_calculated[SINK_TYPE_OUTPUT_ACTION_NEURON][12]) ?? 0, // Move Left
-        MvR: Math.tanh(neurons_calculated[SINK_TYPE_OUTPUT_ACTION_NEURON] && neurons_calculated[SINK_TYPE_OUTPUT_ACTION_NEURON][13]) ?? 0, // Move Right
-        MRL: Math.tanh(neurons_calculated[SINK_TYPE_OUTPUT_ACTION_NEURON] && neurons_calculated[SINK_TYPE_OUTPUT_ACTION_NEURON][14]) ?? 0, // Move Right-Left
-        Mrn: Math.tanh(neurons_calculated[SINK_TYPE_OUTPUT_ACTION_NEURON] && neurons_calculated[SINK_TYPE_OUTPUT_ACTION_NEURON][15]) ?? 0, // Move Random
-        LPD: Math.tanh(neurons_calculated[SINK_TYPE_OUTPUT_ACTION_NEURON] && neurons_calculated[SINK_TYPE_OUTPUT_ACTION_NEURON][16]) ?? 0, // Long Probe Distance
+        moveX: Math.tanh(neurons_calculated[SINK_TYPE_OUTPUT_ACTION_NEURON] && neurons_calculated[SINK_TYPE_OUTPUT_ACTION_NEURON][0]) ?? 0,
+        moveY: Math.tanh(neurons_calculated[SINK_TYPE_OUTPUT_ACTION_NEURON] && neurons_calculated[SINK_TYPE_OUTPUT_ACTION_NEURON][1]) ?? 0,
     };
 };

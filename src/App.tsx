@@ -37,7 +37,7 @@ const App: React.FC = () => {
             <p>Generation: {generation}</p>
             <p>Seconds left for current generation: {secondsLeftForCurrentGeneration}</p>
             <button onClick={handleNextGeneration}>Next Generation</button>
-            <EvolutionMap population={population} secondsLeftForCurrentGeneration={secondsLeftForCurrentGeneration} />
+            <EvolutionMap population={population} secondsLeftForCurrentGeneration={secondsLeftForCurrentGeneration} generation={generation} />
         </div>
     );
 };
