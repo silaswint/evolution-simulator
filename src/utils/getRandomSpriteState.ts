@@ -1,6 +1,7 @@
+import { type SpriteGeneratorResponse } from '@/utils/types/SpriteGeneratorResponse'
 import { type SpriteState } from '@/utils/types/SpriteState'
 
-export const getRandomSpriteState = (prev: SpriteState): SpriteState => {
+export const getRandomSpriteState = (prev: SpriteState): SpriteGeneratorResponse => {
   const newDirectionX = Math.random() > 0.5 ? 1 : -1
   const newDirectionY = Math.random() > 0.5 ? 1 : -1
 
@@ -11,11 +12,9 @@ export const getRandomSpriteState = (prev: SpriteState): SpriteState => {
   const updatedDirectionY = (newY === 0) ? -newDirectionY : newDirectionY
 
   return {
-    id: prev.id,
     x: newX,
     y: newY,
     directionX: updatedDirectionX,
-    directionY: updatedDirectionY,
-    genome: prev.genome
+    directionY: updatedDirectionY
   }
 }
