@@ -1,15 +1,13 @@
-import { BlurFilter } from 'pixi.js'
-import { Stage, Container, Text } from '@pixi/react'
-import React, { useMemo } from 'react'
+import { Stage } from '@pixi/react'
+import React from 'react'
+import { evolutionConfig } from '@/utils/evolutionConfig'
+import { Map } from '@/components/Map'
 
-export const App: React.FC = () => {
-  const blurFilter = useMemo(() => new BlurFilter(4), [])
-
+const mapSize = evolutionConfig.mapSize
+const App: React.FC = () => {
   return (
-        <Stage options={{ backgroundColor: 0xeef1f5 }}>
-            <Container x={400} y={330} >
-                <Text text="Hello World" anchor={{ x: 0.5, y: 0.5 }} filters={[blurFilter]} />
-            </Container>
+        <Stage width={mapSize.width} height={mapSize.height} options={{ backgroundColor: 0xeef1f5 }}>
+            <Map />
         </Stage>
   )
 }
