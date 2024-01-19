@@ -2,8 +2,9 @@
 import React, { useState, useEffect, useRef } from 'react'
 import Creature from './Creature'
 import { evolutionConfig } from '@/utils/evolutionConfig'
-import { randomIntFromInterval } from '@/utils/random'
 import { generateRandomGenome } from '@/utils/genomeUtils'
+import { type Positions } from '@/utils/types/Positions'
+import { getRandomPositions } from '@/utils/getRandomPositions'
 
 interface EvolutionMapProps {
   secondsLeftRef: React.MutableRefObject<number>
@@ -13,7 +14,7 @@ interface EvolutionMapProps {
 
 const EvolutionMap: React.FC<EvolutionMapProps> = ({ secondsLeftRef, populationRef, generationRef }) => {
   const [creatures, setCreatures] = useState<JSX.Element[]>([])
-  const [position, setPosition] = useState<Record<number, { x: number, y: number }>>({})
+  const [position, setPosition] = useState<Positions>({})
   const [speed, setSpeed] = useState(0)
   const [positionIsLoaded, setPositionIsLoaded] = useState<boolean>(false)
 
@@ -28,15 +29,8 @@ const EvolutionMap: React.FC<EvolutionMapProps> = ({ secondsLeftRef, populationR
   }, evolutionConfig.speedInMs)
 
   useEffect(() => {
-    setPosition((prevPosition) => {
-      const newPosition: Record<number, { x: number, y: number }> = {}
-      for (let i = 0; i < populationRef.current; i++) {
-        newPosition[i] = {
-          x: randomIntFromInterval(0, evolutionConfig.mapSize.width),
-          y: randomIntFromInterval(0, evolutionConfig.mapSize.height)
-        }
-      }
-      return { ...prevPosition, ...newPosition }
+    setPosition((prevPosition: Positions) => {
+      return getRandomPositions(prevPosition, populationRef.current)
     })
     setPositionIsLoaded(true)
   }, [populationRef])
