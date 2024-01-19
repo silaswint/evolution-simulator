@@ -47,41 +47,38 @@ export const Map = withPixiApp(({ app, population, secondsLeftForCurrentGenerati
       if (secondsLeftForCurrentGeneration > 0) {
         setSprites((prevSprites: SpriteState[]) =>
           prevSprites.map((prev: SpriteState) => {
-            const randomSpriteState = getRandomSpriteState(prev)
-            const updatedX = randomSpriteState.x
-            const updatedY = randomSpriteState.y
-            const updatedDirectionX = randomSpriteState.directionX
-            const updatedDirectionY = randomSpriteState.directionY
+            const { id, genome } = prev
+            const { x, y, directionX, directionY } = getRandomSpriteState(prev)
 
-            if (updatedX <= spriteSize.width || updatedX >= mapSize.width - spriteSize.width) {
-              // console.log(`Sprite berührt die Grenze bei x: ${updatedX}`)
+            if (x <= spriteSize.width || x >= mapSize.width - spriteSize.width) {
+              // console.log(`Sprite berührt die Grenze bei x: ${x}`)
             }
 
-            if (updatedY <= spriteSize.height || updatedY >= mapSize.height - spriteSize.height) {
-              // console.log(`Sprite berührt die Grenze bei y: ${updatedY}`)
+            if (y <= spriteSize.height || y >= mapSize.height - spriteSize.height) {
+              // console.log(`Sprite berührt die Grenze bei y: ${y}`)
             }
 
-            if (updatedX <= spriteSize.width || updatedY <= spriteSize.height || updatedX >= mapSize.width - spriteSize.width || updatedY >= mapSize.height - spriteSize.height) {
+            if (x <= spriteSize.width || y <= spriteSize.height || x >= mapSize.width - spriteSize.width || y >= mapSize.height - spriteSize.height) {
               const newDirectionX = prev.directionX === 1 ? -1 : 1
               const newDirectionY = prev.directionX === 1 ? -1 : 1
 
               return {
-                id: prev.id,
+                id,
                 x: Math.max(0, Math.min(mapSize.width - spriteSize.width, prev.x + newDirectionX * 2)),
                 y: Math.max(0, Math.min(mapSize.height - spriteSize.height, prev.y + newDirectionY * 2)),
                 directionX: newDirectionX,
                 directionY: newDirectionY,
-                genome: prev.genome
+                genome
               }
             }
 
             return {
-              id: prev.id,
-              x: updatedX,
-              y: updatedY,
-              directionX: updatedDirectionX,
-              directionY: updatedDirectionY,
-              genome: prev.genome
+              id,
+              x,
+              y,
+              directionX,
+              directionY,
+              genome
             }
           })
         )
