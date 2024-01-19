@@ -3,7 +3,7 @@ import { Container, Sprite, withPixiApp } from '@pixi/react'
 import { evolutionConfig } from '@/utils/evolutionConfig'
 import { randomIntFromInterval } from '@/utils/random'
 
-const image = 'https://www.svgrepo.com/show/10166/hamster.svg'
+const image = './assets/creature.svg'
 
 interface SpriteState {
   x: number
