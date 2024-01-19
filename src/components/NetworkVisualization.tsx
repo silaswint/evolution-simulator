@@ -2,7 +2,8 @@ import React from 'react'
 import { type Genome } from '@/utils/types/Genome'
 import CytoscapeComponent from 'react-cytoscapejs'
 import { type LayoutOptions } from 'cytoscape'
-import {SINK_TYPE_INTERNAL_NEURON, SOURCE_TYPE_INPUT_INTERNAL_NEURON} from "@/utils/consts/brain";
+import { SINK_TYPE_INTERNAL_NEURON, SOURCE_TYPE_INPUT_INTERNAL_NEURON } from '@/utils/consts/brain'
+import { convertBase } from '@/utils/convertBase'
 
 interface NetworkProps {
   connections: Genome
@@ -32,12 +33,12 @@ export const NetworkVisualization: React.FC<NetworkProps> = ({ connections }) =>
   connections.forEach(conn => {
     if (!nodesMap.has(conn.sourceId)) {
       const label = conn.sourceType === SOURCE_TYPE_INPUT_INTERNAL_NEURON.toString() ? 'internal' : 'sensory'
-      nodesMap.set(conn.sourceId, { data: { id: conn.sourceId, label: `${label} ${conn.sourceId}` } })
+      nodesMap.set(conn.sourceId, { data: { id: conn.sourceId, label: `${label} ${convertBase.bin2dec(conn.sourceId)}` } })
     }
 
     if (!nodesMap.has(conn.sinkId)) {
       const label = conn.sinkType === SINK_TYPE_INTERNAL_NEURON.toString() ? 'internal' : 'action'
-      nodesMap.set(conn.sinkId, { data: { id: conn.sinkId, label: `${label} ${conn.sinkId}` } })
+      nodesMap.set(conn.sinkId, { data: { id: conn.sinkId, label: `${label} ${convertBase.bin2dec(conn.sinkId)}` } })
     }
   })
 
@@ -50,14 +51,6 @@ export const NetworkVisualization: React.FC<NetworkProps> = ({ connections }) =>
     nodes,
     edges
   }
-
-  console.log('elements', elements)
-
-  /* const elements = [
-    { data: { id: 'one', label: 'Node 1' } },
-    { data: { id: 'two', label: 'Node 2' } },
-    { data: { source: 'one', target: 'two', label: 'Edge from Node1 to Node2' } }
-  ] */
 
   return <CytoscapeComponent layout={options} elements={CytoscapeComponent.normalizeElements(elements)} style={ { width: '600px', height: '600px' } } />
 }
