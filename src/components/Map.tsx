@@ -85,10 +85,10 @@ export const Map = withPixiApp(({ app, population, secondsLeftForCurrentGenerati
   return (
         <>
             {sprites.map((sprite, index) => (
-                <Container key={index} pivot={50} position={[sprite.x, sprite.y]}>
+                <Container key={index} pivot={0} position={[sprite.x, sprite.y]}>
                     <Sprite
                         interactive={true}
-                        anchor={0.5}
+                        anchor={0}
                         image={image}
                         x={0}
                         y={0}
