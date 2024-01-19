@@ -27,7 +27,7 @@ export const Map = withPixiApp(({ app, population, secondsLeftForCurrentGenerati
   const [sprites, setSprites] = useState<SpriteState[]>(generateRandomSprites(population, spriteSize, mapSize))
 
   useEffect(() => {
-    const tick = (delta: number): void => {
+    const tick = (): void => {
       if (secondsLeftForCurrentGeneration > 0) {
         setSprites((prevSprites: SpriteState[]) =>
           prevSprites.map((prev: SpriteState) => {
