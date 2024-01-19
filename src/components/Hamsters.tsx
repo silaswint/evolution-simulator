@@ -3,17 +3,13 @@ import { Container, Sprite, withPixiApp } from '@pixi/react'
 import { config } from '@/utils/config'
 import '@pixi/events'
 import { type HamsterState } from '@/utils/types/HamsterState'
-import { type HamsterSize } from '@/utils/types/HamsterSize'
 import { generateRandomHamsters } from '@/utils/generateRandomHamsters'
 import { getGeneratedHamsterState } from '@/utils/getGeneratedHamsterState'
+import { hamsterSize } from '@/utils/consts/hamsterSize'
 
 const image = './assets/hamster.svg'
 
 const mapSize = config.mapSize
-const hamsterSize: HamsterSize = {
-  width: 50,
-  height: 50
-}
 
 interface MapProps {
   app: any
