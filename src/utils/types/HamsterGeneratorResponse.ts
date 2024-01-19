@@ -1,4 +1,4 @@
-export interface SpriteGeneratorResponse {
+export interface HamsterGeneratorResponse {
   x: number
   y: number
   directionX: number

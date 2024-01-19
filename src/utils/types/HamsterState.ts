@@ -1,6 +1,6 @@
 import { type Genome } from '@/utils/types/Genome'
 
-export interface SpriteState {
+export interface HamsterState {
   id: number
   x: number
   y: number

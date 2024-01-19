@@ -1,9 +1,9 @@
 import { Stage } from '@pixi/react'
 import React, { useEffect, useState } from 'react'
 import { config } from '@/utils/config'
-import { Map } from '@/components/Map'
-import { type SpriteState } from '@/utils/types/SpriteState'
-import SpriteModal from './components/SpriteModal'
+import { Hamsters } from '@/components/Hamsters'
+import { type HamsterState } from '@/utils/types/HamsterState'
+import HamsterModal from './components/HamsterModal'
 
 const mapSize = config.mapSize
 const App: React.FC = () => {
@@ -11,7 +11,7 @@ const App: React.FC = () => {
   const [population, setPopulation] = useState<number>(config.population)
   const [secondsPerGeneration] = useState<number>(config.secondsPerGeneration)
   const [secondsLeftForCurrentGeneration, setSecondsLeftForCurrentGeneration] = useState<number>(secondsPerGeneration)
-  const [selectedSprite, setSelectedSprite] = useState<SpriteState | null>(null)
+  const [selectedHamster, setSelectedHamster] = useState<HamsterState | null>(null)
 
   useEffect(() => {
     setSecondsLeftForCurrentGeneration(secondsPerGeneration)
@@ -40,9 +40,9 @@ const App: React.FC = () => {
           <br />
           <br />
           <Stage width={mapSize.width} height={mapSize.height} options={{ backgroundColor: 0xeef1f5 }}>
-              <Map population={population} secondsLeftForCurrentGeneration={secondsLeftForCurrentGeneration} generation={generation} setSelectedSprite={setSelectedSprite} />
+              <Hamsters population={population} secondsLeftForCurrentGeneration={secondsLeftForCurrentGeneration} generation={generation} setSelectedHamster={setSelectedHamster} />
           </Stage>
-          <SpriteModal selectedSprite={selectedSprite} setSelectedSprite={setSelectedSprite} />
+          <HamsterModal selectedHamster={selectedHamster} setSelectedHamster={setSelectedHamster} />
       </>
   )
 }

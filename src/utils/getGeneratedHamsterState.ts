@@ -1,11 +1,11 @@
-import { type SpriteGeneratorResponse } from '@/utils/types/SpriteGeneratorResponse'
-import { type SpriteState } from '@/utils/types/SpriteState'
-import { getRandomSpriteState } from '@/utils/getRandomSpriteState'
+import { type HamsterGeneratorResponse } from '@/utils/types/HamsterGeneratorResponse'
+import { type HamsterState } from '@/utils/types/HamsterState'
+import { getRandomHamsterState } from '@/utils/getRandomHamsterState'
 import { brain } from '@/utils/brain'
 import { config } from '@/utils/config'
 import { randomIntFromInterval } from '@/utils/math/randomIntFromInterval'
 
-export const getGeneratedSpriteState = (prev: SpriteState, secondsLeftForCurrentGeneration: number, population: number, generation: number): SpriteGeneratorResponse => {
+export const getGeneratedHamsterState = (prev: HamsterState, secondsLeftForCurrentGeneration: number, population: number, generation: number): HamsterGeneratorResponse => {
   const brainResponse = brain({
     age: config.secondsPerGeneration - secondsLeftForCurrentGeneration,
     random: randomIntFromInterval(-4, 4),
@@ -27,7 +27,7 @@ export const getGeneratedSpriteState = (prev: SpriteState, secondsLeftForCurrent
   const updatedDirectionY = (newY === 0) ? -newDirectionY : newDirectionY
 
   if (brainResponse.random > 0.5) {
-    return getRandomSpriteState(prev)
+    return getRandomHamsterState(prev)
   }
 
   return {

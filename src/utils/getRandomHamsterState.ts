@@ -1,7 +1,7 @@
-import { type SpriteGeneratorResponse } from '@/utils/types/SpriteGeneratorResponse'
-import { type SpriteState } from '@/utils/types/SpriteState'
+import { type HamsterGeneratorResponse } from '@/utils/types/HamsterGeneratorResponse'
+import { type HamsterState } from '@/utils/types/HamsterState'
 
-export const getRandomSpriteState = (prev: SpriteState): SpriteGeneratorResponse => {
+export const getRandomHamsterState = (prev: HamsterState): HamsterGeneratorResponse => {
   const newDirectionX = Math.random() > 0.5 ? 1 : -1
   const newDirectionY = Math.random() > 0.5 ? 1 : -1
 
