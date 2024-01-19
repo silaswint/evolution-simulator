@@ -47,7 +47,7 @@ export const Map = withPixiApp(({ app, population, secondsLeftForCurrentGenerati
       if (secondsLeftForCurrentGeneration > 0) {
         setSprites((prevSprites: SpriteState[]) =>
           prevSprites.map((prev: SpriteState) => {
-            const randomSpriteState = getRandomSpriteState(prev, mapSize, spriteSize)
+            const randomSpriteState = getRandomSpriteState(prev)
             const updatedX = randomSpriteState.x
             const updatedY = randomSpriteState.y
             const updatedDirectionX = randomSpriteState.directionX
