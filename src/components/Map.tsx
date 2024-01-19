@@ -44,52 +44,54 @@ export const Map = withPixiApp(({ app, population, secondsLeftForCurrentGenerati
 
   useEffect(() => {
     const tick = (delta: number): void => {
-      setSprites((prevSprites: SpriteState[]) => (
-        prevSprites.map((prev: SpriteState) => {
-          const newDirectionX = Math.random() > 0.5 ? 1 : -1
-          const newDirectionY = Math.random() > 0.5 ? 1 : -1
+      if (secondsLeftForCurrentGeneration > 0) { // Nur bewegen, wenn noch Sekunden übrig sind
+        setSprites((prevSprites: SpriteState[]) => (
+          prevSprites.map((prev: SpriteState) => {
+            const newDirectionX = Math.random() > 0.5 ? 1 : -1
+            const newDirectionY = Math.random() > 0.5 ? 1 : -1
 
-          const newX = prev.x + prev.directionX * 2
-          const newY = prev.y + prev.directionY * 2
+            const newX = prev.x + prev.directionX * 2
+            const newY = prev.y + prev.directionY * 2
 
-          // Überprüfen, ob die neuen Positionen innerhalb der Grenzen liegen
-          const updatedX = Math.max(0, Math.min(mapSize.width - spriteSize.width, newX))
-          const updatedY = Math.max(0, Math.min(mapSize.height - spriteSize.height, newY))
+            // Überprüfen, ob die neuen Positionen innerhalb der Grenzen liegen
+            const updatedX = Math.max(0, Math.min(mapSize.width - spriteSize.width, newX))
+            const updatedY = Math.max(0, Math.min(mapSize.height - spriteSize.height, newY))
 
-          // Wenn der Sprite die Grenze erreicht, die Richtung umkehren
-          const updatedDirectionX = (updatedX === 0 || updatedX === mapSize.width - spriteSize.width) ? -newDirectionX : newDirectionX
-          const updatedDirectionY = (updatedY === 0 || updatedY === mapSize.height - spriteSize.height) ? -newDirectionY : newDirectionY
+            // Wenn der Sprite die Grenze erreicht, die Richtung umkehren
+            const updatedDirectionX = (updatedX === 0 || updatedX === mapSize.width - spriteSize.width) ? -newDirectionX : newDirectionX
+            const updatedDirectionY = (updatedY === 0 || updatedY === mapSize.height - spriteSize.height) ? -newDirectionY : newDirectionY
 
-          // @debug
-          if (updatedX <= spriteSize.width || updatedX >= mapSize.width - spriteSize.width) {
-            // console.log(`Sprite berührt die Grenze bei x: ${updatedX}`)
-          }
+            // @debug
+            if (updatedX <= spriteSize.width || updatedX >= mapSize.width - spriteSize.width) {
+              // console.log(`Sprite berührt die Grenze bei x: ${updatedX}`)
+            }
 
-          if (updatedY <= spriteSize.height || updatedY >= mapSize.height - spriteSize.height) {
-            // console.log(`Sprite berührt die Grenze bei y: ${updatedY}`)
-          }
+            if (updatedY <= spriteSize.height || updatedY >= mapSize.height - spriteSize.height) {
+              // console.log(`Sprite berührt die Grenze bei y: ${updatedY}`)
+            }
 
-          // Wenn die Positionen aktualisiert wurden, logge die Position
-          if (updatedX <= spriteSize.width || updatedY <= spriteSize.height || updatedX >= mapSize.width - spriteSize.width || updatedY >= mapSize.height - spriteSize.height) {
-            const newDirectionX = prev.directionX === 1 ? -1 : 1
-            const newDirectionY = prev.directionX === 1 ? -1 : 1
+            // Wenn die Positionen aktualisiert wurden, logge die Position
+            if (updatedX <= spriteSize.width || updatedY <= spriteSize.height || updatedX >= mapSize.width - spriteSize.width || updatedY >= mapSize.height - spriteSize.height) {
+              const newDirectionX = prev.directionX === 1 ? -1 : 1
+              const newDirectionY = prev.directionX === 1 ? -1 : 1
+
+              return {
+                x: Math.max(0, Math.min(mapSize.width - spriteSize.width, prev.x + newDirectionX * 2)),
+                y: Math.max(0, Math.min(mapSize.height - spriteSize.height, prev.y + newDirectionY * 2)),
+                directionX: newDirectionX,
+                directionY: newDirectionY
+              }
+            }
 
             return {
-              x: Math.max(0, Math.min(mapSize.width - spriteSize.width, prev.x + newDirectionX * 2)),
-              y: Math.max(0, Math.min(mapSize.height - spriteSize.height, prev.y + newDirectionY * 2)),
-              directionX: newDirectionX,
-              directionY: newDirectionY
+              x: updatedX,
+              y: updatedY,
+              directionX: updatedDirectionX,
+              directionY: updatedDirectionY
             }
-          }
-
-          return {
-            x: updatedX,
-            y: updatedY,
-            directionX: updatedDirectionX,
-            directionY: updatedDirectionY
-          }
-        })
-      ))
+          })
+        ))
+      }
     }
 
     app.ticker.add(tick)
@@ -99,7 +101,7 @@ export const Map = withPixiApp(({ app, population, secondsLeftForCurrentGenerati
         app.ticker.remove(tick)
       }
     }
-  }, [app])
+  }, [app, secondsLeftForCurrentGeneration])
 
   return (
         <>
