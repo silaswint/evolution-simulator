@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { Container, Sprite, withPixiApp } from '@pixi/react'
 import { evolutionConfig } from '@/utils/evolutionConfig'
-import { randomIntFromInterval } from '@/utils/random'
-import { generateRandomGenome } from '@/utils/genomeUtils'
 import '@pixi/events'
 import { type SpriteState } from '@/utils/types/SpriteState'
 import { type SpriteSize } from '@/utils/types/SpriteSize'
 import { getRandomSpriteState } from '@/utils/getRandomSpriteState'
+import { generateRandomSprites } from '@/utils/generateRandomSprites'
 
 const image = './assets/creature.svg'
 
@@ -24,23 +23,8 @@ interface MapProps {
   setSelectedSprite: React.Dispatch<React.SetStateAction<SpriteState | null>>
 }
 
-const generateRandomSprites = (population: number): SpriteState[] => {
-  const initialSprites: SpriteState[] = []
-  for (let i = 0; i < population; i++) {
-    initialSprites.push({
-      id: i + 1,
-      x: randomIntFromInterval(spriteSize.width + 1, mapSize.width - spriteSize.width - 1),
-      y: randomIntFromInterval(spriteSize.height + 1, mapSize.height - spriteSize.height - 1),
-      directionX: Math.random() > 0.5 ? 1 : -1,
-      directionY: Math.random() > 0.5 ? 1 : -1,
-      genome: generateRandomGenome()
-    })
-  }
-  return initialSprites
-}
-
 export const Map = withPixiApp(({ app, population, secondsLeftForCurrentGeneration, generation, setSelectedSprite }: MapProps) => {
-  const [sprites, setSprites] = useState<SpriteState[]>(generateRandomSprites(population))
+  const [sprites, setSprites] = useState<SpriteState[]>(generateRandomSprites(population, spriteSize, mapSize))
 
   useEffect(() => {
     const tick = (delta: number): void => {
