@@ -1,10 +1,12 @@
 // src/utils/evolutionConfig.ts
-export const evolutionConfig = {
-  population: 2, // Anzahl der Kreaturen in der Population
-  mapSize: { width: 800, height: 600 }, // Größe der Karte in Pixeln
-  secondsPerGeneration: 10, // Schritte pro Generation
-  genomeSize: 4, // Größe des Genoms pro Kreatur
-  mutationRate: 0.001, // Mutationsrate (Beispiel: 0.001 bedeutet 0.1% Wahrscheinlichkeit für eine Mutation pro Gen)
-  innerNeurons: 3, // Anzahl der inneren Neuronen im Genom
+import { type EvolutionConfig } from '@/utils/types/EvolutionConfig'
+
+export const evolutionConfig: EvolutionConfig = {
+  population: 2,
+  mapSize: { width: 800, height: 600 },
+  secondsPerGeneration: 10,
+  genomeSize: 4,
+  mutationRate: 0.001,
+  innerNeurons: 3,
   speedInMs: 1000
 }
