@@ -1,7 +1,7 @@
 import React from 'react'
 import { type Genome } from '@/utils/types/Genome'
 import CytoscapeComponent from 'react-cytoscapejs'
-import { type LayoutOptions } from 'cytoscape'
+import { type PresetLayoutOptions } from 'cytoscape'
 import { SINK_TYPE_INTERNAL_NEURON, SOURCE_TYPE_INPUT_INTERNAL_NEURON } from '@/utils/consts/brain'
 import { convertBase } from '@/utils/convertBase'
 
@@ -9,15 +9,32 @@ interface NetworkProps {
   connections: Genome
 }
 
-const options: LayoutOptions = {
-  name: 'breadthfirst',
-  fit: true, // whether to fit the viewport to the graph
-  padding: 30, // padding used on fit
-  boundingBox: undefined, // constrain layout bounds; { x1, y1, x2, y2 } or { x1, y1, w, h }
-  avoidOverlap: true, // prevents node overlap, may overflow boundingBox if not enough space
-  nodeDimensionsIncludeLabels: false, // Excludes the label when calculating node bounding boxes for the layout algorithm
-  spacingFactor: undefined, // Applies a multiplicative factor (>0) to expand or compress the overall area that the nodes take up
-  sort: undefined, // a sorting function to order the nodes; e.g. function(a, b){ return a.data('weight') - b.data('weight') }
+const nodesMap = new Map<string, { data: { id: string, label: string } }>()
+const options: PresetLayoutOptions = {
+  name: 'preset',
+  positions: (node) => {
+    const position = { x: 0, y: 0 }
+
+    // Adjust the y-coordinate based on node type
+    // @ts-expect-error actually "_private" exists
+    const nodeId: string = node._private.data.id
+    if (nodeId.startsWith('sensory')) {
+      // Top row for sensory nodes
+      position.y = 100
+    } else if (nodeId.startsWith('internal')) {
+      // Middle row for internal nodes
+      position.y = 300
+    } else if (nodeId.startsWith('action')) {
+      // Bottom row for action nodes
+      position.y = 500
+    }
+
+    return position
+  },
+  zoom: undefined, // the zoom level to set (prob want fit = false if set)
+  pan: undefined, // the pan level to set (prob want fit = false if set)
+  fit: true, // whether to fit to viewport
+  padding: 30, // padding on fit
   animate: false, // whether to transition the node positions
   animationDuration: 500, // duration of animation in ms if enabled
   animationEasing: undefined, // easing of animation if enabled
@@ -28,7 +45,6 @@ const options: LayoutOptions = {
 }
 
 export const NetworkVisualization: React.FC<NetworkProps> = ({ connections }) => {
-  const nodesMap = new Map<string, { data: { id: string, label: string } }>()
   connections.forEach(conn => {
     const inputExternalLabel = conn.sourceType === SOURCE_TYPE_INPUT_INTERNAL_NEURON.toString() ? 'internal' : 'sensory'
     const inputInternalLabel = conn.sinkType === SINK_TYPE_INTERNAL_NEURON.toString() ? 'internal' : 'action'
