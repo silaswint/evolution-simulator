@@ -7,8 +7,7 @@ import {
   NUM_ACTION_OUTPUT_NEURONS,
   NUM_SENSORY_NEURONS,
   SINK_TYPE_INTERNAL_NEURON,
-  SOURCE_TYPE_INPUT_INTERNAL_NEURON,
-  WEIGHT_FLOATING_POINT
+  SOURCE_TYPE_INPUT_INTERNAL_NEURON
 } from '@/utils/consts/brain'
 
 export const generateRandomGenome = (): Genome => {
@@ -29,11 +28,6 @@ export const generateRandomGenome = (): Genome => {
 }
 
 export const generateGenome = (genome: Genome): Genome => {
-  const smallerFloatingPointWeight = (weight: string): string => {
-    const decimalWeight = Number(convertBase.bin2dec(weight))
-    return convertBase.dec2bin((decimalWeight / WEIGHT_FLOATING_POINT).toString())
-  }
-
   return genome.map((gen: Gen) => {
     // 1-Bit: Quelle (0 für sensorisches Eingangsneuron, 1 für internes Neuron)
     const sourceType = gen.sourceType
@@ -48,7 +42,7 @@ export const generateGenome = (genome: Genome): Genome => {
     const sinkId = Number(convertBase.bin2dec(sourceType)) === SINK_TYPE_INTERNAL_NEURON ? convertBase.dec2bin((Number(convertBase.bin2dec(gen.sinkId)) % evolutionConfig.innerNeurons).toString()) : convertBase.dec2bin((Number(convertBase.bin2dec(gen.sinkId)) % NUM_ACTION_OUTPUT_NEURONS).toString())
 
     // 16-Bit: Gewicht der Verbindung
-    const weight = smallerFloatingPointWeight(gen.weight)
+    const weight = gen.weight
 
     // Hexadezimale Darstellung mit auf 8 Zeichen begrenzter Länge
     return {
