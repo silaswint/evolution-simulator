@@ -4,6 +4,7 @@ import { evolutionConfig } from '@/utils/evolutionConfig'
 import { randomIntFromInterval } from '@/utils/random'
 import { type Genome } from '@/utils/types/Genome'
 import { generateRandomGenome } from '@/utils/genomeUtils'
+import '@pixi/events'
 // import { type Application } from 'pixi.js'
 
 const image = './assets/creature.svg'
@@ -109,11 +110,26 @@ export const Map = withPixiApp(({ app, population, secondsLeftForCurrentGenerati
     }
   }, [app, secondsLeftForCurrentGeneration])
 
+  const handleSpriteClick = (sprite: SpriteState): void => {
+    console.log('TEST', sprite)
+  }
+
   return (
         <>
             {sprites.map((sprite, index) => (
                 <Container key={index} pivot={50} position={[sprite.x, sprite.y]}>
-                    <Sprite anchor={0.5} image={image} x={0} y={0} scale={1} width={spriteSize.width} height={spriteSize.height} />
+                    <Sprite
+                        interactive={true}
+                        anchor={0.5}
+                        image={image}
+                        x={0}
+                        y={0}
+                        scale={1}
+                        width={spriteSize.width}
+                        height={spriteSize.height}
+                        mousedown={() => { handleSpriteClick(sprite) }}
+                        touchstart={() => { handleSpriteClick(sprite) }}
+                    />
                 </Container>
             ))}
         </>
