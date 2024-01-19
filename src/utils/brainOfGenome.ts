@@ -1,5 +1,10 @@
 import { type Genome } from '@/utils/types/Genome'
 import { type Gen } from '@/utils/types/Gen'
+import {
+  SINK_TYPE_INTERNAL_NEURON, SINK_TYPE_OUTPUT_ACTION_NEURON,
+  SOURCE_TYPE_INPUT_INTERNAL_NEURON,
+  SOURCE_TYPE_INPUT_SENSORY_NEURON
+} from '@/utils/consts/brain'
 
 interface SensoryInputs {
   age: number
@@ -26,9 +31,9 @@ export const brainOfGenome = (sensoryInputs: SensoryInputs, genome: Genome): Act
       const sourceValue = getSourceValue(gen, sensoryInputs, internalNeurons)
       const weightedValue = sourceValue * parseFloat(gen.weight) / 10000 // Normalize weight to a smaller range
 
-      if (gen.sinkType === '1' && gen.sinkId in internalNeurons) {
+      if (gen.sinkType === SINK_TYPE_INTERNAL_NEURON.toString() && gen.sinkId in internalNeurons) {
         internalNeurons[gen.sinkId] += weightedValue
-      } else if (gen.sinkType === '2') {
+      } else if (gen.sinkType === SINK_TYPE_OUTPUT_ACTION_NEURON.toString()) {
         internalNeurons[gen.sinkId] = weightedValue
       }
     })
@@ -44,9 +49,9 @@ export const brainOfGenome = (sensoryInputs: SensoryInputs, genome: Genome): Act
 
   const getSourceValue = (gen: Gen, inputs: SensoryInputs, internals: Record<string, number>): number => {
     switch (gen.sourceType) {
-      case '1': // Sensory input
+      case SOURCE_TYPE_INPUT_SENSORY_NEURON.toString(): // Sensory input
         return getSensoryInputValue(gen.sourceId, inputs)
-      case '2': // Internal neuron
+      case SOURCE_TYPE_INPUT_INTERNAL_NEURON.toString(): // Internal neuron
         return internals[gen.sourceId] || 0
       default:
         return 0
