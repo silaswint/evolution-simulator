@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { Container, Sprite, withPixiApp } from '@pixi/react'
 import { evolutionConfig } from '@/utils/evolutionConfig'
 import { randomIntFromInterval } from '@/utils/random'
+import { type Genome } from '@/utils/types/Genome'
+import { generateRandomGenome, genomeToHex } from '@/utils/genomeUtils'
 // import { type Application } from 'pixi.js'
 
 const image = './assets/creature.svg'
@@ -11,6 +13,7 @@ interface SpriteState {
   y: number
   directionX: number
   directionY: number
+  genome: Genome
 }
 
 const mapSize = evolutionConfig.mapSize
@@ -33,7 +36,8 @@ const generateRandomSprites = (population: number): SpriteState[] => {
       x: randomIntFromInterval(spriteSize.width + 1, mapSize.width - spriteSize.width - 1),
       y: randomIntFromInterval(spriteSize.height + 1, mapSize.height - spriteSize.height - 1),
       directionX: Math.random() > 0.5 ? 1 : -1,
-      directionY: Math.random() > 0.5 ? 1 : -1
+      directionY: Math.random() > 0.5 ? 1 : -1,
+      genome: generateRandomGenome()
     })
   }
   return initialSprites
@@ -79,7 +83,8 @@ export const Map = withPixiApp(({ app, population, secondsLeftForCurrentGenerati
                 x: Math.max(0, Math.min(mapSize.width - spriteSize.width, prev.x + newDirectionX * 2)),
                 y: Math.max(0, Math.min(mapSize.height - spriteSize.height, prev.y + newDirectionY * 2)),
                 directionX: newDirectionX,
-                directionY: newDirectionY
+                directionY: newDirectionY,
+                genome: prev.genome
               }
             }
 
@@ -87,7 +92,8 @@ export const Map = withPixiApp(({ app, population, secondsLeftForCurrentGenerati
               x: updatedX,
               y: updatedY,
               directionX: updatedDirectionX,
-              directionY: updatedDirectionY
+              directionY: updatedDirectionY,
+              genome: prev.genome
             }
           })
         ))
