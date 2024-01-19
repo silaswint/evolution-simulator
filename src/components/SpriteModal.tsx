@@ -45,21 +45,21 @@ const SpriteModal: React.FC<SpriteModalProps> = ({ setSelectedSprite, selectedSp
             <table>
                 <tbody>
                 <tr>
-                    <th>gen</th>
+                    <th>gene</th>
                     <th>source type</th>
                     <th>source id</th>
                     <th>sink type</th>
                     <th>sink id</th>
                     <th>weight</th>
                 </tr>
-                {selectedSprite.genome.map((gen, index) => (
-                    <tr key={`${genomeToHex([gen])}-${index}`}>
-                        <td>{genomeToHex([gen])}</td>
-                        <td>{Number(convertBase.bin2dec(gen.sourceType)) === SOURCE_TYPE_INPUT_INTERNAL_NEURON ? 'internal neuron' : 'sensory neuron'}</td>
-                        <td>{convertBase.bin2dec(gen.sourceId)}</td>
-                        <td>{Number(convertBase.bin2dec(gen.sinkType)) === SINK_TYPE_INTERNAL_NEURON ? 'internal neuron' : 'output action neuron'}</td>
-                        <td>{convertBase.bin2dec(gen.sinkId)}</td>
-                        <td>{convertBase.bin2dec(gen.weight)}</td>
+                {selectedSprite.genome.map((gene, index) => (
+                    <tr key={`${genomeToHex([gene])}-${index}`}>
+                        <td>{genomeToHex([gene])}</td>
+                        <td>{Number(convertBase.bin2dec(gene.sourceType)) === SOURCE_TYPE_INPUT_INTERNAL_NEURON ? 'internal neuron' : 'sensory neuron'}</td>
+                        <td>{convertBase.bin2dec(gene.sourceId)}</td>
+                        <td>{Number(convertBase.bin2dec(gene.sinkType)) === SINK_TYPE_INTERNAL_NEURON ? 'internal neuron' : 'output action neuron'}</td>
+                        <td>{convertBase.bin2dec(gene.sinkId)}</td>
+                        <td>{convertBase.bin2dec(gene.weight)}</td>
                     </tr>
                 ))}
                 </tbody>
