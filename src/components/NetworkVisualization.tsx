@@ -21,12 +21,15 @@ const options: PresetLayoutOptions = {
     if (nodeId.startsWith('sensory')) {
       // Top row for sensory nodes
       position.y = 100
+      position.x = calculateXForNodeType(nodeId, 'sensory')
     } else if (nodeId.startsWith('internal')) {
       // Middle row for internal nodes
       position.y = 300
+      position.x = calculateXForNodeType(nodeId, 'internal')
     } else if (nodeId.startsWith('action')) {
       // Bottom row for action nodes
       position.y = 500
+      position.x = calculateXForNodeType(nodeId, 'action')
     }
 
     return position
@@ -42,6 +45,25 @@ const options: PresetLayoutOptions = {
   ready: undefined, // callback on layoutready
   stop: undefined, // callback on layoutstop
   transform: function (node, position) { return position } // transform a given node position. Useful for changing flow direction in discrete layouts
+}
+
+// Helper function to calculate x-coordinate based on node type and position in row
+const calculateXForNodeType = (nodeId: string, nodeType: string): number => {
+  const nodeNumber = Number(convertBase.bin2dec(nodeId.split('_')[1])) // Extract the numeric part of nodeId
+  const horizontalSpacing = 100 // Adjust this value based on the desired spacing between nodes in the same row
+
+  // Implement logic to calculate x-coordinate based on node type and position in row
+  console.log('nodeId', nodeNumber)
+  switch (nodeType) {
+    case 'sensory':
+      return nodeNumber * horizontalSpacing // Nodes in the 'sensory' row are spaced horizontally
+    case 'internal':
+      return nodeNumber * horizontalSpacing // Nodes in the 'internal' row are spaced horizontally
+    case 'action':
+      return nodeNumber * horizontalSpacing // Nodes in the 'action' row are spaced horizontally
+    default:
+      return 0
+  }
 }
 
 export const NetworkVisualization: React.FC<NetworkProps> = ({ connections }) => {
