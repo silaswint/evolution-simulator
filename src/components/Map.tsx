@@ -26,19 +26,21 @@ interface MapProps {
   generation: number
 }
 
+const generateRandomSprites = (population: number): SpriteState[] => {
+  const initialSprites: SpriteState[] = []
+  for (let i = 0; i < population; i++) {
+    initialSprites.push({
+      x: randomIntFromInterval(spriteSize.width + 1, mapSize.width - spriteSize.width - 1),
+      y: randomIntFromInterval(spriteSize.height + 1, mapSize.height - spriteSize.height - 1),
+      directionX: Math.random() > 0.5 ? 1 : -1,
+      directionY: Math.random() > 0.5 ? 1 : -1
+    })
+  }
+  return initialSprites
+}
+
 export const Map = withPixiApp(({ app, population, secondsLeftForCurrentGeneration, generation }: MapProps) => {
-  const [sprites, setSprites] = useState<SpriteState[]>(() => {
-    const initialSprites: SpriteState[] = []
-    for (let i = 0; i < population; i++) {
-      initialSprites.push({
-        x: randomIntFromInterval(spriteSize.width + 1, mapSize.width - spriteSize.width - 1),
-        y: randomIntFromInterval(spriteSize.height + 1, mapSize.height - spriteSize.height - 1),
-        directionX: Math.random() > 0.5 ? 1 : -1,
-        directionY: Math.random() > 0.5 ? 1 : -1
-      })
-    }
-    return initialSprites
-  })
+  const [sprites, setSprites] = useState<SpriteState[]>(generateRandomSprites(population))
 
   useEffect(() => {
     const tick = (delta: number): void => {
