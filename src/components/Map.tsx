@@ -3,7 +3,7 @@ import { Container, Sprite, withPixiApp } from '@pixi/react'
 import { evolutionConfig } from '@/utils/evolutionConfig'
 import { randomIntFromInterval } from '@/utils/random'
 import { type Genome } from '@/utils/types/Genome'
-import { generateRandomGenome, genomeToHex } from '@/utils/genomeUtils'
+import { generateRandomGenome } from '@/utils/genomeUtils'
 // import { type Application } from 'pixi.js'
 
 const image = './assets/creature.svg'
