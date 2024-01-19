@@ -25,7 +25,7 @@ interface ActionOutputs {
   random: number
 }
 
-export const brainOfGenome = (sensoryInputs: SensoryInputs, genome: Genome): ActionOutputs => {
+export const brain = (sensoryInputs: SensoryInputs, genome: Genome): ActionOutputs => {
   const internalNeurons: Record<string, number> = {}
   const actionNeurons: Record<string, number> = {}
 

@@ -1,5 +1,5 @@
-import { genomeToHex } from '@/utils/genomeUtils'
-import { convertBase } from '@/utils/convertBase'
+import { genomeToHex } from '@/utils/genome'
+import { convertBase } from '@/utils/math/convertBase'
 import { SINK_TYPE_INTERNAL_NEURON, SOURCE_TYPE_INPUT_INTERNAL_NEURON } from '@/utils/consts/brain'
 import Modal from 'react-modal'
 import React from 'react'

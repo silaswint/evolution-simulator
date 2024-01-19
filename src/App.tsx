@@ -1,15 +1,15 @@
 import { Stage } from '@pixi/react'
 import React, { useEffect, useState } from 'react'
-import { evolutionConfig } from '@/utils/evolutionConfig'
+import { config } from '@/utils/config'
 import { Map } from '@/components/Map'
 import { type SpriteState } from '@/utils/types/SpriteState'
 import SpriteModal from './components/SpriteModal'
 
-const mapSize = evolutionConfig.mapSize
+const mapSize = config.mapSize
 const App: React.FC = () => {
   const [generation, setGeneration] = useState<number>(0)
-  const [population, setPopulation] = useState<number>(evolutionConfig.population)
-  const [secondsPerGeneration, setSecondsPerGeneration] = useState<number>(evolutionConfig.secondsPerGeneration)
+  const [population, setPopulation] = useState<number>(config.population)
+  const [secondsPerGeneration] = useState<number>(config.secondsPerGeneration)
   const [secondsLeftForCurrentGeneration, setSecondsLeftForCurrentGeneration] = useState<number>(secondsPerGeneration)
   const [selectedSprite, setSelectedSprite] = useState<SpriteState | null>(null)
 

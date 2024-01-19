@@ -3,7 +3,7 @@ import { type Genome } from '@/utils/types/Genome'
 import CytoscapeComponent from 'react-cytoscapejs'
 import { type PresetLayoutOptions } from 'cytoscape'
 import { SINK_TYPE_INTERNAL_NEURON, SOURCE_TYPE_INPUT_INTERNAL_NEURON } from '@/utils/consts/brain'
-import { convertBase } from '@/utils/convertBase'
+import { convertBase } from '@/utils/math/convertBase'
 
 interface NetworkProps {
   connections: Genome

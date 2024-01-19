@@ -1,6 +1,6 @@
 import { type SpriteState } from '@/utils/types/SpriteState'
-import { randomIntFromInterval } from '@/utils/random'
-import { generateRandomGenome } from '@/utils/genomeUtils'
+import { randomIntFromInterval } from '@/utils/math/randomIntFromInterval'
+import { generateRandomGenome } from '@/utils/genome'
 import { type SpriteSize } from '@/utils/types/SpriteSize'
 import { type MapSize } from '@/utils/types/MapSIze'
 

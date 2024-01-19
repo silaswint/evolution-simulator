@@ -1,6 +1,6 @@
 // src/utils/genomeUtils.ts
-import { convertBase } from '@/utils/convertBase'
-import { evolutionConfig } from '@/utils/evolutionConfig'
+import { convertBase } from '@/utils/math/convertBase'
+import { config } from '@/utils/config'
 import { type Genome } from '@/utils/types/Genome'
 import { type Gen } from '@/utils/types/Gen'
 import {
@@ -14,7 +14,7 @@ export const generateRandomGenome = (): Genome => {
   const randomBinary = (): number => Math.floor(Math.random() * 2)
 
   const genes: Genome = []
-  for (let i = 0; i < evolutionConfig.genomeSize; i++) {
+  for (let i = 0; i < config.genomeSize; i++) {
     genes.push({
       sourceType: randomBinary().toString(),
       sourceId: Array.from({ length: 7 }, randomBinary).join(''),
@@ -33,13 +33,13 @@ export const generateGenome = (genome: Genome): Genome => {
     const sourceType = gen.sourceType
 
     // 7-Bit: Index des Eingangsneurons oder internen Neurons
-    const sourceId = Number(convertBase.bin2dec(sourceType)) === SOURCE_TYPE_INPUT_INTERNAL_NEURON ? convertBase.dec2bin((Number(convertBase.bin2dec(gen.sourceId)) % evolutionConfig.innerNeurons).toString()) : convertBase.dec2bin((Number(convertBase.bin2dec(gen.sourceId)) % NUM_SENSORY_NEURONS).toString())
+    const sourceId = Number(convertBase.bin2dec(sourceType)) === SOURCE_TYPE_INPUT_INTERNAL_NEURON ? convertBase.dec2bin((Number(convertBase.bin2dec(gen.sourceId)) % config.innerNeurons).toString()) : convertBase.dec2bin((Number(convertBase.bin2dec(gen.sourceId)) % NUM_SENSORY_NEURONS).toString())
 
     // 1-Bit: Senke (0 für internes Neuron, 1 für Ausgangsaktionsneuron)
     const sinkType = gen.sinkType
 
     // 7-Bit: Index des internen Neurons oder Ausgangsaktionsneurons
-    const sinkId = Number(convertBase.bin2dec(sourceType)) === SINK_TYPE_INTERNAL_NEURON ? convertBase.dec2bin((Number(convertBase.bin2dec(gen.sinkId)) % evolutionConfig.innerNeurons).toString()) : convertBase.dec2bin((Number(convertBase.bin2dec(gen.sinkId)) % NUM_ACTION_OUTPUT_NEURONS).toString())
+    const sinkId = Number(convertBase.bin2dec(sourceType)) === SINK_TYPE_INTERNAL_NEURON ? convertBase.dec2bin((Number(convertBase.bin2dec(gen.sinkId)) % config.innerNeurons).toString()) : convertBase.dec2bin((Number(convertBase.bin2dec(gen.sinkId)) % NUM_ACTION_OUTPUT_NEURONS).toString())
 
     // 16-Bit: Gewicht der Verbindung
     const weight = gen.weight

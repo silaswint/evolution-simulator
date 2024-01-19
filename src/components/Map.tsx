@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Container, Sprite, withPixiApp } from '@pixi/react'
-import { evolutionConfig } from '@/utils/evolutionConfig'
+import { config } from '@/utils/config'
 import '@pixi/events'
 import { type SpriteState } from '@/utils/types/SpriteState'
 import { type SpriteSize } from '@/utils/types/SpriteSize'
@@ -9,7 +9,7 @@ import { getGeneratedSpriteState } from '@/utils/getGeneratedSpriteState'
 
 const image = './assets/creature.svg'
 
-const mapSize = evolutionConfig.mapSize
+const mapSize = config.mapSize
 const spriteSize: SpriteSize = {
   width: 50,
   height: 50
