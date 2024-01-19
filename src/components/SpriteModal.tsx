@@ -4,7 +4,7 @@ import { SINK_TYPE_INTERNAL_NEURON, SOURCE_TYPE_INPUT_INTERNAL_NEURON } from '@/
 import Modal from 'react-modal'
 import React from 'react'
 import { type SpriteState } from '@/utils/types/SpriteState'
-import { Network } from '@/components/Network'
+import { NetworkVisualization } from '@/components/NetworkVisualization'
 
 interface SpriteModalProps {
   selectedSprite: SpriteState | null
@@ -66,7 +66,7 @@ const SpriteModal: React.FC<SpriteModalProps> = ({ setSelectedSprite, selectedSp
             </table>
 
             <h1>Neuronal Network Visualization</h1>
-            <Network connections={selectedSprite.genome} />
+            <NetworkVisualization connections={selectedSprite.genome} />
         </>)}
     </Modal>
 }

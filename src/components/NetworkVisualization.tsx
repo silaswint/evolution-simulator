@@ -27,7 +27,7 @@ const options: LayoutOptions = {
   transform: function (node, position) { return position } // transform a given node position. Useful for changing flow direction in discrete layouts
 }
 
-export const Network: React.FC<NetworkProps> = ({ connections }) => {
+export const NetworkVisualization: React.FC<NetworkProps> = ({ connections }) => {
   const nodesMap = new Map<string, { data: { id: string, label: string } }>()
   connections.forEach(conn => {
     if (!nodesMap.has(conn.sourceId)) {
