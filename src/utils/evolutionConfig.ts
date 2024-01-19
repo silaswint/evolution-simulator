@@ -2,11 +2,11 @@
 import { type EvolutionConfig } from '@/utils/types/EvolutionConfig'
 
 export const evolutionConfig: EvolutionConfig = {
-  population: 3,
+  population: 100,
   mapSize: { width: 800, height: 600 },
   secondsPerGeneration: 10,
-  genomeSize: 4,
+  genomeSize: 64,
   mutationRate: 0.001,
-  innerNeurons: 3,
+  innerNeurons: 5,
   speedInMs: 1000
 }
