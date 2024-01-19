@@ -3,11 +3,13 @@ import { convertBase } from '@/utils/convertBase'
 import { evolutionConfig } from '@/utils/evolutionConfig'
 import { type Genome } from '@/utils/types/Genome'
 import { type Gen } from '@/utils/types/Gen'
-import { SINK_TYPE_INTERNAL_NEURON, SOURCE_TYPE_INPUT_INTERNAL_NEURON } from '@/utils/consts/brain'
-
-const WEIGHT_FLOATING_POINT = 8192
-const NUM_SENSORY_NEURONS = 8
-const NUM_ACTION_OUTPUT_NEURONS = 3
+import {
+  NUM_ACTION_OUTPUT_NEURONS,
+  NUM_SENSORY_NEURONS,
+  SINK_TYPE_INTERNAL_NEURON,
+  SOURCE_TYPE_INPUT_INTERNAL_NEURON,
+  WEIGHT_FLOATING_POINT
+} from '@/utils/consts/brain'
 
 export const generateRandomGenome = (): Genome => {
   const randomBinary = (): number => Math.floor(Math.random() * 2)
