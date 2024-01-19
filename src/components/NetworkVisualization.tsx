@@ -53,7 +53,6 @@ const calculateXForNodeType = (nodeId: string, nodeType: string): number => {
   const horizontalSpacing = 100 // Adjust this value based on the desired spacing between nodes in the same row
 
   // Implement logic to calculate x-coordinate based on node type and position in row
-  console.log('nodeId', nodeNumber)
   switch (nodeType) {
     case 'sensory':
       return nodeNumber * horizontalSpacing // Nodes in the 'sensory' row are spaced horizontally
