@@ -31,21 +31,21 @@ const options: LayoutOptions = {
 export const NetworkVisualization: React.FC<NetworkProps> = ({ connections }) => {
   const nodesMap = new Map<string, { data: { id: string, label: string } }>()
   connections.forEach(conn => {
-    if (!nodesMap.has(conn.sourceId)) {
+    if (!nodesMap.has(`${conn.sourceType}_${conn.sourceId}`)) {
       const label = conn.sourceType === SOURCE_TYPE_INPUT_INTERNAL_NEURON.toString() ? 'internal' : 'sensory'
-      nodesMap.set(conn.sourceId, { data: { id: conn.sourceId, label: `${label} ${convertBase.bin2dec(conn.sourceId)}` } })
+      nodesMap.set(`${conn.sourceType}_${conn.sourceId}`, { data: { id: `${conn.sourceType}_${conn.sourceId}`, label: `${label} ${convertBase.bin2dec(conn.sourceId)}` } })
     }
 
-    if (!nodesMap.has(conn.sinkId)) {
+    if (!nodesMap.has(`${conn.sinkType}_${conn.sinkId}`)) {
       const label = conn.sinkType === SINK_TYPE_INTERNAL_NEURON.toString() ? 'internal' : 'action'
-      nodesMap.set(conn.sinkId, { data: { id: conn.sinkId, label: `${label} ${convertBase.bin2dec(conn.sinkId)}` } })
+      nodesMap.set(`${conn.sinkType}_${conn.sinkId}`, { data: { id: `${conn.sinkType}_${conn.sinkId}`, label: `${label} ${convertBase.bin2dec(conn.sinkId)}` } })
     }
   })
 
   const nodes = Array.from(nodesMap.values())
 
   const edges = connections
-    .map(conn => ({ data: { source: conn.sourceId, target: conn.sinkId, weight: conn.weight } }))
+    .map(conn => ({ data: { source: `${conn.sourceType}_${conn.sourceId}`, target: `${conn.sinkType}_${conn.sinkId}`, weight: conn.weight } }))
 
   const elements = {
     nodes,
