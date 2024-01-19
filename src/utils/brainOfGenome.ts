@@ -1,9 +1,11 @@
 import { type Genome } from '@/utils/types/Genome'
 import { type Gen } from '@/utils/types/Gen'
 import {
-  SINK_TYPE_INTERNAL_NEURON, SINK_TYPE_OUTPUT_ACTION_NEURON,
+  SINK_TYPE_INTERNAL_NEURON,
+  SINK_TYPE_OUTPUT_ACTION_NEURON,
   SOURCE_TYPE_INPUT_INTERNAL_NEURON,
-  SOURCE_TYPE_INPUT_SENSORY_NEURON
+  SOURCE_TYPE_INPUT_SENSORY_NEURON,
+  WEIGHT_FLOATING_POINT
 } from '@/utils/consts/brain'
 
 interface SensoryInputs {
@@ -25,21 +27,31 @@ interface ActionOutputs {
 
 export const brainOfGenome = (sensoryInputs: SensoryInputs, genome: Genome): ActionOutputs => {
   const internalNeurons: Record<string, number> = {}
+  const actionNeurons: Record<string, number> = {}
 
   const calculateInternalNeurons = (): void => {
     genome.forEach((gen: Gen) => {
       const sourceValue = getSourceValue(gen, sensoryInputs, internalNeurons)
-      const weightedValue = sourceValue * parseFloat(gen.weight) / 10000 // Normalize weight to a smaller range
+      const weightedValue = sourceValue * parseFloat(gen.weight) / WEIGHT_FLOATING_POINT // Normalize weight to a smaller range
 
       if (gen.sinkType === SINK_TYPE_INTERNAL_NEURON.toString() && gen.sinkId in internalNeurons) {
         internalNeurons[gen.sinkId] += weightedValue
-      } else if (gen.sinkType === SINK_TYPE_OUTPUT_ACTION_NEURON.toString()) {
-        internalNeurons[gen.sinkId] = weightedValue
       }
     })
   }
 
-  const calculateActionOutputs = (): ActionOutputs => {
+  const calculateActionNeurons = (): void => {
+    genome.forEach((gen: Gen) => {
+      const sourceValue = getSourceValue(gen, sensoryInputs, internalNeurons)
+      const weightedValue = sourceValue * parseFloat(gen.weight) / WEIGHT_FLOATING_POINT // Normalize weight to a smaller range
+
+      if (gen.sinkType === SINK_TYPE_OUTPUT_ACTION_NEURON.toString() && gen.sinkId in actionNeurons) {
+        actionNeurons[gen.sinkId] += weightedValue
+      }
+    })
+  }
+
+  const calculateResponse = (): ActionOutputs => {
     const directionX = Math.tanh(internalNeurons.outputActionX || 0)
     const directionY = Math.tanh(internalNeurons.outputActionY || 0)
     const random = Math.tanh(internalNeurons.outputActionRandom || 0)
@@ -82,5 +94,6 @@ export const brainOfGenome = (sensoryInputs: SensoryInputs, genome: Genome): Act
   }
 
   calculateInternalNeurons()
-  return calculateActionOutputs()
+  calculateActionNeurons()
+  return calculateResponse()
 }
