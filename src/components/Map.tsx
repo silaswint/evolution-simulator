@@ -4,8 +4,8 @@ import { evolutionConfig } from '@/utils/evolutionConfig'
 import '@pixi/events'
 import { type SpriteState } from '@/utils/types/SpriteState'
 import { type SpriteSize } from '@/utils/types/SpriteSize'
-import { getRandomSpriteState } from '@/utils/getRandomSpriteState'
 import { generateRandomSprites } from '@/utils/generateRandomSprites'
+import { getGeneratedSpriteState } from '@/utils/getGeneratedSpriteState'
 
 const image = './assets/creature.svg'
 
@@ -32,7 +32,7 @@ export const Map = withPixiApp(({ app, population, secondsLeftForCurrentGenerati
         setSprites((prevSprites: SpriteState[]) =>
           prevSprites.map((prev: SpriteState) => {
             const { id, genome } = prev
-            const { x, y, directionX, directionY } = getRandomSpriteState(prev)
+            const { x, y, directionX, directionY } = getGeneratedSpriteState(prev, secondsLeftForCurrentGeneration, population, generation)
 
             if (x <= spriteSize.width || x >= mapSize.width - spriteSize.width) {
               // console.log(`Sprite berührt die Grenze bei x: ${x}`)

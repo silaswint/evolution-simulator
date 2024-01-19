@@ -7,7 +7,7 @@ import { SINK_TYPE_INTERNAL_NEURON, SOURCE_TYPE_INPUT_INTERNAL_NEURON } from '@/
 
 const WEIGHT_FLOATING_POINT = 8192
 const NUM_SENSORY_NEURONS = 8
-const NUM_ACTION_OUTPUT_NEURONS = 2
+const NUM_ACTION_OUTPUT_NEURONS = 3
 
 export const generateRandomGenome = (): Genome => {
   const randomBinary = (): number => Math.floor(Math.random() * 2)

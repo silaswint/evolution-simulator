@@ -20,8 +20,9 @@ interface SensoryInputs {
 }
 
 interface ActionOutputs {
-  moveX: number
-  moveY: number
+  directionX: number
+  directionY: number
+  random: number
 }
 
 const generatedInnerNeurons = (): number[] => {
@@ -111,7 +112,8 @@ export const brainOfGenome = (sensoryInputs: SensoryInputs, genome: Genome): Act
   }
 
   return {
-    moveX: Math.tanh(neuronsCalculated[SINK_TYPE_OUTPUT_ACTION_NEURON]?.[0]) ?? 0,
-    moveY: Math.tanh(neuronsCalculated[SINK_TYPE_OUTPUT_ACTION_NEURON]?.[1]) ?? 0
+    directionX: Math.tanh(neuronsCalculated[SINK_TYPE_OUTPUT_ACTION_NEURON]?.[0]) ?? 0,
+    directionY: Math.tanh(neuronsCalculated[SINK_TYPE_OUTPUT_ACTION_NEURON]?.[1]) ?? 0,
+    random: Math.tanh(neuronsCalculated[SINK_TYPE_OUTPUT_ACTION_NEURON]?.[2]) ?? 0
   }
 }
