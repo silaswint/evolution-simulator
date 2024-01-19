@@ -2,7 +2,7 @@
 import { convertBase } from '@/utils/math/convertBase'
 import { config } from '@/utils/config'
 import { type Genome } from '@/utils/types/Genome'
-import { type Gen } from '@/utils/types/Gen'
+import { type Gene } from '@/utils/types/Gene'
 import {
   NUM_ACTION_OUTPUT_NEURONS,
   NUM_SENSORY_NEURONS,
@@ -28,23 +28,23 @@ export const generateRandomGenome = (): Genome => {
 }
 
 export const generateGenome = (genome: Genome): Genome => {
-  return genome.map((gen: Gen) => {
-    // 1-Bit: Quelle (0 für sensorisches Eingangsneuron, 1 für internes Neuron)
+  return genome.map((gen: Gene) => {
+    // 1-Bit: Source (0 for sensory input neuron, 1 for internal neuron)
     const sourceType = gen.sourceType
 
-    // 7-Bit: Index des Eingangsneurons oder internen Neurons
+    // 7-Bit: Index of the input neuron or internal neuron
     const sourceId = Number(convertBase.bin2dec(sourceType)) === SOURCE_TYPE_INPUT_INTERNAL_NEURON ? convertBase.dec2bin((Number(convertBase.bin2dec(gen.sourceId)) % config.innerNeurons).toString()) : convertBase.dec2bin((Number(convertBase.bin2dec(gen.sourceId)) % NUM_SENSORY_NEURONS).toString())
 
-    // 1-Bit: Senke (0 für internes Neuron, 1 für Ausgangsaktionsneuron)
+    // 1-Bit: Sink (0 for internal neuron, 1 for output action neuron)
     const sinkType = gen.sinkType
 
-    // 7-Bit: Index des internen Neurons oder Ausgangsaktionsneurons
+    // 7-Bit: Index of the internal neuron or output action neuron
     const sinkId = Number(convertBase.bin2dec(sourceType)) === SINK_TYPE_INTERNAL_NEURON ? convertBase.dec2bin((Number(convertBase.bin2dec(gen.sinkId)) % config.innerNeurons).toString()) : convertBase.dec2bin((Number(convertBase.bin2dec(gen.sinkId)) % NUM_ACTION_OUTPUT_NEURONS).toString())
 
-    // 16-Bit: Gewicht der Verbindung
+    // 16-Bit: Weight of the connection
     const weight = gen.weight
 
-    // Hexadezimale Darstellung mit auf 8 Zeichen begrenzter Länge
+    // Hexadecimal representation with a length limited to 8 characters
     return {
       sourceType,
       sourceId,
@@ -56,10 +56,10 @@ export const generateGenome = (genome: Genome): Genome => {
 }
 
 export const genomeToHex = (genome: Genome): string => {
-  return genome.map((gen: Gen) => {
+  return genome.map((gen: Gene) => {
     const binaryGene = `${gen.sourceType}${gen.sourceId}${gen.sinkType}${gen.sinkId}${gen.weight}`
 
-    // Hexadezimale Darstellung mit auf 8 Zeichen begrenzter Länge
+    // Hexadecimal representation with a length limited to 8 characters
     return convertBase.bin2hex(binaryGene)
   }).join(' ')
 }

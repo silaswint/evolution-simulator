@@ -1,2 +1,2 @@
-import { type Gen } from './Gen'
-export type Genome = Gen[]
+import { type Gene } from './Gene'
+export type Genome = Gene[]

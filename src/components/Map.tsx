@@ -35,11 +35,11 @@ export const Map = withPixiApp(({ app, population, secondsLeftForCurrentGenerati
             const { x, y, directionX, directionY } = getGeneratedSpriteState(prev, secondsLeftForCurrentGeneration, population, generation)
 
             if (x <= spriteSize.width || x >= mapSize.width - spriteSize.width) {
-              // console.log(`Sprite berührt die Grenze bei x: ${x}`)
+              // console.log(`Sprite touches the limit at x: ${x}`)
             }
 
             if (y <= spriteSize.height || y >= mapSize.height - spriteSize.height) {
-              // console.log(`Sprite berührt die Grenze bei y: ${y}`)
+              // console.log(`Sprite touches the limit at y: ${y}`)
             }
 
             if (x <= spriteSize.width || y <= spriteSize.height || x >= mapSize.width - spriteSize.width || y >= mapSize.height - spriteSize.height) {

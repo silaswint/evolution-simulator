@@ -1,5 +1,5 @@
 import { type Genome } from '@/utils/types/Genome'
-import { type Gen } from '@/utils/types/Gen'
+import { type Gene } from '@/utils/types/Gene'
 import {
   SINK_TYPE_INTERNAL_NEURON,
   SINK_TYPE_OUTPUT_ACTION_NEURON,
@@ -30,9 +30,9 @@ export const brain = (sensoryInputs: SensoryInputs, genome: Genome): ActionOutpu
   const actionNeurons: Record<string, number> = {}
 
   const calculateInternalNeurons = (): void => {
-    genome.filter((gen: Gen) => {
+    genome.filter((gen: Gene) => {
       return gen.sinkType === SINK_TYPE_INTERNAL_NEURON.toString()
-    }).forEach((gen: Gen) => {
+    }).forEach((gen: Gene) => {
       const sourceValue = getSourceValue(gen, sensoryInputs, internalNeurons)
       const weightedValue = sourceValue * (parseFloat(gen.weight) / WEIGHT_FLOATING_POINT) // Normalize weight to a smaller range
 
@@ -41,9 +41,9 @@ export const brain = (sensoryInputs: SensoryInputs, genome: Genome): ActionOutpu
   }
 
   const calculateActionNeurons = (): void => {
-    genome.filter((gen: Gen) => {
+    genome.filter((gen: Gene) => {
       return gen.sinkType === SINK_TYPE_OUTPUT_ACTION_NEURON.toString()
-    }).forEach((gen: Gen) => {
+    }).forEach((gen: Gene) => {
       const sourceValue = getSourceValue(gen, sensoryInputs, internalNeurons)
       const weightedValue = sourceValue * (parseFloat(gen.weight) / WEIGHT_FLOATING_POINT) // Normalize weight to a smaller range
 
@@ -52,7 +52,6 @@ export const brain = (sensoryInputs: SensoryInputs, genome: Genome): ActionOutpu
   }
 
   const calculateResponse = (): ActionOutputs => {
-    console.log('actionNeurons', actionNeurons)
     const directionX = Math.tanh(actionNeurons[0]) || 0
     const directionY = Math.tanh(actionNeurons[1]) || 0
     const random = Math.tanh(actionNeurons[2]) || 0
@@ -60,7 +59,7 @@ export const brain = (sensoryInputs: SensoryInputs, genome: Genome): ActionOutpu
     return { directionX, directionY, random }
   }
 
-  const getSourceValue = (gen: Gen, inputs: SensoryInputs, internals: Record<string, number>): number => {
+  const getSourceValue = (gen: Gene, inputs: SensoryInputs, internals: Record<string, number>): number => {
     switch (gen.sourceType) {
       case SOURCE_TYPE_INPUT_SENSORY_NEURON.toString(): // Sensory input
         return getSensoryInputValue(gen.sourceId, inputs) || 0

@@ -14,26 +14,20 @@ const App: React.FC = () => {
   const [selectedSprite, setSelectedSprite] = useState<SpriteState | null>(null)
 
   useEffect(() => {
-    // Hier kannst du Logik für den Start der Evolution oder andere Initialisierungen hinzufügen
-    // Beispiel: setPopulation(evolutionConfig.population);
-
-    // Initialisiere die verbleibenden Sekunden für die aktuelle Generation
     setSecondsLeftForCurrentGeneration(secondsPerGeneration)
 
-    // Starte den Timer, um die verbleibenden Sekunden zu aktualisieren
+    // Start the timer to update the remaining seconds
     const timerInterval = setInterval(() => {
       setSecondsLeftForCurrentGeneration((prevSeconds) => Math.max(0, prevSeconds - 1))
     }, 1000)
 
-    // Cleanup-Funktion für die Aufhebung des Intervalls beim Entfernen der Komponente
+    // Cleanup function for canceling the interval when removing the component
     return () => {
       clearInterval(timerInterval)
     }
   }, [secondsPerGeneration])
 
   const handleNextGeneration = (): void => {
-    // Hier kannst du Logik für den Übergang zur nächsten Generation hinzufügen
-    // Beispiel: Implementiere Reproduktion, Mutation, Selektion
     setGeneration((prevGeneration) => prevGeneration + 1)
   }
 

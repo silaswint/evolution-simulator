@@ -1,4 +1,4 @@
-export interface Gen {
+export interface Gene {
   // 1 bit field: source of the connection is from an input sensory neuron or from an internal neuron
   sourceType: string
 

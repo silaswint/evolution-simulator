@@ -1,11 +1,11 @@
 import { type MapSize } from '@/utils/types/MapSIze'
 
 export interface EvolutionConfig {
-  population: number // Anzahl der Kreaturen in der Population
-  mapSize: MapSize // Größe der Karte in Pixeln
-  secondsPerGeneration: number // Schritte pro Generation
-  genomeSize: number // Größe des Genoms pro Kreatur
-  mutationRate: number // Mutationsrate (Beispiel: 0.001 bedeutet 0.1% Wahrscheinlichkeit für eine Mutation pro Gen)
-  innerNeurons: number // Anzahl der inneren Neuronen im Genom
+  population: number // Number of creatures in the population
+  mapSize: MapSize // Size of the map in pixels
+  secondsPerGeneration: number // Steps per generation
+  genomeSize: number // Size of the genome per creature
+  mutationRate: number // Mutation rate (example: 0.001 means 0.1% probability of a mutation per gene)
+  innerNeurons: number // Number of inner neurons in the genome
   speedInMs: number
 }
