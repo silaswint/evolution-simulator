@@ -1,12 +1,5 @@
-import { evolutionConfig } from '@/utils/evolutionConfig'
 import { type Genome } from '@/utils/types/Genome'
-import { convertBase } from '@/utils/convertBase'
-import {
-  SINK_TYPE_INTERNAL_NEURON,
-  SINK_TYPE_OUTPUT_ACTION_NEURON,
-  SOURCE_TYPE_INPUT_INTERNAL_NEURON,
-  SOURCE_TYPE_INPUT_SENSORY_NEURON
-} from '@/utils/consts/brain'
+import { type Gen } from '@/utils/types/Gen'
 
 interface SensoryInputs {
   age: number
@@ -25,95 +18,64 @@ interface ActionOutputs {
   random: number
 }
 
-const generatedInnerNeurons = (): number[] => {
-  const innerNeurons = []
-
-  for (let i = 0; i < evolutionConfig.innerNeurons; i++) {
-    innerNeurons.push(1)
-  }
-
-  return innerNeurons
-}
-
-type Neurons = Record<number, Record<number, number[]>>
-
-type NeuronsCalculated = Record<number, Record<number, number>>
-
 export const brainOfGenome = (sensoryInputs: SensoryInputs, genome: Genome): ActionOutputs => {
-  const sensoryInputsKeys: Array<keyof SensoryInputs> = Object.keys(sensoryInputs) as Array<keyof SensoryInputs>
+  const internalNeurons: Record<string, number> = {}
 
-  const innerNeurons = generatedInnerNeurons()
+  const calculateInternalNeurons = (): void => {
+    genome.forEach((gen: Gen) => {
+      const sourceValue = getSourceValue(gen, sensoryInputs, internalNeurons)
+      const weightedValue = sourceValue * parseFloat(gen.weight) / 10000 // Normalize weight to a smaller range
 
-  let neurons: Neurons = {}
-
-  // first loop for input sensory neurons
-  for (const gen of genome) {
-    const sourceType = Number(convertBase.hex2dec(gen.sourceType))
-    const sourceId = Number(convertBase.hex2dec(gen.sourceId))
-    const sinkType = Number(convertBase.hex2dec(gen.sinkType))
-    const sinkId = Number(convertBase.hex2dec(gen.sinkId))
-    const weight = Number(gen.weight)
-
-    if (Number(sourceType) === SOURCE_TYPE_INPUT_SENSORY_NEURON) {
-      neurons = Object.assign({}, neurons, {
-        [sinkType]: {
-          [sinkId]: [
-            weight * Number(sensoryInputsKeys[sourceId])
-          ]
-        }
-      })
-    }
-  }
-
-  // second loop for internal neurons
-  for (const gen of genome) {
-    const sourceType = Number(convertBase.hex2dec(gen.sourceType))
-    const sourceId = Number(convertBase.hex2dec(gen.sourceId))
-    const sinkType = Number(convertBase.hex2dec(gen.sinkType))
-    const sinkId = Number(convertBase.hex2dec(gen.sinkId))
-    const weight = Number(gen.weight)
-
-    if (Number(sourceType) === SOURCE_TYPE_INPUT_INTERNAL_NEURON) {
-      neurons = Object.assign({}, neurons, {
-        [sinkType]: {
-          [sinkId]: [
-            weight * Number(innerNeurons[sourceId])
-          ]
-        }
-      })
-    }
-  }
-
-  // third loop for giving all internal neurons the correct value
-  let neuronsCalculated: NeuronsCalculated = {}
-  for (const sinkType in neurons) {
-    if (Number(sinkType) === SINK_TYPE_INTERNAL_NEURON) {
-      for (const sinkId in neurons[sinkType]) {
-        neuronsCalculated = Object.assign({}, neuronsCalculated, {
-          [sinkType]: {
-            [sinkId]: Math.tanh(neurons[sinkType][sinkId].reduce((accumulator, currentValue) => accumulator + currentValue, 0))
-          }
-        })
+      if (gen.sinkType === '1' && gen.sinkId in internalNeurons) {
+        internalNeurons[gen.sinkId] += weightedValue
+      } else if (gen.sinkType === '2') {
+        internalNeurons[gen.sinkId] = weightedValue
       }
+    })
+  }
+
+  const calculateActionOutputs = (): ActionOutputs => {
+    const directionX = Math.tanh(internalNeurons.outputActionX || 0)
+    const directionY = Math.tanh(internalNeurons.outputActionY || 0)
+    const random = Math.tanh(internalNeurons.outputActionRandom || 0)
+
+    return { directionX, directionY, random }
+  }
+
+  const getSourceValue = (gen: Gen, inputs: SensoryInputs, internals: Record<string, number>): number => {
+    switch (gen.sourceType) {
+      case '1': // Sensory input
+        return getSensoryInputValue(gen.sourceId, inputs)
+      case '2': // Internal neuron
+        return internals[gen.sourceId] || 0
+      default:
+        return 0
     }
   }
 
-  // fourth loop for giving all action output neurons the correct value
-  for (const sinkType in neurons) {
-    if (Number(sinkType) === SINK_TYPE_OUTPUT_ACTION_NEURON) {
-      for (const sinkId in neurons[sinkType]) {
-        neuronsCalculated = Object.assign({}, neuronsCalculated, {
-          [sinkType]: {
-            [sinkId]: Math.tanh(neurons[sinkType][sinkId].reduce((accumulator, currentValue) => accumulator + currentValue, 0))
-          }
-        })
-      }
+  const getSensoryInputValue = (sourceId: string, inputs: SensoryInputs): number => {
+    switch (sourceId) {
+      case '0':
+        return inputs.age
+      case '1':
+        return inputs.random
+      case '2':
+        return inputs.currentPositionY
+      case '3':
+        return inputs.currentPositionX
+      case '4':
+        return inputs.generation
+      case '5':
+        return inputs.sizeOfMapX
+      case '6':
+        return inputs.sizeOfMapY
+      case '7':
+        return inputs.population
+      default:
+        return 0
     }
   }
 
-  return {
-    directionX: Math.tanh(neuronsCalculated[SINK_TYPE_OUTPUT_ACTION_NEURON]?.[0]) ?? 0,
-    directionY: Math.tanh(neuronsCalculated[SINK_TYPE_OUTPUT_ACTION_NEURON]?.[1]) ?? 0,
-    random: Math.tanh(neuronsCalculated[SINK_TYPE_OUTPUT_ACTION_NEURON]?.[2]) ?? 0
-  }
+  calculateInternalNeurons()
+  return calculateActionOutputs()
 }
