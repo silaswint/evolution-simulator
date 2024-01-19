@@ -62,6 +62,9 @@ export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGen
             }
           })
         )
+      } else {
+        // challenge: If secondsLeftForCurrentGeneration is 0, remove only the hamsters on the left side
+        setHamsters(prevHamsters => prevHamsters.filter(hamster => hamster.x > mapSize.width / 2))
       }
     }
 
