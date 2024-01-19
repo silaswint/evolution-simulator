@@ -62,11 +62,11 @@ export const Map = withPixiApp(({ app, population, secondsLeftForCurrentGenerati
 
           // @debug
           if (updatedX <= spriteSize.width || updatedX >= mapSize.width - spriteSize.width) {
-            console.log(`Sprite berührt die Grenze bei x: ${updatedX}`)
+            // console.log(`Sprite berührt die Grenze bei x: ${updatedX}`)
           }
 
           if (updatedY <= spriteSize.height || updatedY >= mapSize.height - spriteSize.height) {
-            console.log(`Sprite berührt die Grenze bei y: ${updatedY}`)
+            // console.log(`Sprite berührt die Grenze bei y: ${updatedY}`)
           }
 
           // Wenn die Positionen aktualisiert wurden, logge die Position
