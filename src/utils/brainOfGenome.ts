@@ -30,31 +30,32 @@ export const brainOfGenome = (sensoryInputs: SensoryInputs, genome: Genome): Act
   const actionNeurons: Record<string, number> = {}
 
   const calculateInternalNeurons = (): void => {
-    genome.forEach((gen: Gen) => {
+    genome.filter((gen: Gen) => {
+      return gen.sinkType === SINK_TYPE_INTERNAL_NEURON.toString()
+    }).forEach((gen: Gen) => {
       const sourceValue = getSourceValue(gen, sensoryInputs, internalNeurons)
-      const weightedValue = sourceValue * parseFloat(gen.weight) / WEIGHT_FLOATING_POINT // Normalize weight to a smaller range
+      const weightedValue = sourceValue * (parseFloat(gen.weight) / WEIGHT_FLOATING_POINT) // Normalize weight to a smaller range
 
-      if (gen.sinkType === SINK_TYPE_INTERNAL_NEURON.toString() && gen.sinkId in internalNeurons) {
-        internalNeurons[gen.sinkId] += weightedValue
-      }
+      internalNeurons[gen.sinkId] = (internalNeurons[gen.sinkId] || 0) + weightedValue
     })
   }
 
   const calculateActionNeurons = (): void => {
-    genome.forEach((gen: Gen) => {
+    genome.filter((gen: Gen) => {
+      return gen.sinkType === SINK_TYPE_OUTPUT_ACTION_NEURON.toString()
+    }).forEach((gen: Gen) => {
       const sourceValue = getSourceValue(gen, sensoryInputs, internalNeurons)
-      const weightedValue = sourceValue * parseFloat(gen.weight) / WEIGHT_FLOATING_POINT // Normalize weight to a smaller range
+      const weightedValue = sourceValue * (parseFloat(gen.weight) / WEIGHT_FLOATING_POINT) // Normalize weight to a smaller range
 
-      if (gen.sinkType === SINK_TYPE_OUTPUT_ACTION_NEURON.toString() && gen.sinkId in actionNeurons) {
-        actionNeurons[gen.sinkId] += weightedValue
-      }
+      actionNeurons[gen.sinkId] = (actionNeurons[gen.sinkId] || 0) + weightedValue
     })
   }
 
   const calculateResponse = (): ActionOutputs => {
-    const directionX = Math.tanh(internalNeurons.outputActionX || 0)
-    const directionY = Math.tanh(internalNeurons.outputActionY || 0)
-    const random = Math.tanh(internalNeurons.outputActionRandom || 0)
+    console.log('actionNeurons', actionNeurons)
+    const directionX = Math.tanh(actionNeurons[0]) || 0
+    const directionY = Math.tanh(actionNeurons[1]) || 0
+    const random = Math.tanh(actionNeurons[2]) || 0
 
     return { directionX, directionY, random }
   }
@@ -62,7 +63,7 @@ export const brainOfGenome = (sensoryInputs: SensoryInputs, genome: Genome): Act
   const getSourceValue = (gen: Gen, inputs: SensoryInputs, internals: Record<string, number>): number => {
     switch (gen.sourceType) {
       case SOURCE_TYPE_INPUT_SENSORY_NEURON.toString(): // Sensory input
-        return getSensoryInputValue(gen.sourceId, inputs)
+        return getSensoryInputValue(gen.sourceId, inputs) || 0
       case SOURCE_TYPE_INPUT_INTERNAL_NEURON.toString(): // Internal neuron
         return internals[gen.sourceId] || 0
       default:
