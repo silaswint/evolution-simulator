@@ -64,13 +64,31 @@ export const genomeToHex = (genome: Genome): string => {
   }).join(' ')
 }
 
-export const mutateGenome = (genome: string, mutationRate: number): string => {
+export const hexToGenome = (hexGenome: string[]): Genome => {
+  return hexGenome.map((hexGene: string) => {
+    return {
+      sourceType: hexGene[0],
+      sourceId: hexGene.substring(1, 9),
+      sinkType: hexGene[8],
+      sinkId: hexGene.substring(9, 16),
+      weight: hexGene.substring(16, 32)
+    }
+  })
+}
+
+export const mutateGenome = (genome: Genome): Genome => {
+  const mutationRate = config.mutationRate
+
   const mutateBit = (bit: string): string => (Math.random() < mutationRate ? randomHex() : bit)
 
   const randomHex = (): string => Math.floor(Math.random() * 16).toString(16)
 
-  return genome
-    .split('')
-    .map(mutateBit)
-    .join('')
+  const hexGenome = genomeToHex(genome)
+  const splittedToGenes = hexGenome.split(' ')
+  const mutatedGenes: string[] = []
+  splittedToGenes.forEach((gen: string) => {
+    mutatedGenes.push(gen.split('').map(mutateBit).join(''))
+  })
+
+  return hexToGenome(mutatedGenes)
 }

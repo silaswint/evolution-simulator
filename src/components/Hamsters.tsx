@@ -6,6 +6,7 @@ import { type HamsterState } from '@/utils/types/HamsterState'
 import { generateRandomHamsters } from '@/utils/generateRandomHamsters'
 import { getGeneratedHamsterState } from '@/utils/getGeneratedHamsterState'
 import { hamsterSize } from '@/utils/consts/hamsterSize'
+import { generateMutatedHamsters } from '@/utils/generateMutatedHamsters'
 
 const image = './assets/hamster.svg'
 
@@ -17,10 +18,13 @@ interface MapProps {
   secondsLeftForCurrentGeneration: number
   generation: number
   setSelectedHamster: React.Dispatch<React.SetStateAction<HamsterState | null>>
+  setGeneration: React.Dispatch<React.SetStateAction<number>>
+  resetGenerationCountdown: () => void
 }
 
-export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGeneration, generation, setSelectedHamster }: MapProps) => {
+export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGeneration, generation, setSelectedHamster, setGeneration, resetGenerationCountdown }: MapProps) => {
   const [hamsters, setHamsters] = useState<HamsterState[]>(generateRandomHamsters(population, hamsterSize, mapSize))
+  const [isProcessingNextGeneration, setIsProcessingNextGeneration] = useState<boolean>(false)
 
   useEffect(() => {
     const tick = (): void => {
@@ -62,9 +66,25 @@ export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGen
             }
           })
         )
-      } else {
+      } else if (!isProcessingNextGeneration) {
+        // set processing state
+        setIsProcessingNextGeneration(true)
+
         // challenge: If secondsLeftForCurrentGeneration is 0, remove only the hamsters on the left side
         setHamsters(prevHamsters => prevHamsters.filter(hamster => hamster.x > mapSize.width / 2))
+
+        // let the survived hamsters mutate
+        const mutatedHamsters = generateMutatedHamsters(hamsters, population, hamsterSize, mapSize)
+        setHamsters(mutatedHamsters)
+
+        // reset the countdown
+        resetGenerationCountdown()
+
+        // increment generation
+        setGeneration(generation + 1)
+
+        // reset processing state
+        setIsProcessingNextGeneration(false)
       }
     }
 

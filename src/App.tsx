@@ -8,7 +8,7 @@ import HamsterModal from './components/HamsterModal'
 const mapSize = config.mapSize
 const App: React.FC = () => {
   const [generation, setGeneration] = useState<number>(0)
-  const [population, setPopulation] = useState<number>(config.population)
+  const [population] = useState<number>(config.population)
   const [secondsPerGeneration] = useState<number>(config.secondsPerGeneration)
   const [secondsLeftForCurrentGeneration, setSecondsLeftForCurrentGeneration] = useState<number>(secondsPerGeneration)
   const [selectedHamster, setSelectedHamster] = useState<HamsterState | null>(null)
@@ -25,10 +25,14 @@ const App: React.FC = () => {
     return () => {
       clearInterval(timerInterval)
     }
-  }, [secondsPerGeneration])
+  }, [secondsPerGeneration, generation])
 
   const handleNextGeneration = (): void => {
     setGeneration((prevGeneration) => prevGeneration + 1)
+  }
+
+  const resetGenerationCountdown = (): void => {
+    setSecondsLeftForCurrentGeneration(config.secondsPerGeneration)
   }
 
   return (
@@ -40,7 +44,7 @@ const App: React.FC = () => {
           <br />
           <br />
           <Stage width={mapSize.width} height={mapSize.height} options={{ backgroundColor: 0xeef1f5 }}>
-              <Hamsters population={population} secondsLeftForCurrentGeneration={secondsLeftForCurrentGeneration} generation={generation} setSelectedHamster={setSelectedHamster} />
+              <Hamsters population={population} secondsLeftForCurrentGeneration={secondsLeftForCurrentGeneration} generation={generation} setSelectedHamster={setSelectedHamster} resetGenerationCountdown={resetGenerationCountdown} setGeneration={setGeneration} />
           </Stage>
           <HamsterModal selectedHamster={selectedHamster} setSelectedHamster={setSelectedHamster} />
       </>
