@@ -44,6 +44,7 @@ export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGen
               // console.log(`Hamster touches the limit at y: ${y}`)
             }
 
+            // This condition checks whether the hamster is within the limits
             if (x <= hamsterSize.width || y <= hamsterSize.height || x >= mapSize.width - hamsterSize.width || y >= mapSize.height - hamsterSize.height) {
               const newDirectionX = prev.directionX === 1 ? -1 : 1
               const newDirectionY = prev.directionX === 1 ? -1 : 1
