@@ -10,7 +10,6 @@ export const config: EvolutionConfig = {
   genomeSize: 40,
   mutationRate: 0.001,
   innerNeurons: 10,
-  speedInMs: 1000,
   challenge: CHALLENGE_RIGHT_SIDE_SURVIVES,
   movingSpeed: 3
 }

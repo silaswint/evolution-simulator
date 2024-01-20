@@ -8,7 +8,6 @@ export interface EvolutionConfig {
   genomeSize: number // Size of the genome per hamster
   mutationRate: number // Mutation rate (example: 0.001 means 0.1% probability of a mutation per gene)
   innerNeurons: number // Number of inner neurons in the genome
-  speedInMs: number
   challenge: typeof CHALLENGE_NONE | typeof CHALLENGE_RIGHT_SIDE_SURVIVES
   movingSpeed: number
 }
