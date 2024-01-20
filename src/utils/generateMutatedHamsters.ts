@@ -13,8 +13,8 @@ export const generateMutatedHamsters = (survivedHamsters: HamsterState[], popula
 
     hamsters.push({
       id: i + 1,
-      x: randomNumberBetween(hamsterSize.width + 1, mapSize.width - hamsterSize.width - 1),
-      y: randomNumberBetween(hamsterSize.height + 1, mapSize.height - hamsterSize.height - 1),
+      x: randomNumberBetween(1, mapSize.width - hamsterSize.width - 1),
+      y: randomNumberBetween(1, mapSize.height - hamsterSize.height - 1),
       directionX: Math.random() > 0.5 ? 1 : -1,
       directionY: Math.random() > 0.5 ? 1 : -1,
       genome: mutatedGenome
