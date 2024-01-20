@@ -1,10 +1,11 @@
 import { genomeToHex } from '@/utils/genome'
-import { convertBase } from '@/utils/math/convertBase'
 import { SINK_TYPE_INTERNAL_NEURON, SOURCE_TYPE_INPUT_INTERNAL_NEURON } from '@/utils/consts/brain'
 import Modal from 'react-modal'
 import React from 'react'
 import { NetworkVisualization } from '@/components/NetworkVisualization'
 import { type HamsterModalProps } from '@/utils/types/HamsterModalProps'
+import { getFormattedDecimalGenome } from '@/utils/getFormattedDecimalGenome'
+import { type DecimalGene } from '@/utils/types/DecimalGene'
 
 const HamsterModal: React.FC<HamsterModalProps> = ({ setSelectedHamster, selectedHamster }) => {
   const closeModal = (): void => {
@@ -47,14 +48,14 @@ const HamsterModal: React.FC<HamsterModalProps> = ({ setSelectedHamster, selecte
                     <th>sink id</th>
                     <th>weight</th>
                 </tr>
-                {selectedHamster.genome.map((gene, index) => (
-                    <tr key={`${genomeToHex([gene])}-${index}`}>
-                        <td>{genomeToHex([gene])}</td>
-                        <td>{Number(convertBase.bin2dec(gene.sourceType)) === SOURCE_TYPE_INPUT_INTERNAL_NEURON ? 'internal neuron' : 'sensory neuron'}</td>
-                        <td>{convertBase.bin2dec(gene.sourceId)}</td>
-                        <td>{Number(convertBase.bin2dec(gene.sinkType)) === SINK_TYPE_INTERNAL_NEURON ? 'internal neuron' : 'output action neuron'}</td>
-                        <td>{convertBase.bin2dec(gene.sinkId)}</td>
-                        <td>{convertBase.bin2dec(gene.weight)}</td>
+                {getFormattedDecimalGenome(selectedHamster.genome).map((gene: DecimalGene, index) => (
+                    <tr key={`${gene.hex}-${index}`}>
+                        <td>{gene.hex}</td>
+                        <td>{gene.sourceType === SOURCE_TYPE_INPUT_INTERNAL_NEURON ? 'internal neuron' : 'sensory neuron'}</td>
+                        <td>{gene.sourceId}</td>
+                        <td>{gene.sinkType === SINK_TYPE_INTERNAL_NEURON ? 'internal neuron' : 'output action neuron'}</td>
+                        <td>{gene.sinkId}</td>
+                        <td>{gene.weight}</td>
                     </tr>
                 ))}
                 </tbody>

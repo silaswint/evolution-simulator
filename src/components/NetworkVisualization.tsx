@@ -3,7 +3,7 @@ import { type Genome } from '@/utils/types/Genome'
 import CytoscapeComponent from 'react-cytoscapejs'
 import { type PresetLayoutOptions } from 'cytoscape'
 import { SINK_TYPE_INTERNAL_NEURON, SOURCE_TYPE_INPUT_INTERNAL_NEURON } from '@/utils/consts/brain'
-import { convertBase } from '@/utils/math/convertBase'
+import { getFormattedDecimalGenome } from '@/utils/getFormattedDecimalGenome'
 
 interface NetworkProps {
   connections: Genome
@@ -49,7 +49,7 @@ const options: PresetLayoutOptions = {
 
 // Helper function to calculate x-coordinate based on node type and position in row
 const calculateXForNodeType = (nodeId: string, nodeType: string): number => {
-  const nodeNumber = Number(convertBase.bin2dec(nodeId.split('_')[1])) // Extract the numeric part of nodeId
+  const nodeNumber = Number(nodeId.split('_')[1]) // Extract the numeric part of nodeId
   const horizontalSpacing = 100 // Adjust this value based on the desired spacing between nodes in the same row
 
   // Implement logic to calculate x-coordinate based on node type and position in row
@@ -66,34 +66,34 @@ const calculateXForNodeType = (nodeId: string, nodeType: string): number => {
 }
 
 export const NetworkVisualization: React.FC<NetworkProps> = ({ connections }) => {
-  connections.forEach(conn => {
-    const inputExternalLabel = conn.sourceType === SOURCE_TYPE_INPUT_INTERNAL_NEURON.toString() ? 'internal' : 'sensory'
-    const inputInternalLabel = conn.sinkType === SINK_TYPE_INTERNAL_NEURON.toString() ? 'internal' : 'action'
+  const formattedGenome = getFormattedDecimalGenome(connections)
+  formattedGenome.forEach(conn => {
+    const inputExternalLabel = conn.sourceType === SOURCE_TYPE_INPUT_INTERNAL_NEURON ? 'internal' : 'sensory'
+    const inputInternalLabel = conn.sinkType === SINK_TYPE_INTERNAL_NEURON ? 'internal' : 'action'
 
     if (!nodesMap.has(`${inputExternalLabel}_${conn.sourceId}`)) {
-      nodesMap.set(`${inputExternalLabel}_${conn.sourceId}`, { data: { id: `${inputExternalLabel}_${conn.sourceId}`, label: `${inputExternalLabel} ${convertBase.bin2dec(conn.sourceId)}` } })
+      nodesMap.set(`${inputExternalLabel}_${conn.sourceId}`, { data: { id: `${inputExternalLabel}_${conn.sourceId}`, label: `${inputExternalLabel} ${conn.sourceId}` } })
     }
 
     if (!nodesMap.has(`${inputInternalLabel}_${conn.sinkId}`)) {
-      nodesMap.set(`${inputInternalLabel}_${conn.sinkId}`, { data: { id: `${inputInternalLabel}_${conn.sinkId}`, label: `${inputInternalLabel} ${convertBase.bin2dec(conn.sinkId)}` } })
+      nodesMap.set(`${inputInternalLabel}_${conn.sinkId}`, { data: { id: `${inputInternalLabel}_${conn.sinkId}`, label: `${inputInternalLabel} ${conn.sinkId}` } })
     }
   })
 
   const nodes = Array.from(nodesMap.values())
 
-  const edges = connections
-    .map(conn => {
-      const inputExternalLabel = conn.sourceType === SOURCE_TYPE_INPUT_INTERNAL_NEURON.toString() ? 'internal' : 'sensory'
-      const inputInternalLabel = conn.sinkType === SINK_TYPE_INTERNAL_NEURON.toString() ? 'internal' : 'action'
+  const edges = formattedGenome.map(conn => {
+    const inputExternalLabel = conn.sourceType === SOURCE_TYPE_INPUT_INTERNAL_NEURON ? 'internal' : 'sensory'
+    const inputInternalLabel = conn.sinkType === SINK_TYPE_INTERNAL_NEURON ? 'internal' : 'action'
 
-      return {
-        data: {
-          source: `${inputExternalLabel}_${conn.sourceId}`,
-          target: `${inputInternalLabel}_${conn.sinkId}`,
-          weight: conn.weight
-        }
+    return {
+      data: {
+        source: `${inputExternalLabel}_${conn.sourceId}`,
+        target: `${inputInternalLabel}_${conn.sinkId}`,
+        weight: conn.weight
       }
-    })
+    }
+  })
 
   const elements = {
     nodes,
