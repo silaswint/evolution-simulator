@@ -1,22 +1,30 @@
 import { type HamsterState } from '@/utils/types/HamsterState'
-import { randomNumberBetween } from '@/utils/math/randomNumberBetween'
 import { generateRandomGenome } from '@/utils/genome'
-import { hamsterSize } from '@/utils/consts/hamsterSize'
-import { config } from '@/utils/config'
+import { findEmptyLocation } from '@/utils/findEmptyLocation'
 
 export const generateRandomHamsters = (population: number): HamsterState[] => {
   const hamsters: HamsterState[] = []
-  const mapSize = config.mapSize
 
   for (let i = 0; i < population; i++) {
+    let emptyLocation
+    const id = i + 1
+
+    // Attempts to generate random positions that do not overlap
+    try {
+      emptyLocation = findEmptyLocation(hamsters, id)
+    } catch (e) {
+      continue
+    }
+
     hamsters.push({
-      id: i + 1,
-      x: randomNumberBetween(1, mapSize.width - hamsterSize.width - 1),
-      y: randomNumberBetween(1, mapSize.height - hamsterSize.height - 1),
+      id,
+      x: emptyLocation.x,
+      y: emptyLocation.y,
       directionX: Math.random() > 0.5 ? 1 : -1,
       directionY: Math.random() > 0.5 ? 1 : -1,
       genome: generateRandomGenome()
     })
   }
+
   return hamsters
 }
