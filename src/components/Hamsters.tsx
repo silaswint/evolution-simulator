@@ -1,18 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { Container, Sprite, withPixiApp } from '@pixi/react'
-import { config } from '@/utils/config'
 import '@pixi/events'
 import { type HamsterState } from '@/utils/types/HamsterState'
 import { generateRandomHamsters } from '@/utils/generateRandomHamsters'
 import { hamsterSize } from '@/utils/consts/hamsterSize'
-import { generateMutatedHamsters } from '@/utils/generateMutatedHamsters'
-import { doCurrentChallenge } from '@/utils/doCurrentChallenge'
 import { type Genome } from '@/utils/types/Genome'
 import { move } from '@/utils/move'
+import { prepareNextGeneration } from '@/utils/prepareNextGeneration'
 
 const image = './assets/hamster.svg'
-
-const mapSize = config.mapSize
 
 interface MapProps {
   app: any
@@ -49,27 +45,15 @@ export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGen
           })
         )
       } else if (!isProcessingNextGeneration) {
-        // set processing state
-        setIsProcessingNextGeneration(true)
-
-        // process challenge
-        const survivedHamsters = doCurrentChallenge(hamsters)
-
-        // update survived hamsters stats
-        setSurvivingPopulation(survivedHamsters.length)
-
-        // let the survived hamsters mutate
-        const mutatedHamsters = generateMutatedHamsters(survivedHamsters, population, hamsterSize, mapSize)
-        setHamsters(mutatedHamsters)
-
-        // reset the countdown
-        resetGenerationCountdown()
-
-        // increment generation
-        setGeneration((prevGeneration) => prevGeneration + 1)
-
-        // reset processing state
-        setIsProcessingNextGeneration(false)
+        prepareNextGeneration(
+          hamsters,
+          population,
+          setIsProcessingNextGeneration,
+          setSurvivingPopulation,
+          setHamsters,
+          resetGenerationCountdown,
+          setGeneration
+        )
       }
     }
 
