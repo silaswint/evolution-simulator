@@ -28,10 +28,6 @@ const App: React.FC = () => {
     }
   }, [secondsPerGeneration, generation])
 
-  const handleNextGeneration = (): void => {
-    setGeneration((prevGeneration) => prevGeneration + 1)
-  }
-
   const resetGenerationCountdown = (): void => {
     setSecondsLeftForCurrentGeneration(config.secondsPerGeneration)
   }
@@ -42,7 +38,6 @@ const App: React.FC = () => {
           <p>Generation: {generation}</p>
           <p>Seconds left for current generation: {secondsLeftForCurrentGeneration}</p>
           <p>Surviving population: {survivingPopulation} / {config.population}</p>
-          <button onClick={handleNextGeneration}>Next Generation</button>
           <br />
           <br />
           <Stage width={mapSize.width} height={mapSize.height} options={{ backgroundColor: 0xeef1f5 }}>

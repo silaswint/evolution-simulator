@@ -86,7 +86,7 @@ export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGen
         resetGenerationCountdown()
 
         // increment generation
-        setGeneration(generation + 1)
+        setGeneration((prevGeneration) => prevGeneration + 1)
 
         // reset processing state
         setIsProcessingNextGeneration(false)
