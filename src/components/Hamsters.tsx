@@ -4,12 +4,11 @@ import { config } from '@/utils/config'
 import '@pixi/events'
 import { type HamsterState } from '@/utils/types/HamsterState'
 import { generateRandomHamsters } from '@/utils/generateRandomHamsters'
-import { getGeneratedHamsterState } from '@/utils/getGeneratedHamsterState'
 import { hamsterSize } from '@/utils/consts/hamsterSize'
 import { generateMutatedHamsters } from '@/utils/generateMutatedHamsters'
 import { doCurrentChallenge } from '@/utils/doCurrentChallenge'
 import { type Genome } from '@/utils/types/Genome'
-import { isOverlap } from '@/utils/isOverlap'
+import { move } from '@/utils/move'
 
 const image = './assets/hamster.svg'
 
@@ -46,27 +45,7 @@ export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGen
       if (secondsLeftForCurrentGeneration > 0) {
         setHamsters((prevHamsters: HamsterState[]) =>
           prevHamsters.map((prev: HamsterState) => {
-            const { id, genome } = prev
-            const { x, y, directionX, directionY } = getGeneratedHamsterState(prev, secondsLeftForCurrentGeneration, population, generation)
-
-            // This condition checks whether the hamster is within the limits
-            if (x < 0 || y < 0 || (x + hamsterSize.width) > mapSize.width || (y + hamsterSize.height) > mapSize.height) {
-              return dontMove(prev, id, genome)
-            }
-
-            // This conditions checks whether the location is empty
-            if (isOverlap(x, y, prevHamsters, id)) {
-              return dontMove(prev, id, genome)
-            }
-
-            return {
-              id,
-              x,
-              y,
-              directionX,
-              directionY,
-              genome
-            }
+            return move(prev, prevHamsters, secondsLeftForCurrentGeneration, population, generation)
           })
         )
       } else if (!isProcessingNextGeneration) {
