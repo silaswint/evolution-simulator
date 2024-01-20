@@ -1,11 +1,13 @@
 import { type HamsterState } from '@/utils/types/HamsterState'
 import { randomNumberBetween } from '@/utils/math/randomNumberBetween'
 import { generateRandomGenome } from '@/utils/genome'
-import { type HamsterSize } from '@/utils/types/HamsterSize'
-import { type MapSize } from '@/utils/types/MapSIze'
+import { hamsterSize } from '@/utils/consts/hamsterSize'
+import { config } from '@/utils/config'
 
-export const generateRandomHamsters = (population: number, hamsterSize: HamsterSize, mapSize: MapSize): HamsterState[] => {
+export const generateRandomHamsters = (population: number): HamsterState[] => {
   const hamsters: HamsterState[] = []
+  const mapSize = config.mapSize
+
   for (let i = 0; i < population; i++) {
     hamsters.push({
       id: i + 1,

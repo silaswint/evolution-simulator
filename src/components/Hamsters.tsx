@@ -25,7 +25,7 @@ interface MapProps {
 }
 
 export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGeneration, generation, setSelectedHamster, setGeneration, resetGenerationCountdown, setSurvivingPopulation }: MapProps) => {
-  const [hamsters, setHamsters] = useState<HamsterState[]>(generateRandomHamsters(population, hamsterSize, mapSize))
+  const [hamsters, setHamsters] = useState<HamsterState[]>(generateRandomHamsters(population))
   const [isProcessingNextGeneration, setIsProcessingNextGeneration] = useState<boolean>(false)
 
   useEffect(() => {
