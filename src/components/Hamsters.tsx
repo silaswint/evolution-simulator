@@ -7,6 +7,7 @@ import { generateRandomHamsters } from '@/utils/generateRandomHamsters'
 import { getGeneratedHamsterState } from '@/utils/getGeneratedHamsterState'
 import { hamsterSize } from '@/utils/consts/hamsterSize'
 import { generateMutatedHamsters } from '@/utils/generateMutatedHamsters'
+import {doCurrentChallenge} from "@/utils/doCurrentChallenge";
 
 const image = './assets/hamster.svg'
 
@@ -70,8 +71,8 @@ export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGen
         // set processing state
         setIsProcessingNextGeneration(true)
 
-        // challenge: If secondsLeftForCurrentGeneration is 0, remove only the hamsters on the left side
-        setHamsters(prevHamsters => prevHamsters.filter(hamster => hamster.x > mapSize.width / 2))
+        // process challenge
+        setHamsters(prevHamsters => doCurrentChallenge(prevHamsters))
 
         // let the survived hamsters mutate
         const mutatedHamsters = generateMutatedHamsters(hamsters, population, hamsterSize, mapSize)

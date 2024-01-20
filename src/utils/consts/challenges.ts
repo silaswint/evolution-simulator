@@ -1,0 +1,2 @@
+export const CHALLENGE_NONE = 0
+export const CHALLENGE_RIGHT_SIDE_SURVIVES = 1
