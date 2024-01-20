@@ -74,13 +74,12 @@ export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGen
 
         // process challenge
         const survivedHamsters = doCurrentChallenge(hamsters)
-        setHamsters(survivedHamsters)
 
         // update survived hamsters stats
         setSurvivingPopulation(survivedHamsters.length)
 
         // let the survived hamsters mutate
-        const mutatedHamsters = generateMutatedHamsters(hamsters, population, hamsterSize, mapSize)
+        const mutatedHamsters = generateMutatedHamsters(survivedHamsters, population, hamsterSize, mapSize)
         setHamsters(mutatedHamsters)
 
         // reset the countdown
