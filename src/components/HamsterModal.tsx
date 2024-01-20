@@ -20,7 +20,7 @@ const HamsterModal: React.FC<HamsterModalProps> = ({ setSelectedHamster, selecte
         style={{
           content: {
             width: '80%',
-            maxWidth: '400px',
+            maxWidth: '700px',
             height: '80%',
             maxHeight: '600px',
             margin: 'auto',
