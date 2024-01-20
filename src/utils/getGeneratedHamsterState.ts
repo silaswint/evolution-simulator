@@ -19,6 +19,8 @@ export const getGeneratedHamsterState = (prev: HamsterState, secondsLeftForCurre
 
   const newDirectionX = brainResponse.directionX > 0 ? -1 : 1
   const newDirectionY = brainResponse.directionY > 0 ? -1 : 1
+  const newDirectionX = Math.sign(brainResponse.directionX)
+  const newDirectionY = Math.sign(brainResponse.directionY)
 
   const newX = prev.x + prev.directionX * 2
   const newY = prev.y + prev.directionY * 2
