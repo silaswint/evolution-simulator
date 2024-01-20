@@ -8,6 +8,7 @@ import { getGeneratedHamsterState } from '@/utils/getGeneratedHamsterState'
 import { hamsterSize } from '@/utils/consts/hamsterSize'
 import { generateMutatedHamsters } from '@/utils/generateMutatedHamsters'
 import { doCurrentChallenge } from '@/utils/doCurrentChallenge'
+import { type Genome } from '@/utils/types/Genome'
 
 const image = './assets/hamster.svg'
 
@@ -24,6 +25,17 @@ interface MapProps {
   setSurvivingPopulation: React.Dispatch<React.SetStateAction<number>>
 }
 
+export const dontMove = (prev: HamsterState, id: number, genome: Genome): HamsterState => {
+  return {
+    id,
+    x: prev.x,
+    y: prev.y,
+    directionX: 0,
+    directionY: 0,
+    genome
+  }
+}
+
 export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGeneration, generation, setSelectedHamster, setGeneration, resetGenerationCountdown, setSurvivingPopulation }: MapProps) => {
   const [hamsters, setHamsters] = useState<HamsterState[]>(generateRandomHamsters(population))
   const [isProcessingNextGeneration, setIsProcessingNextGeneration] = useState<boolean>(false)
@@ -38,14 +50,7 @@ export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGen
 
             // This condition checks whether the hamster is within the limits
             if (x < 0 || y < 0 || (x + hamsterSize.width) > mapSize.width || (y + hamsterSize.height) > mapSize.height) {
-              return {
-                id,
-                x: prev.x,
-                y: prev.y,
-                directionX: 0,
-                directionY: 0,
-                genome
-              }
+              return dontMove(prev, id, genome)
             }
 
             return {
