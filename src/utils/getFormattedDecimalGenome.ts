@@ -11,14 +11,33 @@ import { config } from '@/utils/config'
 import { type DecimalGenome } from '@/utils/types/DecimalGenome'
 import { genomeToHex } from '@/utils/genome'
 
+interface SplitResult {
+  firstCharacter: string | null
+  restOfString: string
+}
+
+const splitFirstCharacter = (str: string): SplitResult => {
+  if (str.length === 0) {
+    return { firstCharacter: null, restOfString: '' }
+  }
+
+  const firstCharacter = str.charAt(0)
+  const restOfString = str.slice(1)
+
+  return { firstCharacter, restOfString }
+}
+
 export const getFormattedDecimalGenome = (genome: Genome): DecimalGenome => {
   return genome.map((gene, index) => {
+    const splittedFirstCharacterOfWeight = splitFirstCharacter(gene.weight)
+    const weight = convertBase.bin2dec(splittedFirstCharacterOfWeight.restOfString)
+
     const decimalGene: Gene = {
       sourceType: convertBase.bin2dec(gene.sourceType),
       sourceId: convertBase.bin2dec(gene.sourceId),
       sinkType: convertBase.bin2dec(gene.sinkType),
       sinkId: convertBase.bin2dec(gene.sinkId),
-      weight: convertBase.bin2dec(gene.weight)
+      weight: splittedFirstCharacterOfWeight.firstCharacter === '0' ? (-weight).toString() : weight
     }
 
     return {
