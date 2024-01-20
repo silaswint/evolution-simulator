@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { Container, Sprite, withPixiApp } from '@pixi/react'
 import '@pixi/events'
 import { type HamsterState } from '@/utils/types/HamsterState'
-import { generateRandomHamsters } from '@/utils/generateRandomHamsters'
 import { hamsterSize } from '@/utils/consts/hamsterSize'
 import { type Genome } from '@/utils/types/Genome'
 import { move } from '@/utils/move'
@@ -19,6 +18,8 @@ interface MapProps {
   setGeneration: React.Dispatch<React.SetStateAction<number>>
   resetGenerationCountdown: () => void
   setSurvivingPopulation: React.Dispatch<React.SetStateAction<number>>
+  hamsters: HamsterState[]
+  setHamsters: React.Dispatch<React.SetStateAction<HamsterState[]>>
 }
 
 export const dontMove = (prev: HamsterState, id: number, genome: Genome): HamsterState => {
@@ -32,8 +33,7 @@ export const dontMove = (prev: HamsterState, id: number, genome: Genome): Hamste
   }
 }
 
-export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGeneration, generation, setSelectedHamster, setGeneration, resetGenerationCountdown, setSurvivingPopulation }: MapProps) => {
-  const [hamsters, setHamsters] = useState<HamsterState[]>(generateRandomHamsters(population))
+export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGeneration, generation, setSelectedHamster, setGeneration, resetGenerationCountdown, setSurvivingPopulation, hamsters, setHamsters }: MapProps) => {
   const [isProcessingNextGeneration, setIsProcessingNextGeneration] = useState<boolean>(false)
 
   useEffect(() => {

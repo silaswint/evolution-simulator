@@ -4,6 +4,9 @@ import { config } from '@/utils/config'
 import { Hamsters } from '@/components/Hamsters'
 import { type HamsterState } from '@/utils/types/HamsterState'
 import HamsterModal from './components/HamsterModal'
+import fileDownload from 'js-file-download'
+import { generateRandomHamsters } from '@/utils/generateRandomHamsters'
+import { genomeToHex } from '@/utils/genome'
 
 const mapSize = config.mapSize
 const App: React.FC = () => {
@@ -13,6 +16,7 @@ const App: React.FC = () => {
   const [secondsLeftForCurrentGeneration, setSecondsLeftForCurrentGeneration] = useState<number>(secondsPerGeneration)
   const [selectedHamster, setSelectedHamster] = useState<HamsterState | null>(null)
   const [survivingPopulation, setSurvivingPopulation] = useState<number>(config.population)
+  const [hamsters, setHamsters] = useState<HamsterState[]>(generateRandomHamsters(population))
 
   useEffect(() => {
     setSecondsLeftForCurrentGeneration(secondsPerGeneration)
@@ -32,16 +36,25 @@ const App: React.FC = () => {
     setSecondsLeftForCurrentGeneration(config.secondsPerGeneration)
   }
 
+  const downloadGeneration = (): void => {
+    fileDownload(JSON.stringify(hamsters.map(hamster => genomeToHex(hamster.genome))), 'generation.json')
+  }
+
   return (
       <>
           <h1>Evolution Simulation</h1>
           <p>Generation: {generation}</p>
           <p>Seconds left for current generation: {secondsLeftForCurrentGeneration}</p>
           <p>Surviving population: {survivingPopulation} / {config.population}</p>
+          <p>Download current generation of hamsters:
+              <button onClick={() => {
+                downloadGeneration()
+              }}>Download</button>
+          </p>
           <br />
           <br />
           <Stage width={mapSize.width} height={mapSize.height} options={{ backgroundColor: 0xeef1f5 }}>
-              <Hamsters population={population} secondsLeftForCurrentGeneration={secondsLeftForCurrentGeneration} generation={generation} setSelectedHamster={setSelectedHamster} resetGenerationCountdown={resetGenerationCountdown} setGeneration={setGeneration} setSurvivingPopulation={setSurvivingPopulation} />
+              <Hamsters population={population} secondsLeftForCurrentGeneration={secondsLeftForCurrentGeneration} generation={generation} setSelectedHamster={setSelectedHamster} resetGenerationCountdown={resetGenerationCountdown} setGeneration={setGeneration} setSurvivingPopulation={setSurvivingPopulation} hamsters={hamsters} setHamsters={setHamsters}/>
           </Stage>
           <HamsterModal selectedHamster={selectedHamster} setSelectedHamster={setSelectedHamster} />
       </>
