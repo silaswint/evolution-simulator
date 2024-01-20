@@ -9,13 +9,15 @@ export const generateMutatedHamsters = (survivedHamsters: HamsterState[], popula
   const hamsters: HamsterState[] = []
   for (let i = 0; i < population; i++) {
     const randomHamster = pickRandomHamster(survivedHamsters)
+    const mutatedGenome = mutateGenome(randomHamster.genome)
+
     hamsters.push({
       id: i + 1,
       x: randomIntFromInterval(hamsterSize.width + 1, mapSize.width - hamsterSize.width - 1),
       y: randomIntFromInterval(hamsterSize.height + 1, mapSize.height - hamsterSize.height - 1),
       directionX: Math.random() > 0.5 ? 1 : -1,
       directionY: Math.random() > 0.5 ? 1 : -1,
-      genome: mutateGenome(randomHamster.genome)
+      genome: mutatedGenome
     })
   }
   return hamsters

@@ -3,12 +3,7 @@ import { convertBase } from '@/utils/math/convertBase'
 import { config } from '@/utils/config'
 import { type Genome } from '@/utils/types/Genome'
 import { type Gene } from '@/utils/types/Gene'
-import {
-  NUM_ACTION_OUTPUT_NEURONS,
-  NUM_SENSORY_NEURONS,
-  SINK_TYPE_INTERNAL_NEURON,
-  SOURCE_TYPE_INPUT_INTERNAL_NEURON
-} from '@/utils/consts/brain'
+import { padWithZeros } from '@/utils/math/padWithZeros'
 
 export const generateRandomGenome = (): Genome => {
   const randomBinary = (): number => Math.floor(Math.random() * 2)
@@ -24,35 +19,7 @@ export const generateRandomGenome = (): Genome => {
     })
   }
 
-  return generateGenome(genes)
-}
-
-export const generateGenome = (genome: Genome): Genome => {
-  return genome.map((gen: Gene) => {
-    // 1-Bit: Source (0 for sensory input neuron, 1 for internal neuron)
-    const sourceType = gen.sourceType
-
-    // 7-Bit: Index of the input neuron or internal neuron
-    const sourceId = Number(convertBase.bin2dec(sourceType)) === SOURCE_TYPE_INPUT_INTERNAL_NEURON ? convertBase.dec2bin((Number(convertBase.bin2dec(gen.sourceId)) % config.innerNeurons).toString()) : convertBase.dec2bin((Number(convertBase.bin2dec(gen.sourceId)) % NUM_SENSORY_NEURONS).toString())
-
-    // 1-Bit: Sink (0 for internal neuron, 1 for output action neuron)
-    const sinkType = gen.sinkType
-
-    // 7-Bit: Index of the internal neuron or output action neuron
-    const sinkId = Number(convertBase.bin2dec(sourceType)) === SINK_TYPE_INTERNAL_NEURON ? convertBase.dec2bin((Number(convertBase.bin2dec(gen.sinkId)) % config.innerNeurons).toString()) : convertBase.dec2bin((Number(convertBase.bin2dec(gen.sinkId)) % NUM_ACTION_OUTPUT_NEURONS).toString())
-
-    // 16-Bit: Weight of the connection
-    const weight = gen.weight
-
-    // Hexadecimal representation with a length limited to 8 characters
-    return {
-      sourceType,
-      sourceId,
-      sinkType,
-      sinkId,
-      weight
-    }
-  })
+  return genes
 }
 
 export const genomeToHex = (genome: Genome): string => {
@@ -67,12 +34,14 @@ export const genomeToHex = (genome: Genome): string => {
 export const hexToGenome = (hexGenome: string[]): Genome => {
   return hexGenome.map((hexGene: string) => {
     const binaryGene = convertBase.hex2bin(hexGene)
+    const paddedBinaryGene = padWithZeros(binaryGene, 32)
+
     return {
-      sourceType: binaryGene[0],
-      sourceId: binaryGene.substring(1, 9),
-      sinkType: binaryGene[8],
-      sinkId: binaryGene.substring(9, 16),
-      weight: binaryGene.substring(16, 32)
+      sourceType: paddedBinaryGene[0],
+      sourceId: paddedBinaryGene.substring(1, 8),
+      sinkType: paddedBinaryGene[8],
+      sinkId: paddedBinaryGene.substring(9, 16),
+      weight: paddedBinaryGene.substring(16, 32)
     }
   })
 }
