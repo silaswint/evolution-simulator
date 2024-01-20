@@ -3,12 +3,12 @@ import { type HamsterState } from '@/utils/types/HamsterState'
 import { getRandomHamsterState } from '@/utils/getRandomHamsterState'
 import { brain } from '@/utils/brain'
 import { config } from '@/utils/config'
-import { randomIntFromInterval } from '@/utils/math/randomIntFromInterval'
+import { randomNumberBetween } from '@/utils/math/randomNumberBetween'
 
 export const getGeneratedHamsterState = (prev: HamsterState, secondsLeftForCurrentGeneration: number, population: number, generation: number): HamsterGeneratorResponse => {
   const brainResponse = brain({
     age: config.secondsPerGeneration - secondsLeftForCurrentGeneration,
-    random: randomIntFromInterval(-4, 4),
+    random: randomNumberBetween(-4, 4),
     currentPositionY: prev.y,
     currentPositionX: prev.x,
     generation,
