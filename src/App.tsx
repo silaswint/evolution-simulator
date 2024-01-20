@@ -12,6 +12,7 @@ const App: React.FC = () => {
   const [secondsPerGeneration] = useState<number>(config.secondsPerGeneration)
   const [secondsLeftForCurrentGeneration, setSecondsLeftForCurrentGeneration] = useState<number>(secondsPerGeneration)
   const [selectedHamster, setSelectedHamster] = useState<HamsterState | null>(null)
+  const [survivingPopulation, setSurvivingPopulation] = useState<number>(config.population)
 
   useEffect(() => {
     setSecondsLeftForCurrentGeneration(secondsPerGeneration)
@@ -40,11 +41,12 @@ const App: React.FC = () => {
           <h1>Evolution Simulation</h1>
           <p>Generation: {generation}</p>
           <p>Seconds left for current generation: {secondsLeftForCurrentGeneration}</p>
+          <p>Surviving population: {survivingPopulation} / {config.population}</p>
           <button onClick={handleNextGeneration}>Next Generation</button>
           <br />
           <br />
           <Stage width={mapSize.width} height={mapSize.height} options={{ backgroundColor: 0xeef1f5 }}>
-              <Hamsters population={population} secondsLeftForCurrentGeneration={secondsLeftForCurrentGeneration} generation={generation} setSelectedHamster={setSelectedHamster} resetGenerationCountdown={resetGenerationCountdown} setGeneration={setGeneration} />
+              <Hamsters population={population} secondsLeftForCurrentGeneration={secondsLeftForCurrentGeneration} generation={generation} setSelectedHamster={setSelectedHamster} resetGenerationCountdown={resetGenerationCountdown} setGeneration={setGeneration} setSurvivingPopulation={setSurvivingPopulation} />
           </Stage>
           <HamsterModal selectedHamster={selectedHamster} setSelectedHamster={setSelectedHamster} />
       </>

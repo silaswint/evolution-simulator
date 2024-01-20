@@ -7,7 +7,7 @@ import { generateRandomHamsters } from '@/utils/generateRandomHamsters'
 import { getGeneratedHamsterState } from '@/utils/getGeneratedHamsterState'
 import { hamsterSize } from '@/utils/consts/hamsterSize'
 import { generateMutatedHamsters } from '@/utils/generateMutatedHamsters'
-import {doCurrentChallenge} from "@/utils/doCurrentChallenge";
+import { doCurrentChallenge } from '@/utils/doCurrentChallenge'
 
 const image = './assets/hamster.svg'
 
@@ -21,9 +21,10 @@ interface MapProps {
   setSelectedHamster: React.Dispatch<React.SetStateAction<HamsterState | null>>
   setGeneration: React.Dispatch<React.SetStateAction<number>>
   resetGenerationCountdown: () => void
+  setSurvivingPopulation: React.Dispatch<React.SetStateAction<number>>
 }
 
-export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGeneration, generation, setSelectedHamster, setGeneration, resetGenerationCountdown }: MapProps) => {
+export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGeneration, generation, setSelectedHamster, setGeneration, resetGenerationCountdown, setSurvivingPopulation }: MapProps) => {
   const [hamsters, setHamsters] = useState<HamsterState[]>(generateRandomHamsters(population, hamsterSize, mapSize))
   const [isProcessingNextGeneration, setIsProcessingNextGeneration] = useState<boolean>(false)
 
@@ -72,7 +73,11 @@ export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGen
         setIsProcessingNextGeneration(true)
 
         // process challenge
-        setHamsters(prevHamsters => doCurrentChallenge(prevHamsters))
+        const survivedHamsters = doCurrentChallenge(hamsters)
+        setHamsters(survivedHamsters)
+
+        // update survived hamsters stats
+        setSurvivingPopulation(survivedHamsters.length)
 
         // let the survived hamsters mutate
         const mutatedHamsters = generateMutatedHamsters(hamsters, population, hamsterSize, mapSize)
