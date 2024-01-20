@@ -20,15 +20,15 @@ const options: PresetLayoutOptions = {
     const nodeId: string = node._private.data.id
     if (nodeId.startsWith('sensory')) {
       // Top row for sensory nodes
-      position.y = 100
+      position.y = calculateYForNodeType(nodeId, 'sensory')
       position.x = calculateXForNodeType(nodeId, 'sensory')
     } else if (nodeId.startsWith('internal')) {
       // Middle row for internal nodes
-      position.y = 300
+      position.y = calculateYForNodeType(nodeId, 'internal')
       position.x = calculateXForNodeType(nodeId, 'internal')
     } else if (nodeId.startsWith('action')) {
       // Bottom row for action nodes
-      position.y = 500
+      position.y = calculateYForNodeType(nodeId, 'action')
       position.x = calculateXForNodeType(nodeId, 'action')
     }
 
@@ -57,9 +57,26 @@ const calculateXForNodeType = (nodeId: string, nodeType: string): number => {
     case 'sensory':
       return nodeNumber * horizontalSpacing // Nodes in the 'sensory' row are spaced horizontally
     case 'internal':
-      return nodeNumber * horizontalSpacing // Nodes in the 'internal' row are spaced horizontally
+      return (nodeNumber * horizontalSpacing) + 50 // Nodes in the 'internal' row are spaced horizontally
     case 'action':
-      return nodeNumber * horizontalSpacing // Nodes in the 'action' row are spaced horizontally
+      return nodeNumber * horizontalSpacing + 25 // Nodes in the 'action' row are spaced horizontally
+    default:
+      return 0
+  }
+}
+
+// Helper function to calculate y-coordinate based on node type and position in row
+const calculateYForNodeType = (nodeId: string, nodeType: string): number => {
+  const nodeNumber = Number(nodeId.split('_')[1]) // Extract the numeric part of nodeId
+
+  const addedY = nodeNumber % 2 === 0 ? 0 : 20
+  switch (nodeType) {
+    case 'sensory':
+      return 100 + addedY
+    case 'internal':
+      return 300 + addedY
+    case 'action':
+      return 500 + addedY
     default:
       return 0
   }
