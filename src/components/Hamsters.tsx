@@ -36,25 +36,14 @@ export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGen
             const { id, genome } = prev
             const { x, y, directionX, directionY } = getGeneratedHamsterState(prev, secondsLeftForCurrentGeneration, population, generation)
 
-            if (x <= hamsterSize.width || x >= mapSize.width - hamsterSize.width) {
-              // console.log(`Hamster touches the limit at x: ${x}`)
-            }
-
-            if (y <= hamsterSize.height || y >= mapSize.height - hamsterSize.height) {
-              // console.log(`Hamster touches the limit at y: ${y}`)
-            }
-
             // This condition checks whether the hamster is within the limits
-            if (x <= hamsterSize.width || y <= hamsterSize.height || x >= mapSize.width - hamsterSize.width || y >= mapSize.height - hamsterSize.height) {
-              const newDirectionX = prev.directionX === 1 ? -1 : 1
-              const newDirectionY = prev.directionX === 1 ? -1 : 1
-
+            if (x < 0 || y < 0 || (x + hamsterSize.width) > mapSize.width || (y + hamsterSize.height) > mapSize.height) {
               return {
                 id,
-                x: Math.max(0, Math.min(mapSize.width - hamsterSize.width, prev.x + newDirectionX * 2)),
-                y: Math.max(0, Math.min(mapSize.height - hamsterSize.height, prev.y + newDirectionY * 2)),
-                directionX: newDirectionX,
-                directionY: newDirectionY,
+                x: prev.x,
+                y: prev.y,
+                directionX: 0,
+                directionY: 0,
                 genome
               }
             }
@@ -117,7 +106,7 @@ export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGen
                         image={image}
                         x={0}
                         y={0}
-                        scale={1}
+                        scale={0}
                         width={hamsterSize.width}
                         height={hamsterSize.height}
                         mousedown={() => {
