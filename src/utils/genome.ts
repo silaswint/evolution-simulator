@@ -66,12 +66,13 @@ export const genomeToHex = (genome: Genome): string => {
 
 export const hexToGenome = (hexGenome: string[]): Genome => {
   return hexGenome.map((hexGene: string) => {
+    const binaryGene = convertBase.hex2bin(hexGene)
     return {
-      sourceType: hexGene[0],
-      sourceId: hexGene.substring(1, 9),
-      sinkType: hexGene[8],
-      sinkId: hexGene.substring(9, 16),
-      weight: hexGene.substring(16, 32)
+      sourceType: binaryGene[0],
+      sourceId: binaryGene.substring(1, 9),
+      sinkType: binaryGene[8],
+      sinkId: binaryGene.substring(9, 16),
+      weight: binaryGene.substring(16, 32)
     }
   })
 }
@@ -86,8 +87,9 @@ export const mutateGenome = (genome: Genome): Genome => {
   const hexGenome = genomeToHex(genome)
   const splittedToGenes = hexGenome.split(' ')
   const mutatedGenes: string[] = []
-  splittedToGenes.forEach((gen: string) => {
-    mutatedGenes.push(gen.split('').map(mutateBit).join(''))
+  splittedToGenes.forEach((gene: string) => {
+    const mutatedGene = gene.split('').map(mutateBit).join('')
+    mutatedGenes.push(mutatedGene)
   })
 
   return hexToGenome(mutatedGenes)
