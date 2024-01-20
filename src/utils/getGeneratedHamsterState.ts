@@ -17,8 +17,6 @@ export const getGeneratedHamsterState = (prev: HamsterState, secondsLeftForCurre
     population
   }, prev.genome)
 
-  const newDirectionX = brainResponse.directionX > 0 ? -1 : 1
-  const newDirectionY = brainResponse.directionY > 0 ? -1 : 1
   const newDirectionX = Math.sign(brainResponse.directionX)
   const newDirectionY = Math.sign(brainResponse.directionY)
 
