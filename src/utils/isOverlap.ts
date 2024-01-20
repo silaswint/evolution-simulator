@@ -27,8 +27,7 @@ const checkCircleOverlap = (blue: Circle, red: Circle): boolean => {
 }
 
 export const isOverlap = (x: number, y: number, existingHamsters: HamsterState[], id: number): boolean => {
-  // sqrt(width * width + height * height) / 2
-  const radius = Math.sqrt(hamsterSize.width * hamsterSize.width + hamsterSize.height * hamsterSize.height) / 2
+  const radius = hamsterSize.width / 2
 
   return existingHamsters.some((otherHamster): boolean => {
     if (otherHamster.id === id) {
