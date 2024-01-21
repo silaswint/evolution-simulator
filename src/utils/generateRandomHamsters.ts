@@ -5,6 +5,8 @@ import { type MapSize } from '@/utils/types/MapSIze'
 import { calculateRotation } from '@/utils/calculateRotation'
 import { type MutableRefObject } from 'react'
 
+const getRandomDirection = (): 1 | -1 => (Math.random() > 0.5 ? 1 : -1)
+
 export const generateRandomHamsters = (populationRef: MutableRefObject<number>, mapSize: MapSize): HamsterState[] => {
   const population = populationRef.current
 
@@ -22,8 +24,8 @@ export const generateRandomHamsters = (populationRef: MutableRefObject<number>, 
     }
 
     // these are just random starting positions, act like it's "undefined"
-    const directionX = Math.random() > 0.5 ? 1 : -1
-    const directionY = Math.random() > 0.5 ? 1 : -1
+    const directionX = getRandomDirection()
+    const directionY = getRandomDirection()
 
     hamsters.push({
       id,
