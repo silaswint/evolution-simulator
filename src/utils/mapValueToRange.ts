@@ -1,11 +1,17 @@
-export const mapValueToRange = (value: number, fromMin: number, fromMax: number, toMin: number, toMax: number): number => {
-  // Linear transformation
-  const m = (toMax - toMin) / (fromMax - fromMin)
-  const b = toMin - m * fromMin
+export const mapValueToRange = (
+  value: number,
+  fromMin: number,
+  fromMax: number,
+  toMin: number,
+  toMax: number
+): number => {
+  // Calculate the slope and y-intercept for linear transformation
+  const slope = (toMax - toMin) / (fromMax - fromMin)
+  const intercept = toMin - slope * fromMin
 
-  // Apply the transformation
-  const result = m * value + b
+  // Apply the linear transformation
+  const result = slope * value + intercept
 
-  // Make sure that the result is within the target range
+  // Ensure the result is within the target range
   return Math.max(Math.min(result, toMax), toMin)
 }
