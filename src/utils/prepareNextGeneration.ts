@@ -14,25 +14,27 @@ export const prepareNextGeneration = (
   setGeneration: React.Dispatch<React.SetStateAction<number>>,
   mapSize: MapSize
 ): void => {
-  // set processing state
-  setIsProcessingNextGeneration(true)
+  try {
+    // set processing state
+    setIsProcessingNextGeneration(true)
 
-  // process challenge
-  const survivedHamsters = doCurrentChallenge(hamsters, mapSize)
+    // process challenge
+    const survivedHamsters = doCurrentChallenge(hamsters, mapSize)
 
-  // update survived hamsters stats
-  setSurvivingPopulation(survivedHamsters.length)
+    // update survived hamsters stats
+    setSurvivingPopulation(survivedHamsters.length)
 
-  // let the survived hamsters mutate
-  const mutatedHamsters = generateMutatedHamsters(survivedHamsters, population, mapSize)
-  setHamsters(mutatedHamsters)
+    // let the survived hamsters mutate
+    const mutatedHamsters = generateMutatedHamsters(survivedHamsters, population, mapSize)
+    setHamsters(mutatedHamsters)
 
-  // reset the countdown
-  resetGenerationCountdown()
+    // reset the countdown
+    resetGenerationCountdown()
 
-  // increment generation
-  setGeneration((prevGeneration) => prevGeneration + 1)
-
-  // reset processing state
-  setIsProcessingNextGeneration(false)
+    // increment generation
+    setGeneration(prevGeneration => prevGeneration + 1)
+  } finally {
+    // reset processing state
+    setIsProcessingNextGeneration(false)
+  }
 }
