@@ -17,6 +17,10 @@ interface SensoryInputs {
   sizeOfMapX: number
   sizeOfMapY: number
   population: number
+  distanceOfNextObjectNorth: number
+  distanceOfNextObjectEast: number
+  distanceOfNextObjectSouth: number
+  distanceOfNextObjectWest: number
 }
 
 interface ActionOutputs {

@@ -5,7 +5,8 @@ import {
   NUM_ACTION_OUTPUT_NEURONS,
   NUM_SENSORY_NEURONS,
   SINK_TYPE_INTERNAL_NEURON,
-  SOURCE_TYPE_INPUT_INTERNAL_NEURON, WEIGHT_FLOATING_POINT
+  SOURCE_TYPE_INPUT_INTERNAL_NEURON,
+  WEIGHT_FLOATING_POINT
 } from '@/utils/consts/brain'
 import { config } from '@/utils/config'
 import { type DecimalGenome } from '@/utils/types/DecimalGenome'
@@ -42,9 +43,9 @@ export const getFormattedDecimalGenome = (genome: Genome): DecimalGenome => {
 
     return {
       sourceType: Number(decimalGene.sourceType),
-      sourceId: Number(decimalGene.sourceId) === SOURCE_TYPE_INPUT_INTERNAL_NEURON ? Number(decimalGene.sourceId) % config.innerNeurons : Number(decimalGene.sourceId) % NUM_SENSORY_NEURONS,
+      sourceId: Number(decimalGene.sourceType) === SOURCE_TYPE_INPUT_INTERNAL_NEURON ? Number(decimalGene.sourceId) % config.innerNeurons : Number(decimalGene.sourceId) % NUM_SENSORY_NEURONS,
       sinkType: Number(decimalGene.sinkType),
-      sinkId: Number(decimalGene.sinkId) === SINK_TYPE_INTERNAL_NEURON ? Number(decimalGene.sinkId) % config.innerNeurons : Number(decimalGene.sinkId) % NUM_ACTION_OUTPUT_NEURONS,
+      sinkId: Number(decimalGene.sinkType) === SINK_TYPE_INTERNAL_NEURON ? Number(decimalGene.sinkId) % config.innerNeurons : Number(decimalGene.sinkId) % NUM_ACTION_OUTPUT_NEURONS,
       weight: Number(decimalGene.weight) / WEIGHT_FLOATING_POINT,
       hex: genomeToHex([gene])
     }

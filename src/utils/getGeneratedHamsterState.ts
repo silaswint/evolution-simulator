@@ -5,8 +5,11 @@ import { brain } from '@/utils/brain'
 import { config } from '@/utils/config'
 import { randomNumberBetween } from '@/utils/math/randomNumberBetween'
 import { mapValueToRange } from '@/utils/mapValueToRange'
+import { getDistanceToNearestHamster } from '@/utils/getDistanceToNearestHamster'
 
-export const getGeneratedHamsterState = (prev: HamsterState, secondsLeftForCurrentGeneration: number, population: number, generation: number): HamsterGeneratorResponse => {
+export const getGeneratedHamsterState = (prev: HamsterState, secondsLeftForCurrentGeneration: number, population: number, generation: number, prevHamsters: HamsterState[]): HamsterGeneratorResponse => {
+  const distancesToOtherHamsters = getDistanceToNearestHamster(prev, prevHamsters)
+
   const brainResponse = brain({
     age: config.secondsPerGeneration - secondsLeftForCurrentGeneration,
     random: randomNumberBetween(-4, 4),
@@ -15,7 +18,11 @@ export const getGeneratedHamsterState = (prev: HamsterState, secondsLeftForCurre
     generation,
     sizeOfMapX: config.mapSize.width,
     sizeOfMapY: config.mapSize.height,
-    population
+    population,
+    distanceOfNextObjectNorth: distancesToOtherHamsters.North,
+    distanceOfNextObjectEast: distancesToOtherHamsters.East,
+    distanceOfNextObjectSouth: distancesToOtherHamsters.South,
+    distanceOfNextObjectWest: distancesToOtherHamsters.West
   }, prev.genome)
 
   const newDirectionX = Math.sign(brainResponse.directionX)
