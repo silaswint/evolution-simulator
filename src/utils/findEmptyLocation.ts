@@ -3,15 +3,15 @@ import { hamsterSize } from '@/utils/consts/hamsterSize'
 import { isOverlap } from '@/utils/isOverlap'
 import { config } from '@/utils/config'
 import { type HamsterState } from '@/utils/types/HamsterState'
+import {MapSize} from "@/utils/types/MapSIze";
 
 interface EmptyLocation {
   x: number
   y: number
 }
 
-export const findEmptyLocation = (hamsters: HamsterState[], id: number): EmptyLocation => {
+export const findEmptyLocation = (hamsters: HamsterState[], id: number, mapSize: MapSize): EmptyLocation => {
   let x, y
-  const mapSize = config.mapSize
 
   let attemptCount = 0
   do {

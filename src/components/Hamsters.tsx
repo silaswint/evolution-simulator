@@ -6,6 +6,7 @@ import { hamsterSize } from '@/utils/consts/hamsterSize'
 import { type Genome } from '@/utils/types/Genome'
 import { move } from '@/utils/move'
 import { prepareNextGeneration } from '@/utils/prepareNextGeneration'
+import { type MapSize } from '@/utils/types/MapSIze'
 
 const image = './assets/hamster.svg'
 
@@ -20,6 +21,7 @@ interface MapProps {
   setSurvivingPopulation: React.Dispatch<React.SetStateAction<number>>
   hamsters: HamsterState[]
   setHamsters: React.Dispatch<React.SetStateAction<HamsterState[]>>
+  mapSize: MapSize
 }
 
 export const dontMove = (prev: HamsterState, id: number, genome: Genome): HamsterState => {
@@ -33,7 +35,7 @@ export const dontMove = (prev: HamsterState, id: number, genome: Genome): Hamste
   }
 }
 
-export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGeneration, generation, setSelectedHamster, setGeneration, resetGenerationCountdown, setSurvivingPopulation, hamsters, setHamsters }: MapProps) => {
+export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGeneration, generation, setSelectedHamster, setGeneration, resetGenerationCountdown, setSurvivingPopulation, hamsters, setHamsters, mapSize }: MapProps) => {
   const [isProcessingNextGeneration, setIsProcessingNextGeneration] = useState<boolean>(false)
 
   useEffect(() => {
@@ -41,7 +43,7 @@ export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGen
       if (secondsLeftForCurrentGeneration > 0) {
         setHamsters((prevHamsters: HamsterState[]) =>
           prevHamsters.map((prev: HamsterState) => {
-            return move(prev, prevHamsters, secondsLeftForCurrentGeneration, population, generation)
+            return move(prev, prevHamsters, secondsLeftForCurrentGeneration, population, generation, mapSize)
           })
         )
       } else if (!isProcessingNextGeneration) {
@@ -52,7 +54,8 @@ export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGen
           setSurvivingPopulation,
           setHamsters,
           resetGenerationCountdown,
-          setGeneration
+          setGeneration,
+          mapSize
         )
       }
     }

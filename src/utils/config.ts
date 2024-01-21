@@ -4,7 +4,7 @@ import { type EvolutionConfig } from '@/utils/types/EvolutionConfig'
 import { CHALLENGE_NONE, CHALLENGE_RIGHT_SIDE_SURVIVES } from '@/utils/consts/challenges'
 
 export const config: EvolutionConfig = {
-  population: 100,
+  population: 20,
   mapSize: { width: 800, height: 600 },
   secondsPerGeneration: 5,
   genomeSize: 40,

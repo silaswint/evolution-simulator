@@ -3,11 +3,9 @@ import { hamsterSize } from '@/utils/consts/hamsterSize'
 import { isOverlap } from '@/utils/isOverlap'
 import { dontMove } from '@/components/Hamsters'
 import { type HamsterState } from '@/utils/types/HamsterState'
-import { config } from '@/utils/config'
+import { type MapSize } from '@/utils/types/MapSIze'
 
-const mapSize = config.mapSize
-
-export const move = (prev: HamsterState, prevHamsters: HamsterState[], secondsLeftForCurrentGeneration: number, population: number, generation: number): HamsterState => {
+export const move = (prev: HamsterState, prevHamsters: HamsterState[], secondsLeftForCurrentGeneration: number, population: number, generation: number, mapSize: MapSize): HamsterState => {
   const { id, genome } = prev
   const { x, y, directionX, directionY } = getGeneratedHamsterState(prev, secondsLeftForCurrentGeneration, population, generation)
 

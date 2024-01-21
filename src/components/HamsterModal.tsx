@@ -24,7 +24,8 @@ const HamsterModal: React.FC<HamsterModalProps> = ({ setSelectedHamster, selecte
             height: '80%',
             maxHeight: '600px',
             margin: 'auto',
-            overflow: 'auto'
+            overflow: 'auto',
+            color: '#000000'
           }
         }}
     >

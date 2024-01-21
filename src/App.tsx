@@ -1,5 +1,6 @@
 import { Stage } from '@pixi/react'
-import React, { useEffect, useState } from 'react'
+import type * as PIXI from 'pixi.js'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { config } from '@/utils/config'
 import { Hamsters } from '@/components/Hamsters'
 import { type HamsterState } from '@/utils/types/HamsterState'
@@ -13,8 +14,9 @@ import './custom.scss'
 import { Button, Col, Container, Row } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCakeCandles, faClock, faPeopleGroup } from '@fortawesome/free-solid-svg-icons'
+import { type MapSize } from '@/utils/types/MapSIze'
+import { WindowContext } from '@/components/WindowContextProvider'
 
-const mapSize = config.mapSize
 const App: React.FC = () => {
   const [generation, setGeneration] = useState<number>(0)
   const [population] = useState<number>(config.population)
@@ -22,7 +24,33 @@ const App: React.FC = () => {
   const [secondsLeftForCurrentGeneration, setSecondsLeftForCurrentGeneration] = useState<number>(secondsPerGeneration)
   const [selectedHamster, setSelectedHamster] = useState<HamsterState | null>(null)
   const [survivingPopulation, setSurvivingPopulation] = useState<number>(config.population)
-  const [hamsters, setHamsters] = useState<HamsterState[]>(generateRandomHamsters(population))
+  const { clientHeight, clientWidth } = useContext(WindowContext)
+  const [mapSize, setMapSize] = useState<MapSize>({
+    width: clientWidth,
+    height: clientHeight
+  })
+  const [hamsters, setHamsters] = useState<HamsterState[]>(generateRandomHamsters(population, mapSize))
+
+  const divRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (divRef.current) {
+      const rect = divRef.current.getBoundingClientRect()
+      setMapSize({
+        width: rect.width,
+        height: rect.height
+      })
+    }
+  }, [])
+  useEffect(() => {
+    if (divRef.current) {
+      const rect = divRef.current.getBoundingClientRect()
+      setMapSize({
+        width: rect.width,
+        height: rect.height
+      })
+    }
+  }, [clientWidth, clientHeight])
 
   useEffect(() => {
     setSecondsLeftForCurrentGeneration(secondsPerGeneration)
@@ -50,27 +78,29 @@ const App: React.FC = () => {
       <Container fluid className="mt-4" style={{ maxWidth: '800px' }}>
           <h1 className="mb-4">Evolution Simulation</h1>
           <Row className="mb-3">
-              <Col>
+              <Col xs={8} md={6}>
                   <Row className="mb-3">
-                      <Col xs={6} md={2} className="mb-2 mb-md-0">
+                      <Col xs={3} md={2} className="mb-2 mb-md-0">
                           <p className="mb-0" title={'Generation'}><FontAwesomeIcon icon={faCakeCandles} /> {generation}</p>
                       </Col>
-                      <Col xs={6} md={2} className="mb-2 mb-md-0">
+                      <Col xs={3} md={2} className="mb-2 mb-md-0">
                           <p className="mb-0" title={'Seconds left for current generation'}><FontAwesomeIcon icon={faClock} /> {secondsLeftForCurrentGeneration}</p>
                       </Col>
-                      <Col xs={12} md={4}>
+                      <Col xs={5} md={4}>
                           <p className="mb-0" title={'Surviving population'}><FontAwesomeIcon icon={faPeopleGroup} /> {survivingPopulation}/{config.population}</p>
                       </Col>
                   </Row>
               </Col>
-              <Col className="text-end">
+              <Col xs={4} md={6} className="text-end">
                   <Button variant="primary" onClick={downloadGeneration} title={'Download current generation of hamsters'}>Download</Button>
               </Col>
           </Row>
-          <Stage width={mapSize.width} height={mapSize.height} options={{ backgroundColor: 0xeef1f5 }}>
-              <Hamsters population={population} secondsLeftForCurrentGeneration={secondsLeftForCurrentGeneration} generation={generation} setSelectedHamster={setSelectedHamster} resetGenerationCountdown={resetGenerationCountdown} setGeneration={setGeneration} setSurvivingPopulation={setSurvivingPopulation} hamsters={hamsters} setHamsters={setHamsters}/>
-          </Stage>
-          <HamsterModal selectedHamster={selectedHamster} setSelectedHamster={setSelectedHamster} />
+          <div ref={divRef} style={{ boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)', width: '100%', height: 'auto', maxHeight: `${config.mapSize.height}px`, maxWidth: `${config.mapSize.width}px` }}>
+              <Stage width={mapSize.width} height={mapSize.height} options={{ backgroundColor: 0x343a40 }}>
+                  <Hamsters population={population} secondsLeftForCurrentGeneration={secondsLeftForCurrentGeneration} generation={generation} setSelectedHamster={setSelectedHamster} resetGenerationCountdown={resetGenerationCountdown} setGeneration={setGeneration} setSurvivingPopulation={setSurvivingPopulation} hamsters={hamsters} setHamsters={setHamsters} mapSize={mapSize}/>
+              </Stage>
+              <HamsterModal selectedHamster={selectedHamster} setSelectedHamster={setSelectedHamster} />
+          </div>
       </Container>
   )
 }

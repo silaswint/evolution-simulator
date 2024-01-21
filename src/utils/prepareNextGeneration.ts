@@ -1,11 +1,8 @@
 import { doCurrentChallenge } from '@/utils/doCurrentChallenge'
 import { generateMutatedHamsters } from '@/utils/generateMutatedHamsters'
-import { hamsterSize } from '@/utils/consts/hamsterSize'
 import type React from 'react'
 import { type HamsterState } from '@/utils/types/HamsterState'
-import { config } from '@/utils/config'
-
-const mapSize = config.mapSize
+import { type MapSize } from '@/utils/types/MapSIze'
 
 export const prepareNextGeneration = (
   hamsters: HamsterState[],
@@ -14,19 +11,20 @@ export const prepareNextGeneration = (
   setSurvivingPopulation: React.Dispatch<React.SetStateAction<number>>,
   setHamsters: React.Dispatch<React.SetStateAction<HamsterState[]>>,
   resetGenerationCountdown: () => void,
-  setGeneration: React.Dispatch<React.SetStateAction<number>>
+  setGeneration: React.Dispatch<React.SetStateAction<number>>,
+  mapSize: MapSize
 ): void => {
   // set processing state
   setIsProcessingNextGeneration(true)
 
   // process challenge
-  const survivedHamsters = doCurrentChallenge(hamsters)
+  const survivedHamsters = doCurrentChallenge(hamsters, mapSize)
 
   // update survived hamsters stats
   setSurvivingPopulation(survivedHamsters.length)
 
   // let the survived hamsters mutate
-  const mutatedHamsters = generateMutatedHamsters(survivedHamsters, population, hamsterSize, mapSize)
+  const mutatedHamsters = generateMutatedHamsters(survivedHamsters, population, mapSize)
   setHamsters(mutatedHamsters)
 
   // reset the countdown

@@ -1,0 +1,24 @@
+@import 'bootstrap';
+
+// Überschreibe Bootstrap-Variablen für den Dark Mode
+$theme-colors: (
+        primary: #007bff,
+        secondary: #6c757d,
+        success: #28a745,
+        info: #17a2b8,
+        warning: #ffc107,
+        danger: #dc3545,
+        light: #f8f9fa,
+        dark: #343a40
+);
+
+// Dark Mode Klasse hinzufügen
+body, html {
+  // Hintergrundfarbe für den Dark Mode setzen
+  background-color: map-get($theme-colors, dark);
+
+  // Textfarbe für den Dark Mode setzen
+  color: map-get($theme-colors, light);
+
+  // Weitere Anpassungen für den Dark Mode hier hinzufügen...
+}
