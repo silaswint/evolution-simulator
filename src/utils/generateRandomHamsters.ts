@@ -11,8 +11,6 @@ export const generateRandomHamsters = (populationRef: MutableRefObject<number>, 
 
   const hamsters: HamsterState[] = []
 
-  console.log('mapSize', mapSize)
-
   for (let i = 0; i < population; i++) {
     let emptyLocation
     const id = i + 1
@@ -39,9 +37,6 @@ export const generateRandomHamsters = (populationRef: MutableRefObject<number>, 
       currentRotation: calculateRotation(directionX, directionY)
     })
   }
-
-  console.log('Generated hamsters.length:', hamsters.length)
-  console.log('Generated hamsters:', hamsters)
 
   return hamsters
 }

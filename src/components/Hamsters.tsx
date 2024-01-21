@@ -22,6 +22,7 @@ interface MapProps {
   hamsters: HamsterState[]
   setHamsters: React.Dispatch<React.SetStateAction<HamsterState[]>>
   mapSize: MapSize
+  pause: boolean
 }
 
 export const dontMove = (prev: HamsterState, id: number, genome: Genome): HamsterState => {
@@ -37,18 +38,18 @@ export const dontMove = (prev: HamsterState, id: number, genome: Genome): Hamste
   }
 }
 
-export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGeneration, generation, setSelectedHamster, setGeneration, resetGenerationCountdown, setSurvivingPopulation, hamsters, setHamsters, mapSize }: MapProps) => {
+export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGeneration, generation, setSelectedHamster, setGeneration, resetGenerationCountdown, setSurvivingPopulation, hamsters, setHamsters, mapSize, pause }: MapProps) => {
   const [isProcessingNextGeneration, setIsProcessingNextGeneration] = useState<boolean>(false)
 
   useEffect(() => {
     const tick = (): void => {
-      if (secondsLeftForCurrentGeneration > 0) {
+      if (secondsLeftForCurrentGeneration > 0 && !pause) {
         setHamsters((prevHamsters: HamsterState[]) =>
           prevHamsters.map((prev: HamsterState) => {
             return move(prev, prevHamsters, secondsLeftForCurrentGeneration, population, generation, mapSize)
           })
         )
-      } else if (!isProcessingNextGeneration) {
+      } else if (!isProcessingNextGeneration && secondsLeftForCurrentGeneration === 0) {
         prepareNextGeneration(
           hamsters,
           population,

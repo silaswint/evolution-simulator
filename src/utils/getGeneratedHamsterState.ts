@@ -4,7 +4,7 @@ import { getRandomHamsterState } from '@/utils/getRandomHamsterState'
 import { brain } from '@/utils/brain'
 import { config } from '@/utils/config'
 import { randomNumberBetween } from '@/utils/math/randomNumberBetween'
-import {mapValueToRange} from "@/utils/mapValueToRange";
+import { mapValueToRange } from '@/utils/mapValueToRange'
 
 export const getGeneratedHamsterState = (prev: HamsterState, secondsLeftForCurrentGeneration: number, population: number, generation: number): HamsterGeneratorResponse => {
   const brainResponse = brain({
