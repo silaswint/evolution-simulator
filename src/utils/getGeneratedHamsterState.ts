@@ -1,7 +1,6 @@
-import { type HamsterGeneratorResponse } from '@/utils/types/HamsterGeneratorResponse'
-import { type HamsterState } from '@/utils/types/HamsterState'
-import { type SensoryInputs } from '@/utils/types/SensoryInputs'
-import { type MapSize } from '@/utils/types/MapSIze'
+import type { HamsterGeneratorResponse } from '@/utils/types/HamsterGeneratorResponse'
+import type { HamsterState } from '@/utils/types/HamsterState'
+import type { SensoryInputs } from '@/utils/types/SensoryInputs'
 import { getRandomHamsterState } from '@/utils/getRandomHamsterState'
 import { brain } from '@/utils/brain'
 import { config } from '@/utils/config'
@@ -15,8 +14,7 @@ export const getGeneratedHamsterState = (
   secondsLeftForCurrentGeneration: number,
   population: number,
   generation: number,
-  prevHamsters: HamsterState[],
-  mapSize: MapSize
+  prevHamsters: HamsterState[]
 ): HamsterGeneratorResponse => {
   const {
     secondsPerGeneration,
@@ -41,7 +39,7 @@ export const getGeneratedHamsterState = (
     distanceOfNextObjectWest: distancesToOtherHamsters.West
   }
 
-  const normalizedSensoryInputs: SensoryInputs = Map(sensoryInputs).map((v, k) => Math.tanh(v)).toJS() as unknown as SensoryInputs
+  const normalizedSensoryInputs: SensoryInputs = Map(sensoryInputs).map((value) => Math.tanh(value)).toJS() as unknown as SensoryInputs
 
   const brainResponse = brain(normalizedSensoryInputs, prev.genome)
 

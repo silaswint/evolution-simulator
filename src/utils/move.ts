@@ -20,8 +20,7 @@ export const move = (
     secondsLeftForCurrentGeneration,
     population,
     generation,
-    prevHamsters,
-    mapSize
+    prevHamsters
   )
 
   // Check if the hamster is within the map bounds
