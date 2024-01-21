@@ -1,10 +1,5 @@
 import { type HamsterState } from '@/utils/types/HamsterState'
 import { hamsterSize } from '@/utils/consts/hamsterSize'
-import { config } from '@/utils/config'
-
-export const circleIntersect = (x0: number, y0: number, r0: number, x1: number, y1: number, r1: number): boolean => {
-  return Math.hypot(x0 - x1, y0 - y1) <= r0 + r1
-}
 interface Circle {
   x: number
   y: number
