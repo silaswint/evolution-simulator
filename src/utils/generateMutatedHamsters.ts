@@ -4,6 +4,7 @@ import { type MapSize } from '@/utils/types/MapSIze'
 import { pickRandomHamster } from '@/utils/pickRandomHamster'
 import { findEmptyLocation } from '@/utils/findEmptyLocation'
 import { calculateRotation } from '@/utils/calculateRotation'
+import { getRandomDirection } from '@/utils/getRandomDirection'
 
 export const generateMutatedHamsters = (survivedHamsters: HamsterState[], population: number, mapSize: MapSize): HamsterState[] => {
   if (survivedHamsters.length === 0) {
@@ -25,8 +26,8 @@ export const generateMutatedHamsters = (survivedHamsters: HamsterState[], popula
       continue
     }
 
-    const directionX = Math.random() > 0.5 ? 1 : -1
-    const directionY = Math.random() > 0.5 ? 1 : -1
+    const directionX = getRandomDirection()
+    const directionY = getRandomDirection()
 
     hamsters.push({
       id,

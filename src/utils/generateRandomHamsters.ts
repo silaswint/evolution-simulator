@@ -4,8 +4,7 @@ import { findEmptyLocation } from '@/utils/findEmptyLocation'
 import { type MapSize } from '@/utils/types/MapSIze'
 import { calculateRotation } from '@/utils/calculateRotation'
 import { type MutableRefObject } from 'react'
-
-const getRandomDirection = (): 1 | -1 => (Math.random() > 0.5 ? 1 : -1)
+import { getRandomDirection } from '@/utils/getRandomDirection'
 
 export const generateRandomHamsters = (populationRef: MutableRefObject<number>, mapSize: MapSize): HamsterState[] => {
   const population = populationRef.current
