@@ -7,21 +7,7 @@ import {
 } from '@/utils/consts/brain'
 import { getFormattedDecimalGenome } from '@/utils/getFormattedDecimalGenome'
 import { type DecimalGene } from '@/utils/types/DecimalGene'
-
-interface SensoryInputs {
-  age: number
-  random: number
-  currentPositionY: number
-  currentPositionX: number
-  generation: number
-  sizeOfMapX: number
-  sizeOfMapY: number
-  population: number
-  distanceOfNextObjectNorth: number
-  distanceOfNextObjectEast: number
-  distanceOfNextObjectSouth: number
-  distanceOfNextObjectWest: number
-}
+import { type SensoryInputs } from '@/utils/types/SensoryInputs'
 
 interface ActionOutputs {
   directionX: number

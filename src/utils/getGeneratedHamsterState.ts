@@ -6,11 +6,13 @@ import { config } from '@/utils/config'
 import { randomNumberBetween } from '@/utils/math/randomNumberBetween'
 import { mapValueToRange } from '@/utils/mapValueToRange'
 import { getDistanceToNearestHamster } from '@/utils/getDistanceToNearestHamster'
+import { type SensoryInputs } from '@/utils/types/SensoryInputs'
+import { type MapSize } from '@/utils/types/MapSIze'
 
-export const getGeneratedHamsterState = (prev: HamsterState, secondsLeftForCurrentGeneration: number, population: number, generation: number, prevHamsters: HamsterState[]): HamsterGeneratorResponse => {
+export const getGeneratedHamsterState = (prev: HamsterState, secondsLeftForCurrentGeneration: number, population: number, generation: number, prevHamsters: HamsterState[], mapSize: MapSize): HamsterGeneratorResponse => {
   const distancesToOtherHamsters = getDistanceToNearestHamster(prev, prevHamsters)
 
-  const brainResponse = brain({
+  const sensoryInputs: SensoryInputs = {
     age: config.secondsPerGeneration - secondsLeftForCurrentGeneration,
     random: randomNumberBetween(-4, 4),
     currentPositionY: prev.y,
@@ -23,7 +25,26 @@ export const getGeneratedHamsterState = (prev: HamsterState, secondsLeftForCurre
     distanceOfNextObjectEast: distancesToOtherHamsters.East,
     distanceOfNextObjectSouth: distancesToOtherHamsters.South,
     distanceOfNextObjectWest: distancesToOtherHamsters.West
-  }, prev.genome)
+  }
+
+  const normalizedSensoryInputs: SensoryInputs = {
+    age: mapValueToRange(sensoryInputs.age, 0, config.secondsPerGeneration, 0, 1),
+    random: mapValueToRange(sensoryInputs.random, -4, 4, 0, 1),
+    currentPositionY: mapValueToRange(sensoryInputs.currentPositionY, 0, mapSize.width, 0, 1),
+    currentPositionX: mapValueToRange(sensoryInputs.currentPositionX, 0, mapSize.height, 0, 1),
+    generation: Math.tanh(sensoryInputs.generation),
+    sizeOfMapX: Math.tanh(sensoryInputs.sizeOfMapX),
+    sizeOfMapY: Math.tanh(sensoryInputs.sizeOfMapY),
+    population: Math.tanh(sensoryInputs.population),
+    distanceOfNextObjectNorth: mapValueToRange(sensoryInputs.distanceOfNextObjectNorth, 0, mapSize.height, 0, 1),
+    distanceOfNextObjectEast: mapValueToRange(sensoryInputs.distanceOfNextObjectEast, 0, mapSize.width, 0, 1),
+    distanceOfNextObjectSouth: mapValueToRange(sensoryInputs.distanceOfNextObjectSouth, 0, mapSize.height, 0, 1),
+    distanceOfNextObjectWest: mapValueToRange(sensoryInputs.distanceOfNextObjectWest, 0, mapSize.width, 0, 1)
+  }
+
+  console.log('normalizedSensoryInputs', normalizedSensoryInputs)
+
+  const brainResponse = brain(normalizedSensoryInputs, prev.genome)
 
   const newDirectionX = Math.sign(brainResponse.directionX)
   const newDirectionY = Math.sign(brainResponse.directionY)

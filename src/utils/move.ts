@@ -8,7 +8,7 @@ import { calculateRotation } from '@/utils/calculateRotation'
 
 export const move = (prev: HamsterState, prevHamsters: HamsterState[], secondsLeftForCurrentGeneration: number, population: number, generation: number, mapSize: MapSize): HamsterState => {
   const { id, genome } = prev
-  const { x, y, directionX, directionY } = getGeneratedHamsterState(prev, secondsLeftForCurrentGeneration, population, generation, prevHamsters)
+  const { x, y, directionX, directionY } = getGeneratedHamsterState(prev, secondsLeftForCurrentGeneration, population, generation, prevHamsters, mapSize)
 
   // This condition checks whether the hamster is within the limits
   if (x < 0 || y < 0 || (x + hamsterSize.width) > mapSize.width || (y + hamsterSize.height) > mapSize.height) {
