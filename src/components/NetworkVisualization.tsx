@@ -117,5 +117,5 @@ export const NetworkVisualization: React.FC<NetworkProps> = ({ connections }) =>
     edges
   }
 
-  return <CytoscapeComponent zoom={0.5} zoomingEnabled={false} layout={options} elements={CytoscapeComponent.normalizeElements(elements)} style={ { width: '600px', height: '600px' } } />
+  return <CytoscapeComponent zoom={0.5} zoomingEnabled={false} layout={options} elements={CytoscapeComponent.normalizeElements(elements)} style={ { width: '600px', height: '300px' } } />
 }
