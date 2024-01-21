@@ -4,6 +4,7 @@ import { getRandomHamsterState } from '@/utils/getRandomHamsterState'
 import { brain } from '@/utils/brain'
 import { config } from '@/utils/config'
 import { randomNumberBetween } from '@/utils/math/randomNumberBetween'
+import {mapValueToRange} from "@/utils/mapValueToRange";
 
 export const getGeneratedHamsterState = (prev: HamsterState, secondsLeftForCurrentGeneration: number, population: number, generation: number): HamsterGeneratorResponse => {
   const brainResponse = brain({
@@ -20,8 +21,9 @@ export const getGeneratedHamsterState = (prev: HamsterState, secondsLeftForCurre
   const newDirectionX = Math.sign(brainResponse.directionX)
   const newDirectionY = Math.sign(brainResponse.directionY)
 
-  const newX = prev.x + prev.directionX * config.movingSpeed
-  const newY = prev.y + prev.directionY * config.movingSpeed
+  const movingSpeed = mapValueToRange(brainResponse.movingSpeed, -1, 1, 0, config.movingSpeed)
+  const newX = prev.x + prev.directionX * movingSpeed
+  const newY = prev.y + prev.directionY * movingSpeed
 
   const updatedDirectionX = ((newX === 0) ? -newDirectionX : newDirectionX) as 1 | -1 | 0
   const updatedDirectionY = ((newY === 0) ? -newDirectionY : newDirectionY) as 1 | -1 | 0

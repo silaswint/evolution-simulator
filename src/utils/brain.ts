@@ -23,6 +23,7 @@ interface ActionOutputs {
   directionX: number
   directionY: number
   random: number
+  movingSpeed: number
 }
 
 export const brain = (sensoryInputs: SensoryInputs, genome: Genome): ActionOutputs => {
@@ -56,8 +57,9 @@ export const brain = (sensoryInputs: SensoryInputs, genome: Genome): ActionOutpu
     const directionX = Math.tanh(actionNeurons[0]) || 0
     const directionY = Math.tanh(actionNeurons[1]) || 0
     const random = Math.tanh(actionNeurons[2]) || 0
+    const movingSpeed = Math.tanh(actionNeurons[3]) || 0
 
-    return { directionX, directionY, random }
+    return { directionX, directionY, random, movingSpeed }
   }
 
   const getSourceValue = (gen: DecimalGene, inputs: SensoryInputs, internals: Record<string, number>): number => {

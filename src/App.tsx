@@ -1,5 +1,4 @@
 import { Stage } from '@pixi/react'
-import type * as PIXI from 'pixi.js'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { config } from '@/utils/config'
 import { Hamsters } from '@/components/Hamsters'
@@ -29,7 +28,9 @@ const App: React.FC = () => {
     width: clientWidth,
     height: clientHeight
   })
-  const [hamsters, setHamsters] = useState<HamsterState[]>(generateRandomHamsters(population, mapSize))
+  const populationRef = useRef(population)
+  const mapSizeRef = useRef(mapSize)
+  const [hamsters, setHamsters] = useState<HamsterState[]>(generateRandomHamsters(populationRef, mapSizeRef))
 
   const divRef = useRef<HTMLDivElement>(null)
 

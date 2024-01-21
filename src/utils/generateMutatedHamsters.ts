@@ -3,9 +3,14 @@ import { mutateGenome } from '@/utils/genome'
 import { type MapSize } from '@/utils/types/MapSIze'
 import { pickRandomHamster } from '@/utils/pickRandomHamster'
 import { findEmptyLocation } from '@/utils/findEmptyLocation'
-import {calculateRotation} from "@/utils/calculateRotation";
+import { calculateRotation } from '@/utils/calculateRotation'
 
 export const generateMutatedHamsters = (survivedHamsters: HamsterState[], population: number, mapSize: MapSize): HamsterState[] => {
+  if (survivedHamsters.length === 0) {
+    console.error('all hamsters died')
+    return []
+  }
+
   const hamsters: HamsterState[] = []
   for (let i = 0; i < population; i++) {
     const randomHamster = pickRandomHamster(survivedHamsters)
