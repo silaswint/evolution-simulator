@@ -1,24 +1,15 @@
-import { type HamsterState } from '@/utils/types/HamsterState'
+import type { HamsterState } from '@/utils/types/HamsterState'
 import { hamsterSize } from '@/utils/consts/hamsterSize'
+
 interface Circle {
   x: number
   y: number
   radius: number
 }
 
-const checkCircleOverlap = (blue: Circle, red: Circle): boolean => {
-  // Berechne den Abstand zwischen den Mittelpunkten der Kreise
-  const centersDistance = Math.sqrt((red.x - blue.x) ** 2 + (red.y - blue.y) ** 2)
-
-  // Überprüfe, ob ein Kreis den anderen enthält
-  const blueContainsRed = blue.radius > centersDistance + red.radius
-  const redContainsBlue = red.radius > centersDistance + blue.radius
-
-  // Überprüfe, ob die Kreise sich überlappen
-  const circlesOverlap = centersDistance <= blue.radius + red.radius
-
-  // Die endgültige Bedingung
-  return !blueContainsRed && !redContainsBlue && circlesOverlap
+const checkCircleOverlap = (circle1: Circle, circle2: Circle): boolean => {
+  const centersDistance = Math.hypot(circle1.x - circle2.x, circle1.y - circle2.y)
+  return centersDistance <= circle1.radius + circle2.radius
 }
 
 export const isOverlap = (x: number, y: number, existingHamsters: HamsterState[], id: number): boolean => {
@@ -29,9 +20,9 @@ export const isOverlap = (x: number, y: number, existingHamsters: HamsterState[]
       return false
     }
 
-    return checkCircleOverlap(
-      { x: x + (hamsterSize.width / 2), y: y + (hamsterSize.height / 2), radius },
-      { x: otherHamster.x + (hamsterSize.width / 2), y: otherHamster.y + (hamsterSize.height / 2), radius }
-    )
+    const currentHamsterCircle: Circle = { x: x + radius, y: y + radius, radius }
+    const otherHamsterCircle: Circle = { x: otherHamster.x + radius, y: otherHamster.y + radius, radius }
+
+    return checkCircleOverlap(currentHamsterCircle, otherHamsterCircle)
   })
 }
