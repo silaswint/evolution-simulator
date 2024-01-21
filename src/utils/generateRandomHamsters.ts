@@ -2,6 +2,7 @@ import { type HamsterState } from '@/utils/types/HamsterState'
 import { generateRandomGenome } from '@/utils/genome'
 import { findEmptyLocation } from '@/utils/findEmptyLocation'
 import { type MapSize } from '@/utils/types/MapSIze'
+import { calculateRotation } from '@/utils/calculateRotation'
 
 export const generateRandomHamsters = (population: number, mapSize: MapSize): HamsterState[] => {
   const hamsters: HamsterState[] = []
@@ -17,13 +18,18 @@ export const generateRandomHamsters = (population: number, mapSize: MapSize): Ha
       continue
     }
 
+    const directionX = Math.random() > 0.5 ? 1 : -1
+    const directionY = Math.random() > 0.5 ? 1 : -1
+
     hamsters.push({
       id,
       x: emptyLocation.x,
       y: emptyLocation.y,
-      directionX: Math.random() > 0.5 ? 1 : -1,
-      directionY: Math.random() > 0.5 ? 1 : -1,
-      genome: generateRandomGenome()
+      directionX,
+      directionY,
+      genome: generateRandomGenome(),
+      lastRotation: 0,
+      currentRotation: calculateRotation(directionX, directionY)
     })
   }
 

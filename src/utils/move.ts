@@ -4,6 +4,7 @@ import { isOverlap } from '@/utils/isOverlap'
 import { dontMove } from '@/components/Hamsters'
 import { type HamsterState } from '@/utils/types/HamsterState'
 import { type MapSize } from '@/utils/types/MapSIze'
+import {calculateRotation} from "@/utils/calculateRotation";
 
 export const move = (prev: HamsterState, prevHamsters: HamsterState[], secondsLeftForCurrentGeneration: number, population: number, generation: number, mapSize: MapSize): HamsterState => {
   const { id, genome } = prev
@@ -25,6 +26,8 @@ export const move = (prev: HamsterState, prevHamsters: HamsterState[], secondsLe
     y,
     directionX,
     directionY,
-    genome
+    genome,
+    lastRotation: prev.currentRotation,
+    currentRotation: calculateRotation(directionX, directionY)
   }
 }

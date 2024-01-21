@@ -23,8 +23,8 @@ export const getGeneratedHamsterState = (prev: HamsterState, secondsLeftForCurre
   const newX = prev.x + prev.directionX * config.movingSpeed
   const newY = prev.y + prev.directionY * config.movingSpeed
 
-  const updatedDirectionX = (newX === 0) ? -newDirectionX : newDirectionX
-  const updatedDirectionY = (newY === 0) ? -newDirectionY : newDirectionY
+  const updatedDirectionX = ((newX === 0) ? -newDirectionX : newDirectionX) as 1 | -1 | 0
+  const updatedDirectionY = ((newY === 0) ? -newDirectionY : newDirectionY) as 1 | -1 | 0
 
   if (brainResponse.random > 0.5) {
     return getRandomHamsterState(prev)

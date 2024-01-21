@@ -31,7 +31,9 @@ export const dontMove = (prev: HamsterState, id: number, genome: Genome): Hamste
     y: prev.y,
     directionX: 0,
     directionY: 0,
-    genome
+    genome,
+    lastRotation: prev.currentRotation,
+    currentRotation: 0
   }
 }
 
@@ -73,6 +75,17 @@ export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGen
     setSelectedHamster(hamster)
   }
 
+  // @todo the hamsters are blinking all the time, so I keep it undone until someone knows a solution
+  const interpolateRotation = (lastRotation: number, currentRotation: number): number => {
+    if (lastRotation > currentRotation) {
+      return 0
+    } else if (currentRotation > lastRotation) {
+      return 0
+    } else {
+      return 0
+    }
+  }
+
   return (
         <>
             {hamsters.map((hamster, index) => (
@@ -92,6 +105,8 @@ export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGen
                         touchstart={() => {
                           handleHamsterClick(hamster)
                         }}
+                        angle={interpolateRotation(hamster.lastRotation, hamster.currentRotation)}
+                        pivot={0}
                     />
                 </Container>
             ))}
