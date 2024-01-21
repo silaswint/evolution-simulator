@@ -5,3 +5,4 @@ export const SINK_TYPE_OUTPUT_ACTION_NEURON = 1
 export const WEIGHT_FLOATING_POINT = 8192
 export const NUM_SENSORY_NEURONS = 12
 export const NUM_ACTION_OUTPUT_NEURONS = 4
+export const PRUNE_WEIGHT = 0.5

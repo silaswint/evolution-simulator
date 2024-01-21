@@ -1,5 +1,6 @@
 import { type Genome } from '@/utils/types/Genome'
 import {
+  PRUNE_WEIGHT,
   SINK_TYPE_INTERNAL_NEURON,
   SINK_TYPE_OUTPUT_ACTION_NEURON,
   SOURCE_TYPE_INPUT_INTERNAL_NEURON,
@@ -23,7 +24,7 @@ export const brain = (sensoryInputs: SensoryInputs, genome: Genome): ActionOutpu
 
   const calculateInternalNeurons = (): void => {
     formattedDecimalGenomes
-      .filter((gen: DecimalGene) => gen.sinkType === SINK_TYPE_INTERNAL_NEURON)
+      .filter((gen: DecimalGene) => gen.sinkType === SINK_TYPE_INTERNAL_NEURON && Math.abs(gen.weight) > PRUNE_WEIGHT)
       .forEach((gen: DecimalGene) => {
         const sourceValue = getSourceValue(gen, sensoryInputs, internalNeurons)
         internalNeurons[gen.sinkId] = (internalNeurons[gen.sinkId] || 0) + sourceValue * gen.weight
@@ -32,7 +33,7 @@ export const brain = (sensoryInputs: SensoryInputs, genome: Genome): ActionOutpu
 
   const calculateActionNeurons = (): void => {
     formattedDecimalGenomes
-      .filter((gen: DecimalGene) => gen.sinkType === SINK_TYPE_OUTPUT_ACTION_NEURON)
+      .filter((gen: DecimalGene) => gen.sinkType === SINK_TYPE_OUTPUT_ACTION_NEURON && Math.abs(gen.weight) > PRUNE_WEIGHT)
       .forEach((gen: DecimalGene) => {
         const sourceValue = getSourceValue(gen, sensoryInputs, internalNeurons)
         actionNeurons[gen.sinkId] = (actionNeurons[gen.sinkId] || 0) + sourceValue * gen.weight
