@@ -5,9 +5,8 @@ import { type MapSize } from '@/utils/types/MapSIze'
 import { calculateRotation } from '@/utils/calculateRotation'
 import { type MutableRefObject } from 'react'
 
-export const generateRandomHamsters = (populationRef: MutableRefObject<number>, mapSizeRef: MutableRefObject<MapSize>): HamsterState[] => {
+export const generateRandomHamsters = (populationRef: MutableRefObject<number>, mapSize: MapSize): HamsterState[] => {
   const population = populationRef.current
-  const mapSize = mapSizeRef.current
 
   const hamsters: HamsterState[] = []
 

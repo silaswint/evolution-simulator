@@ -24,15 +24,21 @@ const App: React.FC = () => {
   const [pause, setPause] = useState<boolean>(true)
   const [survivingPopulation, setSurvivingPopulation] = useState<number>(config.population)
   const { clientHeight, clientWidth } = useContext(WindowContext)
+  const [mapSizeIsLoaded, setMapSizeIsLoaded] = useState<boolean>(false)
   const [mapSize, setMapSize] = useState<MapSize>({
     width: clientWidth,
     height: clientHeight
   })
   const populationRef = useRef(population)
-  const mapSizeRef = useRef(mapSize)
-  const [hamsters, setHamsters] = useState<HamsterState[]>(generateRandomHamsters(populationRef, mapSizeRef))
+  const [hamsters, setHamsters] = useState<HamsterState[]>([])
 
   const divRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (mapSizeIsLoaded) {
+      setHamsters(generateRandomHamsters(populationRef, mapSize))
+    }
+  }, [mapSizeIsLoaded])
 
   useEffect(() => {
     if (divRef.current) {
@@ -41,6 +47,7 @@ const App: React.FC = () => {
         width: rect.width,
         height: rect.height
       })
+      setMapSizeIsLoaded(true)
     }
   }, [])
   useEffect(() => {
@@ -124,7 +131,7 @@ const App: React.FC = () => {
           </Row>
           <div ref={divRef} style={{ boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)', width: '100%', height: 'auto', maxHeight: `${config.mapSize.height}px`, maxWidth: `${config.mapSize.width}px` }}>
               <Stage width={mapSize.width} height={mapSize.height} options={{ backgroundColor: 0x343a40 }}>
-                  <Hamsters population={population} secondsLeftForCurrentGeneration={secondsLeftForCurrentGeneration} generation={generation} setSelectedHamster={setSelectedHamster} resetGenerationCountdown={resetGenerationCountdown} setGeneration={setGeneration} setSurvivingPopulation={setSurvivingPopulation} hamsters={hamsters} setHamsters={setHamsters} mapSize={mapSize} pause={pause} />
+                  { hamsters.length > 0 && <Hamsters population={population} secondsLeftForCurrentGeneration={secondsLeftForCurrentGeneration} generation={generation} setSelectedHamster={setSelectedHamster} resetGenerationCountdown={resetGenerationCountdown} setGeneration={setGeneration} setSurvivingPopulation={setSurvivingPopulation} hamsters={hamsters} setHamsters={setHamsters} mapSize={mapSize} pause={pause} /> }
               </Stage>
               <HamsterModal selectedHamster={selectedHamster} setSelectedHamster={setSelectedHamster} />
           </div>
