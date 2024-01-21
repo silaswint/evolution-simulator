@@ -16,6 +16,7 @@ export const doCurrentChallenge = (prevHamsters: HamsterState[], mapSize: MapSiz
     case CHALLENGE_RIGHT_SIDE_SURVIVES:
       return prevHamsters.filter(hamster => hamster.x > mapSize.width / 2)
 
+    // challenge: Only the hamsters on the right 20 percent of the map survive
     case CHALLENGE_RIGHT_SIDE_20_SURVIVES:
       return prevHamsters.filter(hamster => hamster.x >= 0.8 * mapSize.width)
   }
