@@ -10,7 +10,7 @@ import {
 } from '@/utils/consts/brain'
 import { config } from '@/utils/config'
 import type { DecimalGenome } from '@/utils/types/DecimalGenome'
-import { genomeToHex } from '@/utils/genome'
+import { geneToHex } from '@/utils/genome'
 
 interface SplitResult {
   firstCharacter: string | null
@@ -49,7 +49,7 @@ export const getFormattedDecimalGenome = (genome: Genome): DecimalGenome => {
         ? Number(decimalGene.sinkId) % config.innerNeurons
         : Number(decimalGene.sinkId) % NUM_ACTION_OUTPUT_NEURONS,
       weight: Number(decimalGene.weight) / WEIGHT_FLOATING_POINT,
-      hex: genomeToHex([gene])
+      hex: geneToHex(gene)
     }
   })
 }
