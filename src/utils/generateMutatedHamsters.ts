@@ -16,10 +16,10 @@ export const generateMutatedHamsters = (survivedHamsters: HamsterState[], popula
   for (let i = 0; i < population; i++) {
     const randomHamster = pickRandomHamster(survivedHamsters)
     const mutatedGenome = mutateGenome(randomHamster.genome)
-    let emptyLocation
     const id = i + 1
 
     // Attempts to generate random positions that do not overlap
+    let emptyLocation
     try {
       emptyLocation = findEmptyLocation(hamsters, id, mapSize)
     } catch (e) {
