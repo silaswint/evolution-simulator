@@ -28,21 +28,19 @@ export const getGeneratedHamsterState = (prev: HamsterState, secondsLeftForCurre
   }
 
   const normalizedSensoryInputs: SensoryInputs = {
-    age: mapValueToRange(sensoryInputs.age, 0, config.secondsPerGeneration, 0, 1),
-    random: mapValueToRange(sensoryInputs.random, -4, 4, 0, 1),
-    currentPositionY: mapValueToRange(sensoryInputs.currentPositionY, 0, mapSize.width, 0, 1),
-    currentPositionX: mapValueToRange(sensoryInputs.currentPositionX, 0, mapSize.height, 0, 1),
+    age: Math.tanh(sensoryInputs.age),
+    random: Math.tanh(sensoryInputs.random),
+    currentPositionY: Math.tanh(sensoryInputs.currentPositionY),
+    currentPositionX: Math.tanh(sensoryInputs.currentPositionX),
     generation: Math.tanh(sensoryInputs.generation),
     sizeOfMapX: Math.tanh(sensoryInputs.sizeOfMapX),
     sizeOfMapY: Math.tanh(sensoryInputs.sizeOfMapY),
     population: Math.tanh(sensoryInputs.population),
-    distanceOfNextObjectNorth: mapValueToRange(sensoryInputs.distanceOfNextObjectNorth, 0, mapSize.height, 0, 1),
-    distanceOfNextObjectEast: mapValueToRange(sensoryInputs.distanceOfNextObjectEast, 0, mapSize.width, 0, 1),
-    distanceOfNextObjectSouth: mapValueToRange(sensoryInputs.distanceOfNextObjectSouth, 0, mapSize.height, 0, 1),
-    distanceOfNextObjectWest: mapValueToRange(sensoryInputs.distanceOfNextObjectWest, 0, mapSize.width, 0, 1)
+    distanceOfNextObjectNorth: Math.tanh(sensoryInputs.distanceOfNextObjectNorth),
+    distanceOfNextObjectEast: Math.tanh(sensoryInputs.distanceOfNextObjectEast),
+    distanceOfNextObjectSouth: Math.tanh(sensoryInputs.distanceOfNextObjectSouth),
+    distanceOfNextObjectWest: Math.tanh(sensoryInputs.distanceOfNextObjectWest)
   }
-
-  console.log('normalizedSensoryInputs', normalizedSensoryInputs)
 
   const brainResponse = brain(normalizedSensoryInputs, prev.genome)
 
