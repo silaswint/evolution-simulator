@@ -22,35 +22,29 @@ export const brain = (sensoryInputs: SensoryInputs, genome: Genome): ActionOutpu
   const formattedDecimalGenomes = getFormattedDecimalGenome(genome)
 
   const calculateInternalNeurons = (): void => {
-    formattedDecimalGenomes.filter((gen: DecimalGene) => {
-      return gen.sinkType === SINK_TYPE_INTERNAL_NEURON
-    }).forEach((gen: DecimalGene) => {
-      const sourceValue = getSourceValue(gen, sensoryInputs, internalNeurons)
-      const weightedValue = sourceValue * gen.weight
-
-      internalNeurons[gen.sinkId] = (internalNeurons[gen.sinkId] || 0) + weightedValue
-    })
+    formattedDecimalGenomes
+      .filter((gen: DecimalGene) => gen.sinkType === SINK_TYPE_INTERNAL_NEURON)
+      .forEach((gen: DecimalGene) => {
+        const sourceValue = getSourceValue(gen, sensoryInputs, internalNeurons)
+        internalNeurons[gen.sinkId] = (internalNeurons[gen.sinkId] || 0) + sourceValue * gen.weight
+      })
   }
 
   const calculateActionNeurons = (): void => {
-    formattedDecimalGenomes.filter((gen: DecimalGene) => {
-      return gen.sinkType === SINK_TYPE_OUTPUT_ACTION_NEURON
-    }).forEach((gen: DecimalGene) => {
-      const sourceValue = getSourceValue(gen, sensoryInputs, internalNeurons)
-      const weightedValue = sourceValue * gen.weight // Normalize weight to a smaller range
-
-      actionNeurons[gen.sinkId] = (actionNeurons[gen.sinkId] || 0) + weightedValue
-    })
+    formattedDecimalGenomes
+      .filter((gen: DecimalGene) => gen.sinkType === SINK_TYPE_OUTPUT_ACTION_NEURON)
+      .forEach((gen: DecimalGene) => {
+        const sourceValue = getSourceValue(gen, sensoryInputs, internalNeurons)
+        actionNeurons[gen.sinkId] = (actionNeurons[gen.sinkId] || 0) + sourceValue * gen.weight
+      })
   }
 
-  const calculateResponse = (): ActionOutputs => {
-    const directionX = Math.tanh(actionNeurons[0]) || 0
-    const directionY = Math.tanh(actionNeurons[1]) || 0
-    const random = Math.tanh(actionNeurons[2]) || 0
-    const movingSpeed = Math.tanh(actionNeurons[3]) || 0
-
-    return { directionX, directionY, random, movingSpeed }
-  }
+  const calculateResponse = (): ActionOutputs => ({
+    directionX: Math.tanh(actionNeurons[0]) || 0,
+    directionY: Math.tanh(actionNeurons[1]) || 0,
+    random: Math.tanh(actionNeurons[2]) || 0,
+    movingSpeed: Math.tanh(actionNeurons[3]) || 0
+  })
 
   const getSourceValue = (gen: DecimalGene, inputs: SensoryInputs, internals: Record<string, number>): number => {
     switch (gen.sourceType) {
