@@ -85,7 +85,6 @@ const App: React.FC = () => {
   }
 
   const onClickPause = (): void => {
-    console.log('PAUSE')
     setPause(true)
   }
 
