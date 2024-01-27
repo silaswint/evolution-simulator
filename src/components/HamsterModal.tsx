@@ -55,7 +55,9 @@ const HamsterModal: React.FC<HamsterModalProps> = ({ setSelectedHamster, selecte
         </Table>
 
         <h3>Neuronal Network Visualization</h3>
-        <NetworkVisualization connections={selectedHamster.genome} />
+        <div style={{ backgroundColor: '#fffff', overflowX: 'auto', maxWidth: '100%' }}>
+          <NetworkVisualization connections={selectedHamster.genome} />
+        </div>
 
         <h3>Genome detail view</h3>
         <Table striped bordered hover variant="dark" responsive>
