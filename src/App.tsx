@@ -64,19 +64,19 @@ const App: React.FC = () => {
     setSecondsLeftForCurrentGeneration(secondsPerGeneration)
 
     // Only start the timer if "pause" is not true
-    if (!pause) {
-      const timerInterval = setInterval(() => {
-        setSecondsLeftForCurrentGeneration((prevSeconds) => Math.max(0, prevSeconds - 1))
-      }, 1000)
-
-      // Cleanup function to cancel the interval when removing the component
-      return () => {
-        clearInterval(timerInterval)
-      }
+    if (pause) {
+      // No timer when paused
+      return undefined
     }
 
-    // No timer when paused
-    return undefined
+    const timerInterval = setInterval(() => {
+      setSecondsLeftForCurrentGeneration((prevSeconds) => Math.max(0, prevSeconds - 1))
+    }, 1000)
+
+    // Cleanup function to cancel the interval when removing the component
+    return () => {
+      clearInterval(timerInterval)
+    }
   }, [secondsPerGeneration, generation, pause])
 
   const resetGenerationCountdown = (): void => {
@@ -88,6 +88,7 @@ const App: React.FC = () => {
   }
 
   const onClickPause = (): void => {
+    console.log('PAUSE')
     setPause(true)
   }
 
