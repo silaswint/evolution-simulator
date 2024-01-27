@@ -61,23 +61,20 @@ const App: React.FC = () => {
   }, [clientWidth, clientHeight])
 
   useEffect(() => {
-    setSecondsLeftForCurrentGeneration(secondsPerGeneration)
-
-    // Only start the timer if "pause" is not true
     if (pause) {
-      // No timer when paused
-      return undefined
+      // Reset timer and return if paused
+      return
     }
 
     const timerInterval = setInterval(() => {
       setSecondsLeftForCurrentGeneration((prevSeconds) => Math.max(0, prevSeconds - 1))
     }, 1000)
 
-    // Cleanup function to cancel the interval when removing the component
+    // Cleanup function to cancel the interval when removing the component or when paused
     return () => {
       clearInterval(timerInterval)
     }
-  }, [secondsPerGeneration, generation, pause])
+  }, [pause, secondsPerGeneration])
 
   const resetGenerationCountdown = (): void => {
     setSecondsLeftForCurrentGeneration(config.secondsPerGeneration)
