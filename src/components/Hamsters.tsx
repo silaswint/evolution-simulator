@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { Container, Sprite, withPixiApp } from '@pixi/react'
 import '@pixi/events'
 import { type HamsterState } from '@/utils/types/HamsterState'
@@ -41,36 +41,51 @@ export const dontMove = (prev: HamsterState, id: number, genome: Genome): Hamste
 export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGeneration, generation, setSelectedHamster, setGeneration, resetGenerationCountdown, setSurvivingPopulation, hamsters, setHamsters, mapSize, pause }: MapProps) => {
   const [isProcessingNextGeneration, setIsProcessingNextGeneration] = useState<boolean>(false)
 
+  const secondsLeftForCurrentGenerationRef = useRef<any>()
+  secondsLeftForCurrentGenerationRef.current = secondsLeftForCurrentGeneration
+
+  const pauseRef = useRef<any>()
+  pauseRef.current = pause
+
+  const tick = useCallback((): void => {
+    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+    if (secondsLeftForCurrentGenerationRef.current === undefined || pauseRef.current === undefined) {
+      return
+    }
+
+    if (secondsLeftForCurrentGenerationRef.current > 0 && !pauseRef.current) {
+      setHamsters((prevHamsters: HamsterState[]) =>
+        prevHamsters.map((prev: HamsterState) => {
+          return move(prev, prevHamsters, secondsLeftForCurrentGenerationRef.current as unknown as number, population, generation, mapSize)
+        })
+      )
+    } else if (!isProcessingNextGeneration && secondsLeftForCurrentGenerationRef.current === 0) {
+      prepareNextGeneration(
+        hamsters,
+        population,
+        setIsProcessingNextGeneration,
+        setSurvivingPopulation,
+        setHamsters,
+        resetGenerationCountdown,
+        setGeneration,
+        mapSize
+      )
+    }
+  }, [])
+
+  // do play
   useEffect(() => {
-    const tick = (): void => {
-      if (secondsLeftForCurrentGeneration > 0 && !pause) {
-        setHamsters((prevHamsters: HamsterState[]) =>
-          prevHamsters.map((prev: HamsterState) => {
-            return move(prev, prevHamsters, secondsLeftForCurrentGeneration, population, generation, mapSize)
-          })
-        )
-      } else if (!isProcessingNextGeneration && secondsLeftForCurrentGeneration === 0) {
-        prepareNextGeneration(
-          hamsters,
-          population,
-          setIsProcessingNextGeneration,
-          setSurvivingPopulation,
-          setHamsters,
-          resetGenerationCountdown,
-          setGeneration,
-          mapSize
-        )
-      }
+    if (!pause) {
+      app.ticker.add(tick)
     }
+  }, [app, pause])
 
-    app.ticker.add(tick)
-
-    return () => {
-      if (app.ticker !== null) {
-        app.ticker.remove(tick)
-      }
+  // do pause
+  useEffect(() => {
+    if (app.ticker !== null && pause) {
+      app.ticker.remove(tick)
     }
-  }, [app, secondsLeftForCurrentGeneration])
+  }, [app, pause])
 
   const handleHamsterClick = (hamster: HamsterState): void => {
     setSelectedHamster(hamster)
