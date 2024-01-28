@@ -5,8 +5,7 @@ import { type PresetLayoutOptions } from 'cytoscape'
 import { SINK_TYPE_INTERNAL_NEURON, SOURCE_TYPE_INPUT_INTERNAL_NEURON } from '@/utils/consts/brain'
 import { getFormattedDecimalGenome } from '@/utils/getFormattedDecimalGenome'
 import { type DecimalGene } from '@/utils/types/DecimalGene'
-import { arraySum } from '@/utils/math/arraySum'
-import { config } from '@/utils/config'
+import { config } from '@/utils/config/config'
 
 interface NetworkProps {
   connections: Genome

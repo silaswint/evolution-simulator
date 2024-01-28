@@ -1,6 +1,6 @@
 import { getGeneratedHamsterState } from '@/utils/getGeneratedHamsterState'
 import { hamsterSize } from '@/utils/consts/hamsterSize'
-import { isOverlap } from '@/utils/isOverlap'
+import { isOverlap } from '@/utils/map/isOverlap'
 import { dontMove } from '@/components/Hamsters'
 import type { HamsterState } from '@/utils/types/HamsterState'
 import type { MapSize } from '@/utils/types/MapSIze'

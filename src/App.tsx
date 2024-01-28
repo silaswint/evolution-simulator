@@ -1,6 +1,6 @@
 import { Stage } from '@pixi/react'
 import React, { type ReactNode, useContext, useEffect, useRef, useState } from 'react'
-import { config } from '@/utils/config'
+import { config } from '@/utils/config/config'
 import { Hamsters } from '@/components/Hamsters'
 import { type HamsterState } from '@/utils/types/HamsterState'
 import HamsterModal from './components/HamsterModal'
