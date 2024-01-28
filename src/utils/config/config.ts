@@ -7,7 +7,7 @@ export const config: EvolutionConfig = {
   mapSize: { width: 800, height: 600 },
   secondsPerGeneration: 3,
   genomeSize: 60,
-  mutationRate: 0.2,
+  mutationRate: 0.01,
   innerNeurons: [6, 5],
   challenge: CHALLENGE_RIGHT_SIDE_20_SURVIVES,
   movingSpeed: 5,
