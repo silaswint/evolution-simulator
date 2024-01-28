@@ -14,8 +14,8 @@ export const findEmptyLocation = (hamsters: HamsterState[], id: number, mapSize:
 
   let attemptCount = 0
   do {
-    x = randomNumberBetween(0, mapSize.width - hamsterSize.width)
-    y = randomNumberBetween(0, mapSize.height - hamsterSize.height)
+    x = randomNumberBetween(hamsterSize.width * 0.5, mapSize.width - hamsterSize.width * 0.5)
+    y = randomNumberBetween(hamsterSize.height * 0.5, mapSize.height - hamsterSize.height * 0.5)
 
     // Check for overlap
     if (!isOverlap(x, y, hamsters, id)) {
@@ -24,7 +24,6 @@ export const findEmptyLocation = (hamsters: HamsterState[], id: number, mapSize:
 
     attemptCount++
 
-    // Check for more than 10 attempts
     if (attemptCount > 500) {
       throw new Error('Overlapping could not be avoided. Program aborted.')
     }
