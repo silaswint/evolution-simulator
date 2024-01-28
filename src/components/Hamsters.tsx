@@ -95,12 +95,12 @@ export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGen
   }
 
   const interpolateRotation = (lastRotation: number, currentRotation: number): number => {
-    if (lastRotation > currentRotation) {
-      return lastRotation // disable: 0
-    } else if (currentRotation > lastRotation) {
-      return lastRotation // disable: 0
+    const rotationDifference = Math.abs(lastRotation - currentRotation)
+
+    if (rotationDifference > 360 / 8) {
+      return currentRotation
     } else {
-      return currentRotation // disable: 0
+      return lastRotation
     }
   }
 
