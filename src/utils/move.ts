@@ -4,7 +4,7 @@ import { isOverlap } from '@/utils/map/isOverlap'
 import { dontMove } from '@/components/Hamsters'
 import type { HamsterState } from '@/utils/types/HamsterState'
 import type { MapSize } from '@/utils/types/MapSIze'
-import { calculateRotation } from '@/utils/calculateRotation'
+import { calculateRotation } from '@/utils/math/calculateRotation'
 
 export const move = (
   prev: HamsterState,

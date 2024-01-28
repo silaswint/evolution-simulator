@@ -3,7 +3,7 @@ import { mutateGenome } from '@/utils/genome'
 import { type MapSize } from '@/utils/types/MapSIze'
 import { pickRandomHamster } from '@/utils/evolution/pickRandomHamster'
 import { findEmptyLocation } from '@/utils/map/findEmptyLocation'
-import { calculateRotation } from '@/utils/calculateRotation'
+import { calculateRotation } from '@/utils/math/calculateRotation'
 import { getRandomDirection } from '@/utils/getRandomDirection'
 
 export const generateMutatedHamsters = (survivedHamsters: HamsterState[], population: number, mapSize: MapSize): HamsterState[] => {

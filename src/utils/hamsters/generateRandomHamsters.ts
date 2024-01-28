@@ -2,7 +2,7 @@ import { type HamsterState } from '@/utils/types/HamsterState'
 import { generateRandomGenome } from '@/utils/genome'
 import { findEmptyLocation } from '@/utils/map/findEmptyLocation'
 import { type MapSize } from '@/utils/types/MapSIze'
-import { calculateRotation } from '@/utils/calculateRotation'
+import { calculateRotation } from '@/utils/math/calculateRotation'
 import { type MutableRefObject } from 'react'
 import { getRandomDirection } from '@/utils/getRandomDirection'
 
