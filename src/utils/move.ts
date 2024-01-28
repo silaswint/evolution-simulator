@@ -24,7 +24,7 @@ export const move = (
   )
 
   // Check if the hamster is within the map bounds
-  if (x < 0 || y < 0 || x + hamsterSize.width > mapSize.width || y + hamsterSize.height > mapSize.height) {
+  if (x - (hamsterSize.width * 0.5) < 0 || y - (hamsterSize.height * 0.5) < 0 || x + (hamsterSize.width * 0.5) > mapSize.width || y + (hamsterSize.height * 0.5) > mapSize.height) {
     return dontMove(prev, id, genome)
   }
 
