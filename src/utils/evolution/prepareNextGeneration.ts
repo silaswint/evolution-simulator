@@ -2,7 +2,7 @@ import { doCurrentChallenge } from '@/utils/doCurrentChallenge'
 import { generateMutatedHamsters } from '@/utils/hamsters/generateMutatedHamsters'
 import type React from 'react'
 import { type HamsterState } from '@/utils/types/HamsterState'
-import { type MapSize } from '@/utils/types/MapSIze'
+import { type MapSize } from '@/utils/types/MapSize'
 
 export const prepareNextGeneration = (
   hamsters: HamsterState[],

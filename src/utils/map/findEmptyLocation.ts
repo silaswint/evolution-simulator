@@ -2,7 +2,7 @@ import { randomNumberBetween } from '@/utils/math/randomNumberBetween'
 import { hamsterSize } from '@/utils/consts/hamsterSize'
 import { isOverlap } from '@/utils/map/isOverlap'
 import { type HamsterState } from '@/utils/types/HamsterState'
-import { type MapSize } from '@/utils/types/MapSIze'
+import { type MapSize } from '@/utils/types/MapSize'
 
 interface EmptyLocation {
   x: number

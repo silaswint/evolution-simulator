@@ -2,7 +2,7 @@ import { getGeneratedHamsterState } from '@/utils/getGeneratedHamsterState'
 import { isOverlap } from '@/utils/map/isOverlap'
 import { dontMove } from '@/components/Hamsters'
 import type { HamsterState } from '@/utils/types/HamsterState'
-import type { MapSize } from '@/utils/types/MapSIze'
+import type { MapSize } from '@/utils/types/MapSize'
 import { calculateRotation } from '@/utils/math/calculateRotation'
 import { isHamsterOutsideBoundaries } from '@/utils/isHamsterOutsideBoundaries'
 

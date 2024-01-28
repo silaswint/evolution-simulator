@@ -6,7 +6,7 @@ import { hamsterSize } from '@/utils/consts/hamsterSize'
 import { type Genome } from '@/utils/types/Genome'
 import { move } from '@/utils/move'
 import { prepareNextGeneration } from '@/utils/evolution/prepareNextGeneration'
-import { type MapSize } from '@/utils/types/MapSIze'
+import { type MapSize } from '@/utils/types/MapSize'
 
 const image = './assets/hamster.svg'
 
@@ -43,11 +43,23 @@ export const dontMove = (prev: HamsterState, id: number, genome: Genome): Hamste
 export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGeneration, generation, setSelectedHamster, setGeneration, resetGenerationCountdown, setSurvivingPopulation, hamsters, setHamsters, mapSize, pause, survivingPopulation, setPause }: MapProps) => {
   const [isProcessingNextGeneration, setIsProcessingNextGeneration] = useState<boolean>(false)
 
-  const secondsLeftForCurrentGenerationRef = useRef<any>()
+  const secondsLeftForCurrentGenerationRef = useRef<number>(secondsLeftForCurrentGeneration)
   secondsLeftForCurrentGenerationRef.current = secondsLeftForCurrentGeneration
 
-  const pauseRef = useRef<any>()
+  const pauseRef = useRef<boolean>(pause)
   pauseRef.current = pause
+
+  const populationRef = useRef<number>(population)
+  populationRef.current = population
+
+  const hamstersRef = useRef<HamsterState[]>(hamsters)
+  hamstersRef.current = hamsters
+
+  const generationRef = useRef<number>(generation)
+  generationRef.current = generation
+
+  const mapSizeRef = useRef<MapSize>(mapSize)
+  mapSizeRef.current = mapSize
 
   const tick = useCallback((): void => {
     // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
@@ -58,19 +70,19 @@ export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGen
     if (secondsLeftForCurrentGenerationRef.current > 0 && !pauseRef.current) {
       setHamsters((prevHamsters: HamsterState[]) =>
         prevHamsters.map((prev: HamsterState) => {
-          return move(prev, prevHamsters, secondsLeftForCurrentGenerationRef.current as unknown as number, population, generation, mapSize)
+          return move(prev, prevHamsters, secondsLeftForCurrentGenerationRef.current, populationRef.current, generationRef.current, mapSizeRef.current)
         })
       )
-    } else if (!isProcessingNextGeneration && secondsLeftForCurrentGenerationRef.current === 0 && hamsters.length > 0) {
+    } else if (!isProcessingNextGeneration && secondsLeftForCurrentGenerationRef.current === 0 && hamstersRef.current.length > 0) {
       prepareNextGeneration(
-        hamsters,
-        population,
+        hamstersRef.current,
+        populationRef.current,
         setIsProcessingNextGeneration,
         setSurvivingPopulation,
         setHamsters,
         resetGenerationCountdown,
         setGeneration,
-        mapSize,
+        mapSizeRef.current,
         setPause
       )
     }

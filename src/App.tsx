@@ -12,7 +12,7 @@ import '../scss/main.scss'
 import { Button, Col, Container, Row } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCakeCandles, faClock, faPause, faPeopleGroup, faPlay } from '@fortawesome/free-solid-svg-icons'
-import { type MapSize } from '@/utils/types/MapSIze'
+import { type MapSize } from '@/utils/types/MapSize'
 import { WindowContext } from '@/components/WindowContextProvider'
 
 const App: React.FC = () => {

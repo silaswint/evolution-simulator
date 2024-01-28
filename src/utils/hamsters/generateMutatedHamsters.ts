@@ -1,6 +1,6 @@
 import { type HamsterState } from '@/utils/types/HamsterState'
 import { mutateGenome } from '@/utils/genome'
-import { type MapSize } from '@/utils/types/MapSIze'
+import { type MapSize } from '@/utils/types/MapSize'
 import { pickRandomHamster } from '@/utils/evolution/pickRandomHamster'
 import { findEmptyLocation } from '@/utils/map/findEmptyLocation'
 import { calculateRotation } from '@/utils/math/calculateRotation'

@@ -1,4 +1,4 @@
-import { type MapSize } from '@/utils/types/MapSIze'
+import { type MapSize } from '@/utils/types/MapSize'
 import {
   type CHALLENGE_NONE,
   type CHALLENGE_RIGHT_SIDE_20_SURVIVES,
