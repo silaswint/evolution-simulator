@@ -39,9 +39,7 @@ export const getGeneratedHamsterState = (
     distanceOfNextObjectWest: distancesToOtherHamsters.West
   }
 
-  const normalizedSensoryInputs: SensoryInputs = Map(sensoryInputs).map((value) => Math.tanh(value)).toJS() as unknown as SensoryInputs
-
-  const brainResponse = brain(normalizedSensoryInputs, prev.genome)
+  const brainResponse = brain(sensoryInputs, prev.genome)
 
   const newDirectionX = Math.sign(brainResponse.directionX)
   const newDirectionY = Math.sign(brainResponse.directionY)
