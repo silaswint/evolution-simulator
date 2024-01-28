@@ -14,6 +14,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCakeCandles, faClock, faPause, faPeopleGroup, faPlay } from '@fortawesome/free-solid-svg-icons'
 import { type MapSize } from '@/utils/types/MapSize'
 import { WindowContext } from '@/components/WindowContextProvider'
+import { percentage } from '@/utils/math/percent'
 
 const App: React.FC = () => {
   const [generation, setGeneration] = useState<number>(0)
@@ -118,7 +119,7 @@ const App: React.FC = () => {
                           <p className="mb-0" title={'Seconds left for current generation'}><FontAwesomeIcon icon={faClock} /> {secondsLeftForCurrentGeneration}</p>
                       </Col>
                       <Col xs={5} md={4}>
-                          <p className="mb-0" title={'Surviving population'}><FontAwesomeIcon icon={faPeopleGroup} /> {survivingPopulation}/{config.population}</p>
+                          <p className="mb-0" title={'Surviving population'}><FontAwesomeIcon icon={faPeopleGroup} /> { percentage(survivingPopulation, config.population)}%</p>
                       </Col>
                   </Row>
               </Col>
