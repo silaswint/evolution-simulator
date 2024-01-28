@@ -14,3 +14,8 @@ The project from https://github.com/davidrmiller/biosim4 inspired me. For a bett
 ## Launch
 
 - > npm run start
+
+## Tests
+
+- > npm run test
+
