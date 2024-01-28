@@ -1,3 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" height="800px" width="800px" version="1.1">
-    <line stroke="#000" stroke-width="2" x1="80%" x2="80%" y2="100%"/>
+    <!-- Vertical line at x = 80 percent -->
+    <line stroke="#000" stroke-width="2" x1="80%" x2="80%" y2="100%" />
+
+    <!-- Right half in green -->
+    <rect x="80%" width="20%" height="100%" fill="rgba(0, 128, 0, 0.5)" />
 </svg>
