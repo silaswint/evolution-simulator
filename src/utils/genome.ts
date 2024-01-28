@@ -1,5 +1,5 @@
 import { convertBase } from '@/utils/math/convertBase'
-import { config } from '@/utils/config'
+import { config } from '@/utils/config/config'
 import { type Genome } from '@/utils/types/Genome'
 import { type Gene } from '@/utils/types/Gene'
 import { padWithZeros } from '@/utils/math/padWithZeros'

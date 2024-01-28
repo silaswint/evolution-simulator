@@ -8,7 +8,7 @@ import {
   SOURCE_TYPE_INPUT_INTERNAL_NEURON,
   WEIGHT_FLOATING_POINT
 } from '@/utils/consts/brain'
-import { config } from '@/utils/config'
+import { config } from '@/utils/config/config'
 import type { DecimalGenome } from '@/utils/types/DecimalGenome'
 import { geneToHex } from '@/utils/genome'
 import { type DecimalGene } from '@/utils/types/DecimalGene'

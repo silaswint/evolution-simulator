@@ -1,5 +1,5 @@
 import { type HamsterState } from '@/utils/types/HamsterState'
-import { config } from '@/utils/config'
+import { config } from '@/utils/config/config'
 import {
   CHALLENGE_NONE,
   CHALLENGE_RIGHT_SIDE_20_SURVIVES,
