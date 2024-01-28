@@ -5,7 +5,7 @@ import { type HamsterState } from '@/utils/types/HamsterState'
 import { hamsterSize } from '@/utils/consts/hamsterSize'
 import { type Genome } from '@/utils/types/Genome'
 import { move } from '@/utils/move'
-import { prepareNextGeneration } from '@/utils/prepareNextGeneration'
+import { prepareNextGeneration } from '@/utils/evolution/prepareNextGeneration'
 import { type MapSize } from '@/utils/types/MapSIze'
 
 const image = './assets/hamster.svg'
