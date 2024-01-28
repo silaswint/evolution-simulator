@@ -5,6 +5,6 @@ describe('mutateGenome', () => {
     const genome = generateRandomGenome()
     const mutatedGenome = mutateGenome(genome)
 
-    expect(mutatedGenome[0]).toBe(genome[0])
+    expect(mutatedGenome[0]).toStrictEqual(genome[0])
   })
 })
