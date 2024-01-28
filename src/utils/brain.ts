@@ -9,6 +9,7 @@ import {
 import { getFormattedDecimalGenome } from '@/utils/getFormattedDecimalGenome'
 import { type DecimalGene } from '@/utils/types/DecimalGene'
 import { type SensoryInputs } from '@/utils/types/SensoryInputs'
+import { Map } from 'immutable'
 
 interface ActionOutputs {
   directionX: number
@@ -18,7 +19,7 @@ interface ActionOutputs {
 }
 
 export const brain = (sensoryInputs: SensoryInputs, genome: Genome): ActionOutputs => {
-  const internalNeurons: Record<string, number> = {}
+  const internalNeurons: Map<number, Map<number, number>> = Map()
   const actionNeurons: Record<string, number> = {}
   const formattedDecimalGenomes = getFormattedDecimalGenome(genome)
 
@@ -26,8 +27,9 @@ export const brain = (sensoryInputs: SensoryInputs, genome: Genome): ActionOutpu
     formattedDecimalGenomes
       .filter((gen: DecimalGene) => gen.sinkType === SINK_TYPE_INTERNAL_NEURON && Math.abs(gen.weight) > PRUNE_WEIGHT)
       .forEach((gen: DecimalGene) => {
-        const sourceValue = getSourceValue(gen, sensoryInputs, internalNeurons)
-        internalNeurons[gen.sinkId] = (internalNeurons[gen.sinkId] || 0) + sourceValue * gen.weight
+        const sourceValue = getSourceValue(gen, sensoryInputs)
+
+        internalNeurons.updateIn([gen.sinkLayerId, gen.sinkId], 0, (value: unknown): number => (value as number) + sourceValue * gen.weight)
       })
   }
 
@@ -35,7 +37,7 @@ export const brain = (sensoryInputs: SensoryInputs, genome: Genome): ActionOutpu
     formattedDecimalGenomes
       .filter((gen: DecimalGene) => gen.sinkType === SINK_TYPE_OUTPUT_ACTION_NEURON && Math.abs(gen.weight) > PRUNE_WEIGHT)
       .forEach((gen: DecimalGene) => {
-        const sourceValue = getSourceValue(gen, sensoryInputs, internalNeurons)
+        const sourceValue = getSourceValue(gen, sensoryInputs)
         actionNeurons[gen.sinkId] = (actionNeurons[gen.sinkId] || 0) + sourceValue * gen.weight
       })
   }
@@ -47,12 +49,13 @@ export const brain = (sensoryInputs: SensoryInputs, genome: Genome): ActionOutpu
     movingSpeed: Math.tanh(actionNeurons[3]) || 0
   })
 
-  const getSourceValue = (gen: DecimalGene, inputs: SensoryInputs, internals: Record<string, number>): number => {
+  const getSourceValue = (gen: DecimalGene, inputs: SensoryInputs): number => {
     switch (gen.sourceType) {
-      case SOURCE_TYPE_INPUT_SENSORY_NEURON: // Sensory input
+      case SOURCE_TYPE_INPUT_SENSORY_NEURON:
         return getSensoryInputValue(gen.sourceId, inputs) || 0
-      case SOURCE_TYPE_INPUT_INTERNAL_NEURON: // Internal neuron
-        return internals[gen.sourceId] || 0
+      case SOURCE_TYPE_INPUT_INTERNAL_NEURON:
+        // same as internalNeurons[gen.sourceLayerId][gen.sourceId] || 0
+        return internalNeurons.getIn([gen.sourceLayerId, gen.sourceId], 0) as number
       default:
         return 0
     }

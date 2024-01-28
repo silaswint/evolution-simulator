@@ -4,6 +4,9 @@ import CytoscapeComponent from 'react-cytoscapejs'
 import { type PresetLayoutOptions } from 'cytoscape'
 import { SINK_TYPE_INTERNAL_NEURON, SOURCE_TYPE_INPUT_INTERNAL_NEURON } from '@/utils/consts/brain'
 import { getFormattedDecimalGenome } from '@/utils/getFormattedDecimalGenome'
+import { type DecimalGene } from '@/utils/types/DecimalGene'
+import { arraySum } from '@/utils/math/arraySum'
+import { config } from '@/utils/config'
 
 interface NetworkProps {
   connections: Genome
@@ -15,7 +18,7 @@ const options: PresetLayoutOptions = {
   positions: (node) => {
     const position = { x: 0, y: 0 }
 
-    // Adjust the y-coordinate based on node type
+    // Adjust the coordinates based on node type
     // @ts-expect-error actually "_private" exists
     const nodeId: string = node._private.data.id
     if (nodeId.startsWith('sensory')) {
@@ -49,17 +52,20 @@ const options: PresetLayoutOptions = {
 
 // Helper function to calculate x-coordinate based on node type and position in row
 const calculateXForNodeType = (nodeId: string, nodeType: string): number => {
-  const nodeNumber = Number(nodeId.split('_')[1]) // Extract the numeric part of nodeId
-  const horizontalSpacing = 100 // Adjust this value based on the desired spacing between nodes in the same row
+  const splitNode = nodeId.split('_')
+  const layerNumber = Number(splitNode[1])
+  const nodeNumber = Number(splitNode[2])
+
+  const addedX = 100 // Adjust this value based on the desired spacing between nodes in the same row
 
   // Implement logic to calculate x-coordinate based on node type and position in row
   switch (nodeType) {
     case 'sensory':
-      return nodeNumber * horizontalSpacing // Nodes in the 'sensory' row are spaced horizontally
+      return nodeNumber * addedX // Nodes in the 'sensory' row are spaced horizontally
     case 'internal':
-      return (nodeNumber * horizontalSpacing) + 50 // Nodes in the 'internal' row are spaced horizontally
+      return (nodeNumber * addedX) + 50 // Nodes in the 'internal' row are spaced horizontally
     case 'action':
-      return nodeNumber * horizontalSpacing + 25 // Nodes in the 'action' row are spaced horizontally
+      return nodeNumber * addedX + 25 // Nodes in the 'action' row are spaced horizontally
     default:
       return 0
   }
@@ -67,46 +73,66 @@ const calculateXForNodeType = (nodeId: string, nodeType: string): number => {
 
 // Helper function to calculate y-coordinate based on node type and position in row
 const calculateYForNodeType = (nodeId: string, nodeType: string): number => {
-  const nodeNumber = Number(nodeId.split('_')[1]) // Extract the numeric part of nodeId
+  const splitNode = nodeId.split('_')
+  const layerNumber = Number(splitNode[1])
+  const nodeNumber = Number(splitNode[2])
 
   const addedY = nodeNumber % 2 === 0 ? 0 : 20
   switch (nodeType) {
     case 'sensory':
       return 100 + addedY
     case 'internal':
-      return 300 + addedY
+      return 300 + addedY + (layerNumber * 200)
     case 'action':
-      return 500 + addedY
+      return 300 + addedY + (config.innerNeurons.length * 200)
     default:
       return 0
   }
 }
 
+const getInputExternalLabel = (sourceType: number): string => {
+  return sourceType === SOURCE_TYPE_INPUT_INTERNAL_NEURON ? 'internal' : 'sensory'
+}
+
+const getInputInternalLabel = (sinkType: number): string => {
+  return sinkType === SINK_TYPE_INTERNAL_NEURON ? 'internal' : 'action'
+}
+
+const getNodeKeySource = (conn: DecimalGene): string => {
+  const inputExternalLabel = getInputExternalLabel(conn.sourceType)
+  return `${inputExternalLabel}_${conn.sourceLayerId}_${conn.sourceId}`
+}
+
+const getNodeKeySink = (conn: DecimalGene): string => {
+  const inputInternalLabel = getInputInternalLabel(conn.sinkType)
+  return `${inputInternalLabel}_${conn.sinkLayerId}_${conn.sinkId}`
+}
+
 export const NetworkVisualization: React.FC<NetworkProps> = ({ connections }) => {
   const formattedGenome = getFormattedDecimalGenome(connections)
   formattedGenome.forEach(conn => {
-    const inputExternalLabel = conn.sourceType === SOURCE_TYPE_INPUT_INTERNAL_NEURON ? 'internal' : 'sensory'
-    const inputInternalLabel = conn.sinkType === SINK_TYPE_INTERNAL_NEURON ? 'internal' : 'action'
+    const inputExternalLabel = getInputExternalLabel(conn.sourceType)
+    const inputInternalLabel = getInputInternalLabel(conn.sinkType)
 
-    if (!nodesMap.has(`${inputExternalLabel}_${conn.sourceId}`)) {
-      nodesMap.set(`${inputExternalLabel}_${conn.sourceId}`, { data: { id: `${inputExternalLabel}_${conn.sourceId}`, label: `${inputExternalLabel} ${conn.sourceId}` } })
+    const nodeKeySource = getNodeKeySource(conn)
+    const nodeKeySink = getNodeKeySink(conn)
+
+    if (!nodesMap.has(nodeKeySource)) {
+      nodesMap.set(nodeKeySource, { data: { id: nodeKeySource, label: `${inputExternalLabel} #${conn.sourceId}` } })
     }
 
-    if (!nodesMap.has(`${inputInternalLabel}_${conn.sinkId}`)) {
-      nodesMap.set(`${inputInternalLabel}_${conn.sinkId}`, { data: { id: `${inputInternalLabel}_${conn.sinkId}`, label: `${inputInternalLabel} ${conn.sinkId}` } })
+    if (!nodesMap.has(nodeKeySink)) {
+      nodesMap.set(nodeKeySink, { data: { id: nodeKeySink, label: `${inputInternalLabel} #${conn.sinkId}` } })
     }
   })
 
   const nodes = Array.from(nodesMap.values())
 
   const edges = formattedGenome.map(conn => {
-    const inputExternalLabel = conn.sourceType === SOURCE_TYPE_INPUT_INTERNAL_NEURON ? 'internal' : 'sensory'
-    const inputInternalLabel = conn.sinkType === SINK_TYPE_INTERNAL_NEURON ? 'internal' : 'action'
-
     return {
       data: {
-        source: `${inputExternalLabel}_${conn.sourceId}`,
-        target: `${inputInternalLabel}_${conn.sinkId}`,
+        source: getNodeKeySource(conn),
+        target: getNodeKeySink(conn),
         weight: conn.weight
       }
     }

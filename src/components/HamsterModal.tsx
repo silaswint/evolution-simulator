@@ -66,8 +66,10 @@ const HamsterModal: React.FC<HamsterModalProps> = ({ setSelectedHamster, selecte
               <th>gene</th>
               <th>source type</th>
               <th>source id</th>
+              <th>source layer id</th>
               <th>sink type</th>
               <th>sink id</th>
+              <th>sink layer id</th>
               <th>weight</th>
             </tr>
           </thead>
@@ -77,8 +79,10 @@ const HamsterModal: React.FC<HamsterModalProps> = ({ setSelectedHamster, selecte
                 <td>{gene.hex}</td>
                 <td>{gene.sourceType === SOURCE_TYPE_INPUT_INTERNAL_NEURON ? 'internal neuron' : 'sensory neuron'}</td>
                 <td>{gene.sourceId}</td>
+                <td>{gene.sourceLayerId}</td>
                 <td>{gene.sinkType === SINK_TYPE_INTERNAL_NEURON ? 'internal neuron' : 'output action neuron'}</td>
                 <td>{gene.sinkId}</td>
+                <td>{gene.sinkLayerId}</td>
                 <td>{gene.weight}</td>
               </tr>
           ))}

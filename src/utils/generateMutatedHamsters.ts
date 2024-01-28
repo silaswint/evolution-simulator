@@ -14,8 +14,6 @@ export const generateMutatedHamsters = (survivedHamsters: HamsterState[], popula
 
   const hamsters: HamsterState[] = []
   for (let i = 0; i < population; i++) {
-    const randomHamster = pickRandomHamster(survivedHamsters)
-    const mutatedGenome = mutateGenome(randomHamster.genome)
     const id = i + 1
 
     // Attempts to generate random positions that do not overlap
@@ -28,6 +26,9 @@ export const generateMutatedHamsters = (survivedHamsters: HamsterState[], popula
 
     const directionX = getRandomDirection()
     const directionY = getRandomDirection()
+
+    const randomHamster = pickRandomHamster(survivedHamsters)
+    const mutatedGenome = mutateGenome(randomHamster.genome)
 
     hamsters.push({
       id,
