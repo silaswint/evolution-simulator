@@ -75,7 +75,7 @@ const hexToGene = (hexGene: string): Gene => {
   let i = 0
   test = Map(test).map((_value, key) => {
     const result = binaryGene.substring(i, i + calculatedSizeOfHexGen[key])
-    i++
+    i = i + calculatedSizeOfHexGen[key]
     return result
   }).toJS() as unknown as Gene
 
