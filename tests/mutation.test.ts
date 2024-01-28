@@ -5,12 +5,12 @@ describe('mutateGenome', () => {
   it('should keep the mutated genome unchanged for 50 random genomes', () => {
     config.mutationRate = 0
 
-    // Erstelle 50 zufällige Genome
+    // Create 50 random genomes
     for (let i = 0; i < 50; i++) {
       const genome = generateRandomGenome()
       const mutatedGenome = mutateGenome(genome)
 
-      // Vergleiche jedes mutierte Genome mit seinem Original
+      // Compare each mutated genome with its original
       expect(mutatedGenome).toStrictEqual(genome)
     }
   })
