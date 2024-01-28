@@ -1,8 +1,7 @@
 import type { HamsterState } from '@/utils/types/HamsterState'
+import { hamsterSize } from '@/utils/consts/hamsterSize'
+import { Map } from 'immutable'
 
-/**
- * @todo every hamster has space to left, top, bottom, right: respect this
- */
 export const getDistanceToNearestHamster = (currentHamster: HamsterState, otherHamsters: HamsterState[]): Record<string, number> => {
   const distances: Record<string, number> = {
     North: Infinity,
@@ -11,8 +10,11 @@ export const getDistanceToNearestHamster = (currentHamster: HamsterState, otherH
     West: Infinity
   }
 
+  const halfWidth = hamsterSize.width / 2
+  const halfHeight = hamsterSize.height / 2
+
   for (const otherHamster of otherHamsters) {
-    if (otherHamster !== currentHamster) {
+    if (!Map(otherHamster).equals(Map(currentHamster))) {
       const deltaX = otherHamster.x - currentHamster.x
       const deltaY = otherHamster.y - currentHamster.y
 
@@ -20,13 +22,13 @@ export const getDistanceToNearestHamster = (currentHamster: HamsterState, otherH
       const distance = Math.hypot(deltaX, deltaY)
 
       // Check direction and update distance if it's shorter
-      if (deltaY > 0 && distance < distances.North) {
+      if (deltaY > 0 && distance < distances.North && deltaY > halfHeight) {
         distances.North = distance
-      } else if (deltaX > 0 && distance < distances.East) {
+      } else if (deltaX > 0 && distance < distances.East && deltaX > halfWidth) {
         distances.East = distance
-      } else if (deltaY < 0 && distance < distances.South) {
+      } else if (deltaY < 0 && distance < distances.South && -deltaY > halfHeight) {
         distances.South = distance
-      } else if (deltaX < 0 && distance < distances.West) {
+      } else if (deltaX < 0 && distance < distances.West && -deltaX > halfWidth) {
         distances.West = distance
       }
     }
