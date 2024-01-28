@@ -126,8 +126,8 @@ const App: React.FC = () => {
                   <Button variant="primary" onClick={downloadGeneration} title={'Download current generation of hamsters'}>Download</Button>
               </Col>
           </Row>
-          <div ref={divRef} style={{ boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)', width: '100%', height: 'auto', maxHeight: `${config.mapSize.height}px`, maxWidth: `${config.mapSize.width}px` }}>
-              <Stage width={mapSize.width} height={mapSize.height} options={{ backgroundColor: 0x343a40 }}>
+          <div ref={divRef} style={{ boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)', width: '100%', height: 'auto', maxHeight: `${config.mapSize.height}px`, maxWidth: `${config.mapSize.width}px`, backgroundImage: `url(./assets/stage-background-challenge-${config.challenge}.svg)` }}>
+              <Stage width={mapSize.width} height={mapSize.height} options={{ backgroundAlpha: 0 }}>
                   { hamsters.length > 0 && <Hamsters population={population} secondsLeftForCurrentGeneration={secondsLeftForCurrentGeneration} generation={generation} setSelectedHamster={setSelectedHamster} resetGenerationCountdown={resetGenerationCountdown} setGeneration={setGeneration} setSurvivingPopulation={setSurvivingPopulation} hamsters={hamsters} setHamsters={setHamsters} mapSize={mapSize} pause={pause} /> }
               </Stage>
               <HamsterModal selectedHamster={selectedHamster} setSelectedHamster={setSelectedHamster} />
