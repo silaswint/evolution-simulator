@@ -1,5 +1,8 @@
 import type { HamsterState } from '@/utils/types/HamsterState'
 
+/**
+ * @todo every hamster has space to left, top, bottom, right: respect this
+ */
 export const getDistanceToNearestHamster = (currentHamster: HamsterState, otherHamsters: HamsterState[]): Record<string, number> => {
   const distances: Record<string, number> = {
     North: Infinity,
