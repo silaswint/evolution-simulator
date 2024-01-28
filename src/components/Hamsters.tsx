@@ -7,11 +7,12 @@ import { type Genome } from '@/utils/types/Genome'
 import { move } from '@/utils/move'
 import { prepareNextGeneration } from '@/utils/evolution/prepareNextGeneration'
 import { type MapSize } from '@/utils/types/MapSize'
+import { type Application as PixiApplication } from '@pixi/app'
 
 const image = './assets/hamster.svg'
 
 interface MapProps {
-  app: any
+  app: PixiApplication
   population: number
   secondsLeftForCurrentGeneration: number
   generation: number
