@@ -23,6 +23,8 @@ interface MapProps {
   setHamsters: React.Dispatch<React.SetStateAction<HamsterState[]>>
   mapSize: MapSize
   pause: boolean
+  survivingPopulation: number
+  setPause: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export const dontMove = (prev: HamsterState, id: number, genome: Genome): HamsterState => {
@@ -38,7 +40,7 @@ export const dontMove = (prev: HamsterState, id: number, genome: Genome): Hamste
   }
 }
 
-export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGeneration, generation, setSelectedHamster, setGeneration, resetGenerationCountdown, setSurvivingPopulation, hamsters, setHamsters, mapSize, pause }: MapProps) => {
+export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGeneration, generation, setSelectedHamster, setGeneration, resetGenerationCountdown, setSurvivingPopulation, hamsters, setHamsters, mapSize, pause, survivingPopulation, setPause }: MapProps) => {
   const [isProcessingNextGeneration, setIsProcessingNextGeneration] = useState<boolean>(false)
 
   const secondsLeftForCurrentGenerationRef = useRef<any>()
@@ -59,7 +61,7 @@ export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGen
           return move(prev, prevHamsters, secondsLeftForCurrentGenerationRef.current as unknown as number, population, generation, mapSize)
         })
       )
-    } else if (!isProcessingNextGeneration && secondsLeftForCurrentGenerationRef.current === 0) {
+    } else if (!isProcessingNextGeneration && secondsLeftForCurrentGenerationRef.current === 0 && hamsters.length > 0) {
       prepareNextGeneration(
         hamsters,
         population,
@@ -68,7 +70,8 @@ export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGen
         setHamsters,
         resetGenerationCountdown,
         setGeneration,
-        mapSize
+        mapSize,
+        setPause
       )
     }
   }, [])
@@ -82,10 +85,10 @@ export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGen
 
   // do pause
   useEffect(() => {
-    if (app.ticker !== null && pause) {
+    if (app.ticker !== null && (pause || survivingPopulation === 0)) {
       app.ticker.remove(tick)
     }
-  }, [app, pause])
+  }, [app, pause, survivingPopulation])
 
   const handleHamsterClick = (hamster: HamsterState): void => {
     setSelectedHamster(hamster)

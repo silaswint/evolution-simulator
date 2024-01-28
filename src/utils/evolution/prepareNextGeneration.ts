@@ -12,7 +12,8 @@ export const prepareNextGeneration = (
   setHamsters: React.Dispatch<React.SetStateAction<HamsterState[]>>,
   resetGenerationCountdown: () => void,
   setGeneration: React.Dispatch<React.SetStateAction<number>>,
-  mapSize: MapSize
+  mapSize: MapSize,
+  setPause: React.Dispatch<React.SetStateAction<boolean>>
 ): void => {
   try {
     // set processing state
@@ -23,6 +24,11 @@ export const prepareNextGeneration = (
 
     // update survived hamsters stats
     setSurvivingPopulation(survivedHamsters.length)
+
+    if (survivedHamsters.length === 0) {
+      setPause(true)
+      return
+    }
 
     // let the survived hamsters mutate
     const mutatedHamsters = generateMutatedHamsters(survivedHamsters, population, mapSize)
