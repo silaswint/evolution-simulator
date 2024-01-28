@@ -14,4 +14,5 @@ export interface EvolutionConfig {
   innerNeurons: number[] // Number of inner neurons in the genome per layer
   challenge: typeof CHALLENGE_NONE | typeof CHALLENGE_RIGHT_SIDE_SURVIVES | typeof CHALLENGE_RIGHT_SIDE_20_SURVIVES
   movingSpeed: number
+  maxFPS: number
 }

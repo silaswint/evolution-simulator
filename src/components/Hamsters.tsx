@@ -8,6 +8,7 @@ import { move } from '@/utils/move'
 import { prepareNextGeneration } from '@/utils/evolution/prepareNextGeneration'
 import { type MapSize } from '@/utils/types/MapSize'
 import { type Application as PixiApplication } from '@pixi/app'
+import { config } from '@/utils/config/config'
 
 const image = './assets/hamster.svg'
 
@@ -92,6 +93,7 @@ export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGen
   // do play
   useEffect(() => {
     if (!pause) {
+      app.ticker.maxFPS = config.maxFPS
       app.ticker.add(tick)
     }
   }, [app, pause])
