@@ -5,10 +5,10 @@ import { CHALLENGE_NONE, CHALLENGE_RIGHT_SIDE_SURVIVES, CHALLENGE_RIGHT_SIDE_20_
 export const config: EvolutionConfig = {
   population: 50,
   mapSize: { width: 800, height: 600 },
-  secondsPerGeneration: 3,
+  secondsPerGeneration: 5,
   genomeSize: 60,
   mutationRate: 0.01,
-  innerNeurons: [6, 5],
+  innerNeurons: [6, 5, 3],
   challenge: CHALLENGE_RIGHT_SIDE_20_SURVIVES,
   movingSpeed: 5,
   maxFPS: 30
