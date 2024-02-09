@@ -15,6 +15,7 @@ import { faCakeCandles, faClock, faPause, faPeopleGroup, faPlay } from '@fortawe
 import { type MapSize } from '@/utils/types/MapSize'
 import { WindowContext } from '@/components/WindowContextProvider'
 import { percentage } from '@/utils/math/percent'
+import { CHALLENGE_INNER_CIRCLE_SURVIVES } from '@/utils/consts/challenges'
 
 const App: React.FC = () => {
   const [generation, setGeneration] = useState<number>(0)
@@ -144,9 +145,9 @@ const App: React.FC = () => {
                 maxHeight: `${config.mapSize.height}px`,
                 maxWidth: `${config.mapSize.width}px`,
                 backgroundImage: `url(./assets/stage-background/challenge-${config.challenge}.svg)`,
-                backgroundSize: 'contain',
+                backgroundSize: config.challenge === CHALLENGE_INNER_CIRCLE_SURVIVES ? 'contain' : '100% 100%',
                 backgroundRepeat: 'no-repeat',
-                backgroundPosition: 'center'
+                backgroundPosition: config.challenge === CHALLENGE_INNER_CIRCLE_SURVIVES ? 'center' : 'right'
               }}
           >
           <Stage width={mapSize.width} height={mapSize.height} options={{ backgroundAlpha: 0 }}>
