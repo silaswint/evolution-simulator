@@ -144,7 +144,7 @@ const App: React.FC = () => {
                 maxHeight: `${config.mapSize.height}px`,
                 maxWidth: `${config.mapSize.width}px`,
                 backgroundImage: `url(./assets/stage-background/challenge-${config.challenge}.svg)`,
-                backgroundSize: 'cover',
+                backgroundSize: 'contain',
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center'
               }}
