@@ -110,16 +110,24 @@ const App: React.FC = () => {
               <Col xs={8} md={6}>
                   <Row className="mb-3">
                       <Col xs={5} md={4}>
-                          <p className="mb-0" title={'Surviving population'}><PauseOrContinue /></p>
+                          <p className="mb-0" title={'Surviving population'}>
+                              <PauseOrContinue />
+                          </p>
                       </Col>
                       <Col xs={3} md={2} className="mb-2 mb-md-0">
-                          <p className="mb-0" title={'Generation'}><FontAwesomeIcon icon={faCakeCandles} /> {generation}</p>
+                          <p className="mb-0" title={'Generation'}>
+                              <FontAwesomeIcon icon={faCakeCandles} /> {generation}
+                          </p>
                       </Col>
                       <Col xs={3} md={2} className="mb-2 mb-md-0">
-                          <p className="mb-0" title={'Seconds left for current generation'}><FontAwesomeIcon icon={faClock} /> {secondsLeftForCurrentGeneration}</p>
+                          <p className="mb-0" title={'Seconds left for current generation'}>
+                              <FontAwesomeIcon icon={faClock} /> {secondsLeftForCurrentGeneration}
+                          </p>
                       </Col>
                       <Col xs={5} md={4}>
-                          <p className="mb-0" title={'Surviving population'}><FontAwesomeIcon icon={faPeopleGroup} /> { percentage(survivingPopulation, config.population)}%</p>
+                          <p className="mb-0" title={'Surviving population'}>
+                              <FontAwesomeIcon icon={faPeopleGroup} /> { percentage(survivingPopulation, config.population)}%
+                          </p>
                       </Col>
                   </Row>
               </Col>
