@@ -69,13 +69,16 @@ export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGen
       return
     }
 
-    if (secondsLeftForCurrentGenerationRef.current > 0 && !pauseRef.current) {
+    const isGenerationRunning = secondsLeftForCurrentGenerationRef.current > 0 && !pauseRef.current
+    const shouldPrepareNextGeneration = !isProcessingNextGeneration && secondsLeftForCurrentGenerationRef.current === 0 && hamstersRef.current.length > 0
+
+    if (isGenerationRunning) {
       setHamsters((prevHamsters: HamsterState[]) =>
         prevHamsters.map((prev: HamsterState) => {
           return move(prev, prevHamsters, secondsLeftForCurrentGenerationRef.current, populationRef.current, generationRef.current, mapSizeRef.current)
         })
       )
-    } else if (!isProcessingNextGeneration && secondsLeftForCurrentGenerationRef.current === 0 && hamstersRef.current.length > 0) {
+    } else if (shouldPrepareNextGeneration) {
       prepareNextGeneration(
         hamstersRef.current,
         populationRef.current,
