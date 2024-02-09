@@ -143,7 +143,10 @@ const App: React.FC = () => {
                 height: 'auto',
                 maxHeight: `${config.mapSize.height}px`,
                 maxWidth: `${config.mapSize.width}px`,
-                backgroundImage: `url(./assets/stage-background/challenge-${config.challenge}.svg)`
+                backgroundImage: `url(./assets/stage-background/challenge-${config.challenge}.svg)`,
+                backgroundSize: 'cover',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'center'
               }}
           >
           <Stage width={mapSize.width} height={mapSize.height} options={{ backgroundAlpha: 0 }}>
