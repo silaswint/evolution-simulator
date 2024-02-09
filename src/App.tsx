@@ -135,8 +135,18 @@ const App: React.FC = () => {
                   <Button variant="primary" onClick={downloadGeneration} title={'Download current generation of hamsters'}>Download</Button>
               </Col>
           </Row>
-          <div ref={divRef} style={{ boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)', width: '100%', height: 'auto', maxHeight: `${config.mapSize.height}px`, maxWidth: `${config.mapSize.width}px`, backgroundImage: `url(./assets/stage-background/challenge-${config.challenge}.svg)` }}>
-              <Stage width={mapSize.width} height={mapSize.height} options={{ backgroundAlpha: 0 }}>
+          <div
+              ref={divRef}
+              style={{
+                boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)',
+                width: '100%',
+                height: 'auto',
+                maxHeight: `${config.mapSize.height}px`,
+                maxWidth: `${config.mapSize.width}px`,
+                backgroundImage: `url(./assets/stage-background/challenge-${config.challenge}.svg)`
+              }}
+          >
+          <Stage width={mapSize.width} height={mapSize.height} options={{ backgroundAlpha: 0 }}>
                   {hamsters.length > 0 && (
                       <Hamsters
                           population={population}
