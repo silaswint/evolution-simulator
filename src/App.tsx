@@ -4,9 +4,7 @@ import { config } from '@/utils/config/config'
 import { Hamsters } from '@/components/Hamsters'
 import { type HamsterState } from '@/utils/types/HamsterState'
 import HamsterModal from './components/HamsterModal'
-import fileDownload from 'js-file-download'
 import { generateRandomHamsters } from '@/utils/hamsters/generateRandomHamsters'
-import { genomeToHex } from '@/utils/genome'
 import 'bootstrap'
 import '../scss/main.scss'
 import { Button, Col, Container, Row } from 'react-bootstrap'
@@ -16,6 +14,7 @@ import { type MapSize } from '@/utils/types/MapSize'
 import { WindowContext } from '@/components/WindowContextProvider'
 import { percentage } from '@/utils/math/percent'
 import { CHALLENGE_INNER_CIRCLE_SURVIVES } from '@/utils/consts/challenges'
+import DownloadGenerationButton from '@/components/DownloadGenerationButton'
 
 const App: React.FC = () => {
   const [generation, setGeneration] = useState<number>(0)
@@ -82,10 +81,6 @@ const App: React.FC = () => {
     setSecondsLeftForCurrentGeneration(config.secondsPerGeneration)
   }
 
-  const downloadGeneration = (): void => {
-    fileDownload(JSON.stringify(hamsters.map(hamster => genomeToHex(hamster.genome))), 'generation.json')
-  }
-
   const onClickPause = (): void => {
     setPause(true)
   }
@@ -107,7 +102,7 @@ const App: React.FC = () => {
   return (
       <Container fluid className="mt-4" style={{ maxWidth: '800px' }}>
           <h1 className="mb-4">Evolution Simulation</h1>
-          <Row className="mb-3">
+          <Row className="mb-0">
               <Col xs={8} md={6}>
                   <Row className="mb-3">
                       <Col xs={5} md={4}>
@@ -133,7 +128,7 @@ const App: React.FC = () => {
                   </Row>
               </Col>
               <Col xs={4} md={6} className="text-end">
-                  <Button variant="primary" onClick={downloadGeneration} title={'Download current generation of hamsters'}>Download</Button>
+                  <DownloadGenerationButton hamsters={hamsters} />
               </Col>
           </Row>
           <div
