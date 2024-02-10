@@ -41,5 +41,6 @@ export const generateMutatedHamsters = (survivedHamsters: HamsterState[], popula
       currentRotation: calculateRotation(directionX, directionY)
     })
   }
+
   return hamsters
 }
