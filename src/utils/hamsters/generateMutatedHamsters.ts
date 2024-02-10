@@ -6,19 +6,20 @@ import { calculateRotation } from '@/utils/math/calculateRotation'
 import { getRandomDirection } from '@/utils/getRandomDirection'
 import { pickRandomHamster } from '@/utils/evolution/pickRandomHamster'
 
-export const generateMutatedHamsters = (survivedHamsters: HamsterState[], population: number, mapSize: MapSize): HamsterState[] => {
+export const generateMutatedHamsters = (
+  survivedHamsters: HamsterState[],
+  population: number,
+  mapSize: MapSize
+): HamsterState[] => {
   if (survivedHamsters.length === 0) {
     console.error('all hamsters died')
     return []
   }
 
-  // reset the ids for survived generations of the hamsters
   let lastId = 0
 
-  // increment the counter for survived generations of the hamsters
   const hamsters: HamsterState[] = []
   survivedHamsters.forEach(hamster => {
-    // Attempts to generate random positions that do not overlap
     let emptyLocation
     try {
       emptyLocation = findEmptyLocation(hamsters, hamster.id, mapSize)
@@ -43,22 +44,12 @@ export const generateMutatedHamsters = (survivedHamsters: HamsterState[], popula
     })
   })
 
-  // sort the best hamsters by the number of survival generations
-  const bestHamsters: HamsterState[] = hamsters.slice().sort((a, b) => {
-    // Sort by survivedGenerations in descending order
-    const generationsComparison = b.survivedGenerations - a.survivedGenerations
-
-    // If survivedGenerations are equal, sort by id in descending order
-    if (generationsComparison === 0) {
-      return b.id - a.id
-    }
-
-    return generationsComparison
-  })
+  const bestHamsters: HamsterState[] = hamsters
+    .slice()
+    .sort((a, b) => b.survivedGenerations - a.survivedGenerations || b.id - a.id)
     .slice(0, 5)
 
   for (let id = lastId; id < population; id++) {
-    // Attempts to generate random positions that do not overlap
     let emptyLocation
     try {
       emptyLocation = findEmptyLocation(hamsters, id, mapSize)
@@ -69,9 +60,10 @@ export const generateMutatedHamsters = (survivedHamsters: HamsterState[], popula
     const directionX = getRandomDirection()
     const directionY = getRandomDirection()
 
-    const bestHamster = (bestHamsters[0].survivedGenerations === 0)
-      ? pickRandomHamster(bestHamsters)
-      : bestHamsters[id % bestHamsters.length]
+    const bestHamster =
+        bestHamsters[0].survivedGenerations === 0
+          ? pickRandomHamster(bestHamsters)
+          : bestHamsters[id % bestHamsters.length]
 
     const mutatedGenome = mutateGenome(bestHamster.genome)
 
