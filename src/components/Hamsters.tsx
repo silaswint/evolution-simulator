@@ -10,7 +10,6 @@ import { type MapSize } from '@/utils/types/MapSize'
 import { type Application as PixiApplication } from '@pixi/app'
 import { config } from '@/utils/config/config'
 import { ColorMatrixFilter } from '@pixi/filter-color-matrix'
-import { getBestHamster } from '@/utils/hamsters/getBestHamster'
 
 const hamsterImage = './assets/hamster.svg'
 const bestHamsterImage = './assets/best-hamster.svg'
@@ -31,6 +30,7 @@ interface MapProps {
   survivingPopulation: number
   setPause: React.Dispatch<React.SetStateAction<boolean>>
   challenge: number
+  bestHamster: HamsterState
 }
 
 export const dontMove = (prev: HamsterState, id: number, genome: Genome): HamsterState => {
@@ -47,7 +47,7 @@ export const dontMove = (prev: HamsterState, id: number, genome: Genome): Hamste
   }
 }
 
-export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGeneration, generation, setSelectedHamster, setGeneration, resetGenerationCountdown, setSurvivingPopulation, hamsters, setHamsters, mapSize, pause, survivingPopulation, setPause, challenge }: MapProps) => {
+export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGeneration, generation, setSelectedHamster, setGeneration, resetGenerationCountdown, setSurvivingPopulation, hamsters, setHamsters, mapSize, pause, survivingPopulation, setPause, challenge, bestHamster }: MapProps) => {
   const [isProcessingNextGeneration, setIsProcessingNextGeneration] = useState<boolean>(false)
 
   const secondsLeftForCurrentGenerationRef = useRef<number>(secondsLeftForCurrentGeneration)
@@ -135,8 +135,6 @@ export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGen
     colorMatrix: ColorMatrixFilter
   })
 
-  const bestHamster = getBestHamster(hamsters)
-
   return (
         <>
             {hamsters.map((hamster, index) => (
@@ -146,11 +144,11 @@ export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGen
                     pivot={{ x: hamsterSize.width * 0.5, y: hamsterSize.height * 0.5 }}
                     angle={interpolateRotation(hamster.lastRotation, hamster.currentRotation)}
                 >
-                  <Filters colorMatrix={{
+                  {/* <Filters colorMatrix={{
                     matrix: hamster.id === bestHamster.id && hamster.survivedGenerations > 0
                       ? [1, 0, 0, 0, 0, 0, 1, 0.5, 0, 0, 0.5, 0, 1, 0, 0, 0, 0, 0, 1, 0]
                       : [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0]
-                  }}>
+                  }}> */}
                     <Sprite
                         interactive={true}
                         anchor={0}
@@ -167,7 +165,7 @@ export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGen
                           handleHamsterClick(hamster)
                         }}
                     />
-                  </Filters>
+                  {/* </Filters> */}
                 </Container>
             ))}
         </>

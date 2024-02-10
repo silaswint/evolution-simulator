@@ -208,6 +208,7 @@ const App: React.FC = () => {
                           survivingPopulation={survivingPopulation}
                           challenge={challenge}
                           setPause={setPause}
+                          bestHamster={bestHamster}
                       />
                   )}
               </CameraContainer>
