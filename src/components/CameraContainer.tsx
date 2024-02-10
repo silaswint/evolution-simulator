@@ -27,10 +27,10 @@ export const CameraContainer = withPixiApp(({ app, children, hamster, active }: 
 
   const shouldNotFollow = !hamster?.x || !hamster?.y || hamster.survivedGenerations === 0 || !active
   if (shouldNotFollow) {
-    const resetFollowPlayer = new ResetFollowPlayer(app.stage, 1)
+    const resetFollowPlayer = new ResetFollowPlayer(app.stage, 0)
     camera.effect(resetFollowPlayer)
   } else {
-    const followPlayer = new FollowPlayer(app.stage, hamster.x, hamster.y, 1)
+    const followPlayer = new FollowPlayer(app.stage, hamster.x, hamster.y, 0)
     camera.effect(followPlayer)
   }
 
