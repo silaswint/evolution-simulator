@@ -187,7 +187,7 @@ const App: React.FC = () => {
                 maxWidth: `${config.mapSize.width}px`
               }}
           >
-              <Stage width={mapSize.width} height={mapSize.height} options={{ backgroundAlpha: 0 }}>
+              <Stage width={mapSize.width} height={mapSize.height} options={{ backgroundAlpha: 0, antialias: true }}>
                   { /* <Background mapSize={mapSize} challenge={challenge}> */ }
                       { /* <CameraContainer hamster={bestHamster} active={isCameraActive}> */ }
                           {hamsters.length > 0 && (
