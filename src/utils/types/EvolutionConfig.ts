@@ -16,4 +16,5 @@ export interface EvolutionConfig {
   challenge: typeof CHALLENGE_NONE | typeof CHALLENGE_RIGHT_SIDE_SURVIVES | typeof CHALLENGE_RIGHT_SIDE_20_SURVIVES | typeof CHALLENGE_INNER_CIRCLE_SURVIVES
   movingSpeed: number
   maxFPS: number
+  reproductionRate: number // tells how many of the best hamsters can reproduce
 }

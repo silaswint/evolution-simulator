@@ -8,6 +8,7 @@ export const config: EvolutionConfig = {
   secondsPerGeneration: 5,
   genomeSize: 60,
   mutationRate: 0.01,
+  reproductionRate: 0.2,
   innerNeurons: [6, 5, 3],
   challenge: CHALLENGE_RIGHT_SIDE_20_SURVIVES,
   movingSpeed: 5,
