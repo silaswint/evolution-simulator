@@ -14,11 +14,6 @@ interface CameraProps {
   active: boolean
 }
 
-/**
- * @todo effects must stop when shouldNotFollow changes
- * @todo background image should be a sprite instead a css background
- * @todo watch CPU time
- */
 export const CameraContainer = withPixiApp(({ app, children, hamster, active }: CameraProps) => {
   const options = {
     // ticker: app.ticker
