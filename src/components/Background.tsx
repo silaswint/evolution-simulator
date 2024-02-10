@@ -1,6 +1,5 @@
 import React, { type ReactNode } from 'react'
 import { Sprite } from '@pixi/react'
-import { type Application as PixiApplication } from '@pixi/app'
 import { type MapSize } from '@/utils/types/MapSize'
 
 interface BackgroundProps {
