@@ -13,14 +13,15 @@ export const prepareNextGeneration = (
   resetGenerationCountdown: () => void,
   setGeneration: React.Dispatch<React.SetStateAction<number>>,
   mapSize: MapSize,
-  setPause: React.Dispatch<React.SetStateAction<boolean>>
+  setPause: React.Dispatch<React.SetStateAction<boolean>>,
+  challenge: number
 ): void => {
   try {
     // set processing state
     setIsProcessingNextGeneration(true)
 
     // process challenge
-    const survivedHamsters = doCurrentChallenge(hamsters, mapSize)
+    const survivedHamsters = doCurrentChallenge(hamsters, mapSize, challenge)
 
     // update survived hamsters stats
     setSurvivingPopulation(survivedHamsters.length)

@@ -7,13 +7,18 @@ import HamsterModal from './components/HamsterModal'
 import { generateRandomHamsters } from '@/utils/hamsters/generateRandomHamsters'
 import 'bootstrap'
 import '../scss/main.scss'
-import { Button, Col, Container, Row } from 'react-bootstrap'
+import { Button, Col, Container, Form, Row } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCakeCandles, faClock, faPause, faPeopleGroup, faPlay } from '@fortawesome/free-solid-svg-icons'
 import { type MapSize } from '@/utils/types/MapSize'
 import { WindowContext } from '@/components/WindowContextProvider'
 import { percentage } from '@/utils/math/percent'
-import { CHALLENGE_INNER_CIRCLE_SURVIVES } from '@/utils/consts/challenges'
+import {
+  CHALLENGE_INNER_CIRCLE_SURVIVES,
+  CHALLENGE_NONE,
+  CHALLENGE_RIGHT_SIDE_20_SURVIVES,
+  CHALLENGE_RIGHT_SIDE_SURVIVES
+} from '@/utils/consts/challenges'
 import DownloadGenerationButton from '@/components/DownloadGenerationButton'
 
 const App: React.FC = () => {
@@ -24,6 +29,7 @@ const App: React.FC = () => {
   const [selectedHamster, setSelectedHamster] = useState<HamsterState | null>(null)
   const [pause, setPause] = useState<boolean>(true)
   const [survivingPopulation, setSurvivingPopulation] = useState<number>(config.population)
+  const [challenge, setChallenge] = useState<number>(config.challenge)
   const { clientHeight, clientWidth } = useContext(WindowContext)
   const [mapSizeIsLoaded, setMapSizeIsLoaded] = useState<boolean>(false)
   const [mapSize, setMapSize] = useState<MapSize>({
@@ -99,6 +105,10 @@ const App: React.FC = () => {
         </Button>
   }
 
+  const handleChallengeChange: React.ChangeEventHandler<HTMLInputElement> = (event): void => {
+    setChallenge(Number(event.target.value))
+  }
+
   return (
       <Container fluid className="mt-4" style={{ maxWidth: '800px' }}>
           <h1 className="mb-4">Evolution Simulation</h1>
@@ -131,6 +141,21 @@ const App: React.FC = () => {
                   <DownloadGenerationButton hamsters={hamsters} />
               </Col>
           </Row>
+          <Row className="mb-3">
+              <Col xs={12} md={12}>
+                  <Form>
+                      <Form.Group controlId="challengeSelect">
+                          <Form.Label className="me-3">Challenge:</Form.Label>
+                          <Form.Control as="select" onChange={ handleChallengeChange }>
+                              <option value={ CHALLENGE_NONE } selected={challenge === CHALLENGE_NONE}>None</option>
+                              <option value={ CHALLENGE_RIGHT_SIDE_SURVIVES } selected={challenge === CHALLENGE_RIGHT_SIDE_SURVIVES}>Right side survives</option>
+                              <option value={ CHALLENGE_RIGHT_SIDE_20_SURVIVES } selected={challenge === CHALLENGE_RIGHT_SIDE_20_SURVIVES}>20% of right side survives</option>
+                              <option value={ CHALLENGE_INNER_CIRCLE_SURVIVES } selected={challenge === CHALLENGE_INNER_CIRCLE_SURVIVES}>Inner circle survives</option>
+                          </Form.Control>
+                      </Form.Group>
+                  </Form>
+              </Col>
+          </Row>
           <div
               ref={divRef}
               style={{
@@ -139,10 +164,10 @@ const App: React.FC = () => {
                 height: 'auto',
                 maxHeight: `${config.mapSize.height}px`,
                 maxWidth: `${config.mapSize.width}px`,
-                backgroundImage: `url(./assets/stage-background/challenge-${config.challenge}.svg)`,
-                backgroundSize: config.challenge === CHALLENGE_INNER_CIRCLE_SURVIVES ? 'contain' : '100% 100%',
+                backgroundImage: `url(./assets/stage-background/challenge-${challenge}.svg)`,
+                backgroundSize: challenge === CHALLENGE_INNER_CIRCLE_SURVIVES ? 'contain' : '100% 100%',
                 backgroundRepeat: 'no-repeat',
-                backgroundPosition: config.challenge === CHALLENGE_INNER_CIRCLE_SURVIVES ? 'center' : 'right'
+                backgroundPosition: challenge === CHALLENGE_INNER_CIRCLE_SURVIVES ? 'center' : 'right'
               }}
           >
           <Stage width={mapSize.width} height={mapSize.height} options={{ backgroundAlpha: 0 }}>
@@ -160,6 +185,7 @@ const App: React.FC = () => {
                           mapSize={mapSize}
                           pause={pause}
                           survivingPopulation={survivingPopulation}
+                          challenge={challenge}
                           setPause={setPause}
                       />
                   )}

@@ -1,6 +1,5 @@
 /* eslint-disable no-case-declarations */
 import { type HamsterState } from '@/utils/types/HamsterState'
-import { config } from '@/utils/config/config'
 import {
   CHALLENGE_INNER_CIRCLE_SURVIVES,
   CHALLENGE_NONE,
@@ -9,8 +8,10 @@ import {
 } from '@/utils/consts/challenges'
 import { type MapSize } from '@/utils/types/MapSize'
 
-export const doCurrentChallenge = (prevHamsters: HamsterState[], mapSize: MapSize): HamsterState[] => {
-  switch (config.challenge) {
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
+export const doCurrentChallenge = (prevHamsters: HamsterState[], mapSize: MapSize, challenge: number): HamsterState[] => {
+  switch (challenge) {
     case CHALLENGE_NONE:
       return prevHamsters
 

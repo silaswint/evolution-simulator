@@ -27,6 +27,7 @@ interface MapProps {
   pause: boolean
   survivingPopulation: number
   setPause: React.Dispatch<React.SetStateAction<boolean>>
+  challenge: number
 }
 
 export const dontMove = (prev: HamsterState, id: number, genome: Genome): HamsterState => {
@@ -42,7 +43,7 @@ export const dontMove = (prev: HamsterState, id: number, genome: Genome): Hamste
   }
 }
 
-export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGeneration, generation, setSelectedHamster, setGeneration, resetGenerationCountdown, setSurvivingPopulation, hamsters, setHamsters, mapSize, pause, survivingPopulation, setPause }: MapProps) => {
+export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGeneration, generation, setSelectedHamster, setGeneration, resetGenerationCountdown, setSurvivingPopulation, hamsters, setHamsters, mapSize, pause, survivingPopulation, setPause, challenge }: MapProps) => {
   const [isProcessingNextGeneration, setIsProcessingNextGeneration] = useState<boolean>(false)
 
   const secondsLeftForCurrentGenerationRef = useRef<number>(secondsLeftForCurrentGeneration)
@@ -62,6 +63,9 @@ export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGen
 
   const mapSizeRef = useRef<MapSize>(mapSize)
   mapSizeRef.current = mapSize
+
+  const challengeRef = useRef<number>(challenge)
+  challengeRef.current = challenge
 
   const tick = useCallback((): void => {
     // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
@@ -88,7 +92,8 @@ export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGen
         resetGenerationCountdown,
         setGeneration,
         mapSizeRef.current,
-        setPause
+        setPause,
+        challengeRef.current
       )
     }
   }, [])
