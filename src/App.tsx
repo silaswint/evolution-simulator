@@ -188,7 +188,7 @@ const App: React.FC = () => {
               }}
           >
               <Stage width={mapSize.width} height={mapSize.height} options={{ backgroundAlpha: 0, antialias: true }}>
-                  { /* <Background mapSize={mapSize} challenge={challenge}> */ }
+                  <Background mapSize={mapSize} challenge={challenge}>
                       <CameraContainer hamster={bestHamster} active={isCameraActive}>
                           {hamsters.length > 0 && (
                               <Hamsters
@@ -210,7 +210,7 @@ const App: React.FC = () => {
                               />
                           )}
                      </CameraContainer>
-                  { /* </Background> */ }
+                  </Background>
               </Stage>
               <HamsterModal selectedHamster={selectedHamster} setSelectedHamster={setSelectedHamster} />
           </div>
