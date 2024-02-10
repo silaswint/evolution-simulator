@@ -11,7 +11,6 @@ interface BackgroundProps {
 const Background: React.FC<BackgroundProps> = ({ children, mapSize, challenge }) => {
   return <Sprite
       image={`./assets/stage-background/challenge-${challenge}.svg`}
-      scale={0}
       width={mapSize.width}
       height={mapSize.height}
   >
