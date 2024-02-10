@@ -146,11 +146,17 @@ const App: React.FC = () => {
                   <Form>
                       <Form.Group controlId="challengeSelect">
                           <Form.Label className="me-3">Challenge:</Form.Label>
-                          <Form.Control as="select" onChange={ handleChallengeChange }>
-                              <option value={ CHALLENGE_NONE } selected={challenge === CHALLENGE_NONE}>None</option>
-                              <option value={ CHALLENGE_RIGHT_SIDE_SURVIVES } selected={challenge === CHALLENGE_RIGHT_SIDE_SURVIVES}>Right side survives</option>
-                              <option value={ CHALLENGE_RIGHT_SIDE_20_SURVIVES } selected={challenge === CHALLENGE_RIGHT_SIDE_20_SURVIVES}>20% of right side survives</option>
-                              <option value={ CHALLENGE_INNER_CIRCLE_SURVIVES } selected={challenge === CHALLENGE_INNER_CIRCLE_SURVIVES}>Inner circle survives</option>
+                          <Form.Control as="select" value={challenge} onChange={handleChallengeChange}>
+                              {[
+                                { value: CHALLENGE_NONE, label: 'None' },
+                                { value: CHALLENGE_RIGHT_SIDE_SURVIVES, label: 'Right side survives' },
+                                { value: CHALLENGE_RIGHT_SIDE_20_SURVIVES, label: '20% of right side survives' },
+                                { value: CHALLENGE_INNER_CIRCLE_SURVIVES, label: 'Inner circle survives' }
+                              ].map(option => (
+                                  <option key={option.value} value={option.value}>
+                                      {option.label}
+                                  </option>
+                              ))}
                           </Form.Control>
                       </Form.Group>
                   </Form>
