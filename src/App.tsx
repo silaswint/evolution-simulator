@@ -22,6 +22,7 @@ import {
 import DownloadGenerationButton from '@/components/DownloadGenerationButton'
 import { CameraContainer } from '@/components/CameraContainer'
 import { getBestHamster } from '@/utils/hamsters/getBestHamster'
+import Background from '@/components/Background'
 
 const App: React.FC = () => {
   const [generation, setGeneration] = useState<number>(0)
@@ -183,35 +184,33 @@ const App: React.FC = () => {
                 width: '100%',
                 height: 'auto',
                 maxHeight: `${config.mapSize.height}px`,
-                maxWidth: `${config.mapSize.width}px`,
-                backgroundImage: `url(./assets/stage-background/challenge-${challenge}.svg)`,
-                backgroundSize: challenge === CHALLENGE_INNER_CIRCLE_SURVIVES ? 'contain' : '100% 100%',
-                backgroundRepeat: 'no-repeat',
-                backgroundPosition: challenge === CHALLENGE_INNER_CIRCLE_SURVIVES ? 'center' : 'right'
+                maxWidth: `${config.mapSize.width}px`
               }}
           >
-          <Stage width={mapSize.width} height={mapSize.height} options={{ backgroundAlpha: 0 }}>
-              <CameraContainer hamster={bestHamster} active={isCameraActive}>
-                  {hamsters.length > 0 && (
-                      <Hamsters
-                          population={population}
-                          secondsLeftForCurrentGeneration={secondsLeftForCurrentGeneration}
-                          generation={generation}
-                          setSelectedHamster={setSelectedHamster}
-                          resetGenerationCountdown={resetGenerationCountdown}
-                          setGeneration={setGeneration}
-                          setSurvivingPopulation={setSurvivingPopulation}
-                          hamsters={hamsters}
-                          setHamsters={setHamsters}
-                          mapSize={mapSize}
-                          pause={pause}
-                          survivingPopulation={survivingPopulation}
-                          challenge={challenge}
-                          setPause={setPause}
-                          bestHamster={bestHamster}
-                      />
-                  )}
-              </CameraContainer>
+              <Stage width={mapSize.width} height={mapSize.height} options={{ backgroundAlpha: 0 }}>
+                  { /* <Background mapSize={mapSize} challenge={challenge}> */ }
+                      { /* <CameraContainer hamster={bestHamster} active={isCameraActive}> */ }
+                          {hamsters.length > 0 && (
+                              <Hamsters
+                                  population={population}
+                                  secondsLeftForCurrentGeneration={secondsLeftForCurrentGeneration}
+                                  generation={generation}
+                                  setSelectedHamster={setSelectedHamster}
+                                  resetGenerationCountdown={resetGenerationCountdown}
+                                  setGeneration={setGeneration}
+                                  setSurvivingPopulation={setSurvivingPopulation}
+                                  hamsters={hamsters}
+                                  setHamsters={setHamsters}
+                                  mapSize={mapSize}
+                                  pause={pause}
+                                  survivingPopulation={survivingPopulation}
+                                  challenge={challenge}
+                                  setPause={setPause}
+                                  bestHamster={bestHamster}
+                              />
+                          )}
+                     { /* </CameraContainer> */}
+                  { /* </Background> */ }
               </Stage>
               <HamsterModal selectedHamster={selectedHamster} setSelectedHamster={setSelectedHamster} />
           </div>
