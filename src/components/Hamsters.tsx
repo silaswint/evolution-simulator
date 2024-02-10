@@ -12,7 +12,8 @@ import { config } from '@/utils/config/config'
 import { ColorMatrixFilter } from '@pixi/filter-color-matrix'
 import { getBestHamster } from '@/utils/hamsters/getBestHamster'
 
-const image = './assets/hamster.svg'
+const hamsterImage = './assets/hamster.svg'
+const bestHamsterImage = './assets/best-hamster.svg'
 
 interface MapProps {
   app: PixiApplication
@@ -153,7 +154,7 @@ export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGen
                     <Sprite
                         interactive={true}
                         anchor={0}
-                        image={image}
+                        image={hamster.id === bestHamster.id && hamster.survivedGenerations > 0 ? bestHamsterImage : hamsterImage}
                         x={0}
                         y={0}
                         scale={0}
