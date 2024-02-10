@@ -9,4 +9,5 @@ export interface HamsterState {
   genome: Genome
   lastRotation: number
   currentRotation: number
+  survivedGenerations: number
 }

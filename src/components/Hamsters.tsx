@@ -39,7 +39,8 @@ export const dontMove = (prev: HamsterState, id: number, genome: Genome): Hamste
     directionY: 0,
     genome,
     lastRotation: prev.currentRotation,
-    currentRotation: 0
+    currentRotation: 0,
+    survivedGenerations: prev.survivedGenerations
   }
 }
 
@@ -130,7 +131,12 @@ export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGen
   return (
         <>
             {hamsters.map((hamster, index) => (
-                <Container key={index} position={[hamster.x, hamster.y]} pivot={{ x: hamsterSize.width * 0.5, y: hamsterSize.height * 0.5 }} angle={interpolateRotation(hamster.lastRotation, hamster.currentRotation)}>
+                <Container
+                    key={index}
+                    position={[hamster.x, hamster.y]}
+                    pivot={{ x: hamsterSize.width * 0.5, y: hamsterSize.height * 0.5 }}
+                    angle={interpolateRotation(hamster.lastRotation, hamster.currentRotation)}
+                >
                     <Sprite
                         interactive={true}
                         anchor={0}

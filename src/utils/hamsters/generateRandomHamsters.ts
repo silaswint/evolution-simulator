@@ -34,7 +34,8 @@ export const generateRandomHamsters = (populationRef: MutableRefObject<number>, 
       directionY,
       genome: generateRandomGenome(),
       lastRotation: 0,
-      currentRotation: calculateRotation(directionX, directionY)
+      currentRotation: calculateRotation(directionX, directionY),
+      survivedGenerations: 0
     })
   }
 

@@ -41,6 +41,7 @@ export const move = (
     directionY,
     genome,
     lastRotation: prev.currentRotation,
-    currentRotation: calculateRotation(directionX, directionY)
+    currentRotation: calculateRotation(directionX, directionY),
+    survivedGenerations: prev.survivedGenerations
   }
 }

@@ -36,6 +36,10 @@ const HamsterModal: React.FC<HamsterModalProps> = ({ setSelectedHamster, selecte
               <td>{selectedHamster.x}x{selectedHamster.y}</td>
             </tr>
             <tr>
+              <td>Survived generations</td>
+              <td>{selectedHamster.survivedGenerations}</td>
+            </tr>
+            <tr>
               <td>Genome</td>
               <td>
                 <ShowMoreText

@@ -13,7 +13,8 @@ describe('distanceToNearestHamsterWithTwoHamsters', () => {
       directionY: getRandomDirection(),
       genome: generateRandomGenome(),
       lastRotation: 0,
-      currentRotation: 0
+      currentRotation: 0,
+      survivedGenerations: 0
     }
 
     const hamster2: HamsterState = {
@@ -24,7 +25,8 @@ describe('distanceToNearestHamsterWithTwoHamsters', () => {
       directionY: getRandomDirection(),
       genome: generateRandomGenome(),
       lastRotation: 0,
-      currentRotation: 0
+      currentRotation: 0,
+      survivedGenerations: 0
     }
 
     const otherHamsters = [hamster1, hamster2]
