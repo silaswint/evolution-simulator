@@ -1,5 +1,5 @@
 import { Stage } from '@pixi/react'
-import React, { type ReactNode, useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { config } from '@/utils/config/config'
 import { Hamsters } from '@/components/Hamsters'
 import { type HamsterState } from '@/utils/types/HamsterState'
@@ -7,9 +7,9 @@ import HamsterModal from './components/HamsterModal'
 import { generateRandomHamsters } from '@/utils/hamsters/generateRandomHamsters'
 import 'bootstrap'
 import '../scss/main.scss'
-import { Button, Col, Container, Form, Row } from 'react-bootstrap'
+import { Col, Container, Form, Row } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCakeCandles, faClock, faPause, faPeopleGroup, faPlay } from '@fortawesome/free-solid-svg-icons'
+import { faCakeCandles, faClock, faPeopleGroup } from '@fortawesome/free-solid-svg-icons'
 import { type MapSize } from '@/utils/types/MapSize'
 import { WindowContext } from '@/components/WindowContextProvider'
 import { percentage } from '@/utils/math/percent'
@@ -23,6 +23,7 @@ import DownloadGenerationButton from '@/components/DownloadGenerationButton'
 import { CameraContainer } from '@/components/CameraContainer'
 import { getBestHamster } from '@/utils/hamsters/getBestHamster'
 import Background from '@/components/Background'
+import PauseOrContinue from '@/components/PauseOrContinue'
 
 const App: React.FC = () => {
   const [generation, setGeneration] = useState<number>(0)
@@ -92,24 +93,6 @@ const App: React.FC = () => {
     setSecondsLeftForCurrentGeneration(config.secondsPerGeneration)
   }
 
-  const onClickPause = (): void => {
-    setPause(true)
-  }
-
-  const onClickPlay = (): void => {
-    setPause(false)
-  }
-
-  const PauseOrContinue = (): ReactNode => {
-    return !pause
-      ? <Button onClick={ onClickPause } variant="secondary" size="sm">
-            <FontAwesomeIcon icon={faPause} />
-        </Button>
-      : <Button onClick={ onClickPlay } variant="secondary" size="sm">
-            <FontAwesomeIcon icon={faPlay} />
-        </Button>
-  }
-
   const handleChallengeChange: React.ChangeEventHandler<HTMLInputElement> = (event): void => {
     setChallenge(Number(event.target.value))
   }
@@ -124,7 +107,7 @@ const App: React.FC = () => {
                   <Row className="mb-3">
                       <Col xs={5} md={4}>
                           <p className="mb-0" title={'Surviving population'}>
-                              <PauseOrContinue />
+                              <PauseOrContinue setPause={setPause} pause={pause} />
                           </p>
                       </Col>
                       <Col xs={3} md={2} className="mb-2 mb-md-0">
