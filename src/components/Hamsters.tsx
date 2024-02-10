@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
-import { Container, Sprite, withPixiApp } from '@pixi/react'
+import { Container, Sprite, withFilters, withPixiApp } from '@pixi/react'
 import '@pixi/events'
 import { type HamsterState } from '@/utils/types/HamsterState'
 import { hamsterSize } from '@/utils/consts/hamsterSize'
@@ -9,6 +9,8 @@ import { prepareNextGeneration } from '@/utils/evolution/prepareNextGeneration'
 import { type MapSize } from '@/utils/types/MapSize'
 import { type Application as PixiApplication } from '@pixi/app'
 import { config } from '@/utils/config/config'
+import { ColorMatrixFilter } from '@pixi/filter-color-matrix'
+import { getBestHamster } from '@/utils/hamsters/getBestHamster'
 
 const image = './assets/hamster.svg'
 
@@ -128,6 +130,12 @@ export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGen
     }
   }
 
+  const Filters = withFilters(Container, {
+    colorMatrix: ColorMatrixFilter
+  })
+
+  const bestHamster = getBestHamster(hamsters)
+
   return (
         <>
             {hamsters.map((hamster, index) => (
@@ -137,6 +145,11 @@ export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGen
                     pivot={{ x: hamsterSize.width * 0.5, y: hamsterSize.height * 0.5 }}
                     angle={interpolateRotation(hamster.lastRotation, hamster.currentRotation)}
                 >
+                  <Filters colorMatrix={{
+                    matrix: hamster.id === bestHamster.id && hamster.survivedGenerations > 0
+                      ? [1, 0, 0, 0, 0, 0, 1, 0.5, 0, 0, 0.5, 0, 1, 0, 0, 0, 0, 0, 1, 0]
+                      : [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0]
+                  }}>
                     <Sprite
                         interactive={true}
                         anchor={0}
@@ -153,6 +166,7 @@ export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGen
                           handleHamsterClick(hamster)
                         }}
                     />
+                  </Filters>
                 </Container>
             ))}
         </>

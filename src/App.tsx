@@ -20,6 +20,8 @@ import {
   CHALLENGE_RIGHT_SIDE_SURVIVES
 } from '@/utils/consts/challenges'
 import DownloadGenerationButton from '@/components/DownloadGenerationButton'
+import { CameraContainer } from '@/components/CameraContainer'
+import { getBestHamster } from '@/utils/hamsters/getBestHamster'
 
 const App: React.FC = () => {
   const [generation, setGeneration] = useState<number>(0)
@@ -38,6 +40,7 @@ const App: React.FC = () => {
   })
   const populationRef = useRef(population)
   const [hamsters, setHamsters] = useState<HamsterState[]>([])
+  const [isCameraActive, setCameraActive] = useState<boolean>(false)
 
   const divRef = useRef<HTMLDivElement>(null)
 
@@ -57,6 +60,7 @@ const App: React.FC = () => {
       setMapSizeIsLoaded(true)
     }
   }, [])
+
   useEffect(() => {
     if (divRef.current) {
       const rect = divRef.current.getBoundingClientRect()
@@ -109,6 +113,8 @@ const App: React.FC = () => {
     setChallenge(Number(event.target.value))
   }
 
+  const bestHamster = getBestHamster(hamsters)
+
   return (
       <Container fluid className="mt-4" style={{ maxWidth: '800px' }}>
           <h1 className="mb-4">Evolution Simulation</h1>
@@ -142,7 +148,7 @@ const App: React.FC = () => {
               </Col>
           </Row>
           <Row className="mb-3">
-              <Col xs={12} md={12}>
+              <Col xs={6} md={6}>
                   <Form>
                       <Form.Group controlId="challengeSelect">
                           <Form.Label className="me-3">Challenge:</Form.Label>
@@ -161,6 +167,14 @@ const App: React.FC = () => {
                       </Form.Group>
                   </Form>
               </Col>
+              <Col xs={6} md={6}>
+                  <Form.Check
+                      type="checkbox"
+                      label="Activate Camera"
+                      checked={isCameraActive}
+                      onChange={() => { setCameraActive(!isCameraActive) }}
+                  />
+              </Col>
           </Row>
           <div
               ref={divRef}
@@ -177,6 +191,7 @@ const App: React.FC = () => {
               }}
           >
           <Stage width={mapSize.width} height={mapSize.height} options={{ backgroundAlpha: 0 }}>
+              <CameraContainer hamster={bestHamster} active={isCameraActive}>
                   {hamsters.length > 0 && (
                       <Hamsters
                           population={population}
@@ -195,6 +210,7 @@ const App: React.FC = () => {
                           setPause={setPause}
                       />
                   )}
+              </CameraContainer>
               </Stage>
               <HamsterModal selectedHamster={selectedHamster} setSelectedHamster={setSelectedHamster} />
           </div>
