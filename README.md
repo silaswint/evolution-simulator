@@ -6,6 +6,7 @@ The project from https://github.com/davidrmiller/biosim4 inspired me. For a bett
 
 ## Requirements
 - npm v9.6.4
+- node v20.1.0
 
 ## Installation
 
@@ -19,3 +20,10 @@ The project from https://github.com/davidrmiller/biosim4 inspired me. For a bett
 
 - > npm run test
 
+## CLI
+
+- > npm run cli
+
+or
+
+- > ./bin/cli

@@ -36,6 +36,9 @@ export default {
                     },
                     {
                         loader: "ts-loader",
+                        options: {
+                            configFile: 'src/tsconfig.json'
+                        },
                     },
                 ],
             },
