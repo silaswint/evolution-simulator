@@ -1,8 +1,12 @@
-const path = require("path");
-const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+import path from "path";
+import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin";
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import { fileURLToPath } from 'url';
 
-module.exports = {
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+export default {
     entry: "./src/index.tsx",
     output: {
         path: path.resolve(__dirname, "dist"),
@@ -13,8 +17,8 @@ module.exports = {
         extensions: [".tsx", ".ts", ".js", ".jsx"],
         alias: {
             "@": path.resolve(__dirname, "src"),
-        }
-},
+        },
+    },
     module: {
         rules: [
             {
@@ -26,7 +30,7 @@ module.exports = {
                         options: {
                             plugins: [
                                 // React Refresh Babel plugin
-                                require.resolve("react-refresh/babel"),
+                                "react-refresh/babel"
                             ],
                         },
                     },
@@ -44,7 +48,7 @@ module.exports = {
                     "css-loader",
                     // Compiles Sass to CSS
                     "sass-loader",
-                ]
+                ],
             },
         ],
     },
@@ -57,7 +61,7 @@ module.exports = {
     ],
     devServer: {
         static: {
-            directory: path.join(__dirname, 'public'),
+            directory: path.join(__dirname, "public"),
         },
         hot: true,
         port: 3000,

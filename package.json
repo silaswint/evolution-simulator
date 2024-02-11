@@ -83,5 +83,9 @@
       ".tsx"
     ],
     "testEnvironment": "node"
-  }
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "type": "module"
 }
