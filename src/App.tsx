@@ -141,7 +141,7 @@ const App: React.FC = () => {
                                 { value: CHALLENGE_NONE, label: 'None' },
                                 { value: CHALLENGE_RIGHT_SIDE_SURVIVES, label: 'Right side survives' },
                                 { value: CHALLENGE_RIGHT_SIDE_20_SURVIVES, label: '20% of right side survives' },
-                                { value: CHALLENGE_INNER_CIRCLE_SURVIVES, label: 'Inner circle survives' }
+                                { value: CHALLENGE_INNER_CIRCLE_SURVIVES, label: 'Inner circle survives (EXPERIMENTAL)' }
                               ].map(option => (
                                   <option key={option.value} value={option.value}>
                                       {option.label}
