@@ -83,6 +83,7 @@ const AppCli = ({ saveThresholdGenerations = 50, challenge = config.challenge }:
               challenge={challenge}
               setPause={setPause}
               bestHamster={bestHamster}
+              saveThresholdGenerations={saveThresholdGenerations}
           />
       )}
     </>

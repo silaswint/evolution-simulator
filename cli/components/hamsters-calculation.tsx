@@ -6,6 +6,8 @@ import { prepareNextGeneration } from '@/utils/evolution/prepareNextGeneration'
 import { type MapSize } from '@/utils/types/MapSize'
 import { type Ticker } from '@/cli/types/Ticker'
 import { Text, useInput, useApp, Newline } from 'ink'
+import { percentage } from '@/utils/math/percent'
+import { config } from '@/utils/config/config'
 
 interface MapProps {
   ticker: Ticker
@@ -23,9 +25,10 @@ interface MapProps {
   setPause: React.Dispatch<React.SetStateAction<boolean>>
   challenge: number
   bestHamster: HamsterState
+  saveThresholdGenerations: number
 }
 
-const HamstersCalculation = ({ ticker, population, secondsLeftForCurrentGeneration, generation, setGeneration, resetGenerationCountdown, setSurvivingPopulation, hamsters, setHamsters, mapSize, pause, survivingPopulation, setPause, challenge, bestHamster }: MapProps): ReactElement<any, any> => {
+const HamstersCalculation = ({ ticker, population, secondsLeftForCurrentGeneration, generation, setGeneration, resetGenerationCountdown, setSurvivingPopulation, hamsters, setHamsters, mapSize, pause, survivingPopulation, setPause, challenge, bestHamster, saveThresholdGenerations }: MapProps): ReactElement<any, any> => {
   const [isProcessingNextGeneration, setIsProcessingNextGeneration] = useState<boolean>(false)
 
   const secondsLeftForCurrentGenerationRef = useRef<number>(secondsLeftForCurrentGeneration)
@@ -106,10 +109,19 @@ const HamstersCalculation = ({ ticker, population, secondsLeftForCurrentGenerati
     }
   }, [pause, survivingPopulation])
 
+  const survivingRate = percentage(survivingPopulation, config.population)
+
   return <>
-    <Text color="green">Generation: {generation}</Text>
-    <Text color="green">Survived generations of best hamster: {bestHamster.survivedGenerations}</Text>
-    <Text color="green">Seconds left for current generation: {secondsLeftForCurrentGeneration}</Text>
+    <Text color="green">
+      <>
+        Gen: {generation} | Seconds left: {secondsLeftForCurrentGeneration} | <Text color={ survivingRate < 80 ? 'red' : 'green' }>Surviving rate: {survivingRate}%</Text>
+      </>
+    </Text>
+    <Text>
+      <>
+        The best hamster survived <Text color={ bestHamster.survivedGenerations < saveThresholdGenerations ? 'red' : 'green' }>{bestHamster.survivedGenerations} generations</Text>.
+      </>
+    </Text>
     <Newline />
     <Text>Press “q” to exit or “p“ to pause / continue.</Text>
     { pause && <Text color="red">PAUSE!</Text> }
