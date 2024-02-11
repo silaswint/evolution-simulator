@@ -7,7 +7,6 @@ import { config } from '@/utils/config/config'
 import { randomNumberBetween } from '@/utils/math/randomNumberBetween'
 import { mapValueToRange } from '@/utils/math/mapValueToRange'
 import { getDistanceToNearestHamster } from '@/utils/hamsters/getDistanceToNearestHamster'
-import { Map } from 'immutable'
 
 export const getGeneratedHamsterState = (
   prev: HamsterState,
