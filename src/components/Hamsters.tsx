@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
-import { Container, Sprite, withFilters, withPixiApp } from '@pixi/react'
+import { Container, Sprite, withPixiApp } from '@pixi/react'
 import '@pixi/events'
 import { type HamsterState } from '@/utils/types/HamsterState'
 import { hamsterSize } from '@/utils/consts/hamsterSize'
@@ -8,7 +8,6 @@ import { prepareNextGeneration } from '@/utils/evolution/prepareNextGeneration'
 import { type MapSize } from '@/utils/types/MapSize'
 import { type Application as PixiApplication } from '@pixi/app'
 import { config } from '@/utils/config/config'
-import { ColorMatrixFilter } from '@pixi/filter-color-matrix'
 
 const hamsterImage = './assets/hamster.svg'
 const bestHamsterImage = './assets/best-hamster.svg'
@@ -130,10 +129,6 @@ export const Hamsters = withPixiApp(({ app, population, secondsLeftForCurrentGen
       return lastRotation
     }
   }
-
-  const Filters = withFilters(Container, {
-    colorMatrix: ColorMatrixFilter
-  })
 
   return (
         <>
