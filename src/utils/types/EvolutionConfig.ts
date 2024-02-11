@@ -14,7 +14,7 @@ export interface EvolutionConfig {
   mutationRate: number // Mutation rate (example: 0.001 means 0.1% probability of a mutation per gene)
   innerNeurons: number[] // Number of inner neurons in the genome per layer
   challenge: typeof CHALLENGE_NONE | typeof CHALLENGE_RIGHT_SIDE_SURVIVES | typeof CHALLENGE_RIGHT_SIDE_20_SURVIVES | typeof CHALLENGE_INNER_CIRCLE_SURVIVES
-  movingSpeed: number
+  movingSpeed: number // maximum pixel per step
   maxFPS: number
   reproductionRate: number // tells how many of the best hamsters can reproduce
 }
