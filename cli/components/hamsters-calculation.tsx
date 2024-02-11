@@ -5,7 +5,7 @@ import { move } from '@/utils/move'
 import { prepareNextGeneration } from '@/utils/evolution/prepareNextGeneration'
 import { type MapSize } from '@/utils/types/MapSize'
 import { type Ticker } from '@/cli/types/Ticker'
-import { Text } from 'ink'
+import { Text, useInput, useApp, Newline } from 'ink'
 
 interface MapProps {
   ticker: Ticker
@@ -48,6 +48,14 @@ const HamstersCalculation = ({ ticker, population, secondsLeftForCurrentGenerati
 
   const challengeRef = useRef<number>(challenge)
   challengeRef.current = challenge
+
+  const { exit } = useApp()
+
+  useInput((input: string): void => {
+    if (input === 'q') {
+      exit()
+    }
+  })
 
   const tick = useCallback((): void => {
     // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
@@ -97,6 +105,8 @@ const HamstersCalculation = ({ ticker, population, secondsLeftForCurrentGenerati
   return <>
     <Text color="green">Generation: {generation}</Text>
     <Text color="green">Survived generations of best hamster: {bestHamster.survivedGenerations}</Text>
+    <Newline />
+    <Text>Press “q” to exit.</Text>
   </>
 }
 
