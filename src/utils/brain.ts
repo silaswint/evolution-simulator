@@ -1,4 +1,3 @@
-import { type Genome } from '@/utils/types/Genome'
 import {
   PRUNE_WEIGHT,
   SINK_TYPE_INTERNAL_NEURON,
@@ -6,10 +5,10 @@ import {
   SOURCE_TYPE_INPUT_INTERNAL_NEURON,
   SOURCE_TYPE_INPUT_SENSORY_NEURON
 } from '@/utils/consts/brain'
-import { getFormattedDecimalGenome } from '@/utils/getFormattedDecimalGenome'
 import { type DecimalGene } from '@/utils/types/DecimalGene'
 import { type SensoryInputs } from '@/utils/types/SensoryInputs'
 import { Map } from 'immutable'
+import { type DecimalGenome } from '@/utils/types/DecimalGenome'
 
 interface ActionOutputs {
   directionX: number
@@ -18,13 +17,12 @@ interface ActionOutputs {
   movingSpeed: number
 }
 
-export const brain = (sensoryInputs: SensoryInputs, genome: Genome): ActionOutputs => {
+export const brain = (sensoryInputs: SensoryInputs, formattedDecimalGenome: DecimalGenome): ActionOutputs => {
   const internalNeurons: Map<number, Map<number, number>> = Map()
   const actionNeurons: Record<string, number> = {}
-  const formattedDecimalGenomes = getFormattedDecimalGenome(genome)
 
   const calculateInternalNeurons = (): void => {
-    formattedDecimalGenomes
+    formattedDecimalGenome
       .filter((gen: DecimalGene) => gen.sinkType === SINK_TYPE_INTERNAL_NEURON && Math.abs(gen.weight) > PRUNE_WEIGHT)
       .forEach((gen: DecimalGene) => {
         const sourceValue = getSourceValue(gen, sensoryInputs)
@@ -34,7 +32,7 @@ export const brain = (sensoryInputs: SensoryInputs, genome: Genome): ActionOutpu
   }
 
   const calculateActionNeurons = (): void => {
-    formattedDecimalGenomes
+    formattedDecimalGenome
       .filter((gen: DecimalGene) => gen.sinkType === SINK_TYPE_OUTPUT_ACTION_NEURON && Math.abs(gen.weight) > PRUNE_WEIGHT)
       .forEach((gen: DecimalGene) => {
         const sourceValue = getSourceValue(gen, sensoryInputs)

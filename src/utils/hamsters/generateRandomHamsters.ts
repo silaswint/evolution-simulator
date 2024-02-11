@@ -5,6 +5,7 @@ import { type MapSize } from '@/utils/types/MapSize'
 import { calculateRotation } from '@/utils/math/calculateRotation'
 import { type MutableRefObject } from 'react'
 import { getRandomDirection } from '@/utils/getRandomDirection'
+import { getFormattedDecimalGenome } from '@/utils/getFormattedDecimalGenome'
 
 export const generateRandomHamsters = (populationRef: MutableRefObject<number>, mapSize: MapSize): HamsterState[] => {
   const population = populationRef.current
@@ -26,13 +27,15 @@ export const generateRandomHamsters = (populationRef: MutableRefObject<number>, 
     const directionX = getRandomDirection()
     const directionY = getRandomDirection()
 
+    const randomGenome = generateRandomGenome()
     hamsters.push({
       id,
       x: emptyLocation.x,
       y: emptyLocation.y,
       directionX,
       directionY,
-      genome: generateRandomGenome(),
+      genome: randomGenome,
+      decimalGenome: getFormattedDecimalGenome(randomGenome),
       lastRotation: 0,
       currentRotation: calculateRotation(directionX, directionY),
       survivedGenerations: 0

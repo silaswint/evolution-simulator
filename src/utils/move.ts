@@ -14,7 +14,6 @@ export const move = (
   generation: number,
   mapSize: MapSize
 ): HamsterState => {
-  const { id, genome } = prev
   const { x, y, directionX, directionY } = getGeneratedHamsterState(
     prev,
     secondsLeftForCurrentGeneration,
@@ -25,21 +24,22 @@ export const move = (
 
   // Check if the hamster is within the map bounds
   if (isHamsterOutsideBoundaries(x, y, mapSize)) {
-    return dontMove(prev, id, genome)
+    return dontMove(prev)
   }
 
   // Check if the location is empty
-  if (isOverlap(x, y, prevHamsters, id)) {
-    return dontMove(prev, id, genome)
+  if (isOverlap(x, y, prevHamsters, prev.id)) {
+    return dontMove(prev)
   }
 
   return {
-    id,
+    id: prev.id,
     x,
     y,
     directionX,
     directionY,
-    genome,
+    genome: prev.genome,
+    decimalGenome: prev.decimalGenome,
     lastRotation: prev.currentRotation,
     currentRotation: calculateRotation(directionX, directionY),
     survivedGenerations: prev.survivedGenerations

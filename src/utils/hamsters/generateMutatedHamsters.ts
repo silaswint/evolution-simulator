@@ -6,6 +6,7 @@ import { calculateRotation } from '@/utils/math/calculateRotation'
 import { getRandomDirection } from '@/utils/getRandomDirection'
 import { pickRandomHamster } from '@/utils/evolution/pickRandomHamster'
 import { config } from '@/utils/config/config'
+import { getFormattedDecimalGenome } from '@/utils/getFormattedDecimalGenome'
 
 export const generateMutatedHamsters = (
   survivedHamsters: HamsterState[],
@@ -71,6 +72,7 @@ export const generateMutatedHamsters = (
         directionX,
         directionY,
         genome: mutatedGenome,
+        decimalGenome: getFormattedDecimalGenome(mutatedGenome),
         lastRotation: 0,
         currentRotation: calculateRotation(directionX, directionY),
         survivedGenerations: 0

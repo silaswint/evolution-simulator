@@ -38,7 +38,7 @@ export const getGeneratedHamsterState = (
     distanceOfNextObjectWest: distancesToOtherHamsters.West
   }
 
-  const brainResponse = brain(sensoryInputs, prev.genome)
+  const brainResponse = brain(sensoryInputs, prev.decimalGenome)
 
   const newDirectionX = Math.sign(brainResponse.directionX)
   const newDirectionY = Math.sign(brainResponse.directionY)

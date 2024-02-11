@@ -33,14 +33,15 @@ interface MapProps {
   bestHamster: HamsterState
 }
 
-export const dontMove = (prev: HamsterState, id: number, genome: Genome): HamsterState => {
+export const dontMove = (prev: HamsterState): HamsterState => {
   return {
-    id,
+    id: prev.id,
     x: prev.x,
     y: prev.y,
     directionX: 0,
     directionY: 0,
-    genome,
+    genome: prev.genome,
+    decimalGenome: prev.decimalGenome,
     lastRotation: prev.currentRotation,
     currentRotation: 0,
     survivedGenerations: prev.survivedGenerations
