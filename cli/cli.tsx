@@ -11,21 +11,21 @@ const cli = meow(
 	  $ cli
 
 	Options
-		--name  Your name
-		--help  Usage
+		--saveThresholdGenerations (default: 50) Minimum number of survived generations to save the model
+		--help  Help for usage
 
 	Examples
-	  $ cli --name=Jane
-	  Hello, Jane
+	  $ cli --saveThresholdGenerations=100
+	  Sets the minimum number of survived generations until the model starts to save
 `,
     {
       importMeta: import.meta,
       flags: {
-        name: {
-          type: 'string'
+        minSurvivedGenerationsForSaveModel: {
+          type: 'number'
         }
       }
     }
 )
 
-render(<AppCli name={cli.flags.name} />)
+render(<AppCli saveThresholdGenerations={cli.flags.saveThresholdGenerations} />)

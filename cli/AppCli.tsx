@@ -7,12 +7,14 @@ import HamstersCalculation from './components/hamsters-calculation'
 import { useTicker } from './utils/useTicker'
 import { type Ticker } from './types/Ticker'
 import { getBestHamster } from '@/utils/hamsters/getBestHamster'
+import { genomeToHex } from '@/utils/genome'
+import * as fs from 'fs'
 
 interface AppCliProps {
-  name: string | undefined
+  saveThresholdGenerations: number
 }
 
-const AppCli = ({ name = 'Stranger' }: AppCliProps): ReactElement<any, any> => {
+const AppCli = ({ saveThresholdGenerations = 50 }: AppCliProps): ReactElement<any, any> => {
   const [ticker, setTicker] = useState<Ticker>(useTicker(config.maxFPS))
   const [generation, setGeneration] = useState<number>(0)
   const [population] = useState<number>(config.population)
@@ -56,6 +58,19 @@ const AppCli = ({ name = 'Stranger' }: AppCliProps): ReactElement<any, any> => {
   }
 
   const bestHamster = getBestHamster(hamsters)
+
+  if (bestHamster?.survivedGenerations >= saveThresholdGenerations) {
+    const data = {
+      config: {
+        genomeSize: config.genomeSize,
+        innerNeurons: config.innerNeurons
+      },
+      hamsters: [genomeToHex(bestHamster.genome)]
+    }
+    const asJson = JSON.stringify(data)
+
+    fs.writeFileSync('generation.json', asJson)
+  }
 
   return <>
       {hamsters.length > 0 && (
