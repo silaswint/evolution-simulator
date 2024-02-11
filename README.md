@@ -10,20 +10,21 @@ The project from https://github.com/davidrmiller/biosim4 inspired me. For a bett
 
 ## Installation
 
-- > npm install
+> `npm install`
 
 ## Launch
 
-- > npm run start
+> `npm run start`
 
 ## Tests
 
-- > npm run test
+> `npm run test`
 
 ## CLI
 
-- > npm run cli
+> `npm run cli`
 
 or
 
-- > ./bin/cli
+> `./bin/cli [--challenge <number>] [--saveThresholdGenerations <number>] [--help]`
+
