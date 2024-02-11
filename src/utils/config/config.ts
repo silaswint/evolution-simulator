@@ -6,7 +6,7 @@ export const config: EvolutionConfig = {
   population: 50,
   mapSize: { width: 800, height: 600 },
   secondsPerGeneration: 5,
-  genomeSize: 60,
+  genomeSize: 80,
   mutationRate: 0.01,
   reproductionRate: 0.5,
   innerNeurons: [6, 5, 3],
