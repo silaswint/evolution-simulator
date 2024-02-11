@@ -12,9 +12,10 @@ import * as fs from 'fs'
 
 interface AppCliProps {
   saveThresholdGenerations: number
+  challenge: number
 }
 
-const AppCli = ({ saveThresholdGenerations = 50 }: AppCliProps): ReactElement<any, any> => {
+const AppCli = ({ saveThresholdGenerations = 50, challenge = config.challenge }: AppCliProps): ReactElement<any, any> => {
   const [ticker, setTicker] = useState<Ticker>(useTicker(config.maxFPS))
   const [generation, setGeneration] = useState<number>(0)
   const [population] = useState<number>(config.population)
@@ -22,7 +23,6 @@ const AppCli = ({ saveThresholdGenerations = 50 }: AppCliProps): ReactElement<an
   const [secondsLeftForCurrentGeneration, setSecondsLeftForCurrentGeneration] = useState<number>(secondsPerGeneration)
   const [pause, setPause] = useState<boolean>(false)
   const [survivingPopulation, setSurvivingPopulation] = useState<number>(config.population)
-  const [challenge, setChallenge] = useState<number>(config.challenge)
   const [mapSizeIsLoaded, setMapSizeIsLoaded] = useState<boolean>(true)
   const [mapSize, setMapSize] = useState<MapSize>({
     width: config.mapSize.width,
