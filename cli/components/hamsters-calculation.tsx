@@ -112,7 +112,7 @@ const HamstersCalculation = ({ ticker, population, secondsLeftForCurrentGenerati
   const survivingRate = percentage(survivingPopulation, config.population)
 
   return <>
-    <Text color="green">
+    <Text>
       <>
         Gen: {generation} | Seconds left: {secondsLeftForCurrentGeneration} | <Text color={ survivingRate < 80 ? 'red' : 'green' }>Surviving rate: {survivingRate}%</Text>
       </>
