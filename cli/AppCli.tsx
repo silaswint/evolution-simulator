@@ -38,20 +38,13 @@ const AppCli = ({ saveThresholdGenerations = 50, challenge = config.challenge }:
   }, [mapSizeIsLoaded])
 
   useEffect(() => {
-    if (pause) {
-      // Reset timer and return if paused
+    if (ticker.stepsPerTicker.current < ((Math.max(config.mapSize.width, config.mapSize.height) / config.movingSpeed) / config.secondsPerGeneration) || pause) {
       return
     }
 
-    const timerInterval = setInterval(() => {
-      setSecondsLeftForCurrentGeneration((prevSeconds) => Math.max(0, prevSeconds - 1))
-    }, 1000)
-
-    // Cleanup function to cancel the interval when removing the component or when paused
-    return () => {
-      clearInterval(timerInterval)
-    }
-  }, [pause, secondsPerGeneration])
+    setSecondsLeftForCurrentGeneration((prevSeconds) => Math.max(0, prevSeconds - 1))
+    ticker.stepsPerTicker.current = 0
+  }, [ticker.stepsPerTicker.current])
 
   const resetGenerationCountdown = (): void => {
     setSecondsLeftForCurrentGeneration(config.secondsPerGeneration)

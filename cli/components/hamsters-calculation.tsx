@@ -55,6 +55,10 @@ const HamstersCalculation = ({ ticker, population, secondsLeftForCurrentGenerati
     if (input === 'q') {
       exit()
     }
+
+    if (input === 'p') {
+      setPause((prevPause) => !prevPause)
+    }
   })
 
   const tick = useCallback((): void => {
@@ -105,8 +109,10 @@ const HamstersCalculation = ({ ticker, population, secondsLeftForCurrentGenerati
   return <>
     <Text color="green">Generation: {generation}</Text>
     <Text color="green">Survived generations of best hamster: {bestHamster.survivedGenerations}</Text>
+    <Text color="green">Seconds left for current generation: {secondsLeftForCurrentGeneration}</Text>
     <Newline />
-    <Text>Press “q” to exit.</Text>
+    <Text>Press “q” to exit or “p“ to pause / continue.</Text>
+    { pause && <Text color="red">PAUSE!</Text> }
   </>
 }
 
