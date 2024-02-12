@@ -142,8 +142,30 @@ export const NetworkVisualization: React.FC<NetworkProps> = ({ connections }) =>
     edges
   }
 
+  const style = [
+    {
+      selector: 'node',
+      style: {
+        label: 'data(label)',
+        textValign: 'center',
+        color: 'white',
+        backgroundColor: '#2d3849',
+        shape: 'roundrectangle',
+        textBackgroundOpacity: 1,
+        textBackgroundColor: '#2d3849'
+      }
+    },
+    {
+      selector: 'edge',
+      style: {
+        width: 2,
+        textOutlineColor: 'grey'
+      }
+    }
+  ]
+
   const zoom = 0.7
   const calculatedHeight = 300 + 20 + (config.innerNeurons.length * 200) * zoom
   const calculatedHeightWithPx = `${calculatedHeight}px`
-  return <CytoscapeComponent zoom={zoom} zoomingEnabled={false} layout={options} elements={CytoscapeComponent.normalizeElements(elements)} style={ { width: '600px', height: calculatedHeightWithPx } } />
+  return <CytoscapeComponent stylesheet={style} zoom={zoom} zoomingEnabled={false} layout={options} elements={CytoscapeComponent.normalizeElements(elements)} style={ { width: '600px', height: calculatedHeightWithPx } } />
 }
