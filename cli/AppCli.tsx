@@ -30,6 +30,7 @@ const AppCli = ({ saveThresholdGenerations = 50, challenge = config.challenge }:
   })
   const populationRef = useRef(population)
   const [hamsters, setHamsters] = useState<HamsterState[]>([])
+  const [bestHamsterGenerationAtAll, setBestHamsterGenerationAtAll] = useState<number>(0)
 
   useEffect(() => {
     if (mapSizeIsLoaded) {
@@ -52,17 +53,26 @@ const AppCli = ({ saveThresholdGenerations = 50, challenge = config.challenge }:
 
   const bestHamster = getBestHamster(hamsters)
 
-  if (bestHamster?.survivedGenerations >= saveThresholdGenerations) {
-    const data = {
-      config: {
-        genomeSize: config.genomeSize,
-        innerNeurons: config.innerNeurons
-      },
-      hamsters: [genomeToHex(bestHamster.genome)]
-    }
-    const asJson = JSON.stringify(data)
+  if (bestHamster) {
+    const isNewHamsterGenerationAtAll = bestHamster.survivedGenerations > bestHamsterGenerationAtAll
 
-    fs.writeFileSync('generation.json', asJson)
+    if (bestHamster.survivedGenerations >= saveThresholdGenerations || (saveThresholdGenerations === 0 && isNewHamsterGenerationAtAll)) {
+      if (isNewHamsterGenerationAtAll) {
+        setBestHamsterGenerationAtAll(bestHamster.survivedGenerations)
+      }
+
+      const data = {
+        config: {
+          genomeSize: config.genomeSize,
+          innerNeurons: config.innerNeurons,
+          survivedGenerations: bestHamster.survivedGenerations
+        },
+        hamsters: [genomeToHex(bestHamster.genome)]
+      }
+      const asJson = JSON.stringify(data)
+
+      fs.writeFileSync('generation.json', asJson)
+    }
   }
 
   return <>

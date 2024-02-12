@@ -13,7 +13,7 @@ const cli = meow(
 
 	Options
 		--challenge  (default: ${config.challenge}) Challenge to train for
-		--saveThresholdGenerations  (default: 50) Minimum number of survived generations to save the model
+		--saveThresholdGenerations  (default: 50) Minimum number of survived generations to save the model but "0" means every new record will be saved
 		--help  Help for usage
 
 	Examples
