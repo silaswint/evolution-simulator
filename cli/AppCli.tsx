@@ -55,8 +55,9 @@ const AppCli = ({ saveThresholdGenerations = 50, challenge = config.challenge }:
 
   if (bestHamster) {
     const isNewHamsterGenerationAtAll = bestHamster.survivedGenerations > bestHamsterGenerationAtAll
+    const isUsingThreshold = saveThresholdGenerations !== 0 && bestHamster.survivedGenerations >= saveThresholdGenerations
 
-    if (bestHamster.survivedGenerations >= saveThresholdGenerations || (saveThresholdGenerations === 0 && isNewHamsterGenerationAtAll)) {
+    if (isUsingThreshold || (saveThresholdGenerations === 0 && isNewHamsterGenerationAtAll)) {
       if (isNewHamsterGenerationAtAll) {
         setBestHamsterGenerationAtAll(bestHamster.survivedGenerations)
       }
