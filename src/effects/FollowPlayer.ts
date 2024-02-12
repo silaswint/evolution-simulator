@@ -46,7 +46,7 @@ export class FollowPlayer extends Effect {
       y: 1.33
     }
 
-    // //now character inside stage is mapped to center of screen
+    // now character inside stage is mapped to center of screen
     this.container.pivot.x = this._coordinates.x
     this.container.pivot.y = this._coordinates.y
 
