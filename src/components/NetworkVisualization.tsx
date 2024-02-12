@@ -142,5 +142,8 @@ export const NetworkVisualization: React.FC<NetworkProps> = ({ connections }) =>
     edges
   }
 
-  return <CytoscapeComponent zoom={0.5} zoomingEnabled={false} layout={options} elements={CytoscapeComponent.normalizeElements(elements)} style={ { width: '600px', height: '300px' } } />
+  const zoom = 0.7
+  const calculatedHeight = 300 + 20 + (config.innerNeurons.length * 200) * zoom
+  const calculatedHeightWithPx = `${calculatedHeight}px`
+  return <CytoscapeComponent zoom={zoom} zoomingEnabled={false} layout={options} elements={CytoscapeComponent.normalizeElements(elements)} style={ { width: '600px', height: calculatedHeightWithPx } } />
 }
