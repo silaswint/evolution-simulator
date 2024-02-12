@@ -173,7 +173,7 @@ const App: React.FC = () => {
               <Stage width={mapSize.width} height={mapSize.height} options={{ backgroundAlpha: 0, antialias: true }}>
                   <Background challenge={challenge}>
                       <CameraContainer hamster={bestHamster} active={isCameraActive}>
-                          {hamsters.length > 0 && (
+                          {hamsters.length > 0 && bestHamster && (
                               <Hamsters
                                   population={population}
                                   secondsLeftForCurrentGeneration={secondsLeftForCurrentGeneration}
