@@ -37,13 +37,13 @@ export class FollowPlayer extends Effect {
 
     this.current = performance.now()
 
-    this.container.position.x = this.container.width / 2
-    this.container.position.y = this.container.height / 2
+    this.container.position.x = this.container.width / 3
+    this.container.position.y = this.container.height / 4
 
     // scale
     this.container.scale = {
-      x: 1.33,
-      y: 1.33
+      x: 1.5,
+      y: 1.5
     }
 
     // now character inside stage is mapped to center of screen
@@ -59,6 +59,6 @@ export class FollowPlayer extends Effect {
      * @returns {boolean} Returns true if the panto effect is finished or false otherwise.
      */
   criteriaMet (): boolean {
-    return this.container.pivot.x === this._coordinates.x && this.container.pivot.y === this._coordinates.y && this.container.position.x === this.container.width / 2 && this.container.position.y === this.container.height / 2
+    return this.container.pivot.x === this._coordinates.x && this.container.pivot.y === this._coordinates.y && this.container.position.x === this.container.width / 3 && this.container.position.y === this.container.height / 4
   }
 }
