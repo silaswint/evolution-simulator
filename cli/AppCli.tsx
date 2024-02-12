@@ -54,10 +54,10 @@ const AppCli = ({ saveThresholdGenerations = 50, challenge = config.challenge }:
   const bestHamster = getBestHamster(hamsters)
 
   if (bestHamster) {
-    const isNewHamsterGenerationAtAll = bestHamster.survivedGenerations > bestHamsterGenerationAtAll
+    const isNewHamsterGenerationAtAll = saveThresholdGenerations === 0 && bestHamster.survivedGenerations > bestHamsterGenerationAtAll
     const isUsingThreshold = saveThresholdGenerations !== 0 && bestHamster.survivedGenerations >= saveThresholdGenerations
 
-    if (isUsingThreshold || (saveThresholdGenerations === 0 && isNewHamsterGenerationAtAll)) {
+    if (isUsingThreshold || isNewHamsterGenerationAtAll) {
       if (isNewHamsterGenerationAtAll) {
         setBestHamsterGenerationAtAll(bestHamster.survivedGenerations)
       }
@@ -74,10 +74,9 @@ const AppCli = ({ saveThresholdGenerations = 50, challenge = config.challenge }:
 
       fs.writeFileSync('generation.json', asJson)
     }
-  }
 
-  return <>
-      {hamsters.length > 0 && bestHamster && (
+    return <>
+      {hamsters.length > 0 && (
           <HamstersCalculation
               ticker={ticker}
               population={population}
@@ -93,11 +92,13 @@ const AppCli = ({ saveThresholdGenerations = 50, challenge = config.challenge }:
               survivingPopulation={survivingPopulation}
               challenge={challenge}
               setPause={setPause}
-              bestHamster={bestHamster}
-              saveThresholdGenerations={saveThresholdGenerations}
+              bestHamsterGenerationAtAll={bestHamsterGenerationAtAll}
           />
       )}
     </>
+  }
+
+  return <></>
 }
 
 export default AppCli

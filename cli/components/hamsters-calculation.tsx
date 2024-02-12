@@ -24,11 +24,10 @@ interface MapProps {
   survivingPopulation: number
   setPause: React.Dispatch<React.SetStateAction<boolean>>
   challenge: number
-  bestHamster: HamsterState
-  saveThresholdGenerations: number
+  bestHamsterGenerationAtAll: number
 }
 
-const HamstersCalculation = ({ ticker, population, secondsLeftForCurrentGeneration, generation, setGeneration, resetGenerationCountdown, setSurvivingPopulation, hamsters, setHamsters, mapSize, pause, survivingPopulation, setPause, challenge, bestHamster, saveThresholdGenerations }: MapProps): ReactElement<any, any> => {
+const HamstersCalculation = ({ ticker, population, secondsLeftForCurrentGeneration, generation, setGeneration, resetGenerationCountdown, setSurvivingPopulation, hamsters, setHamsters, mapSize, pause, survivingPopulation, setPause, challenge, bestHamsterGenerationAtAll }: MapProps): ReactElement<any, any> => {
   const [isProcessingNextGeneration, setIsProcessingNextGeneration] = useState<boolean>(false)
 
   const secondsLeftForCurrentGenerationRef = useRef<number>(secondsLeftForCurrentGeneration)
@@ -119,7 +118,7 @@ const HamstersCalculation = ({ ticker, population, secondsLeftForCurrentGenerati
     </Text>
     <Text>
       <>
-        The best hamster survived <Text color={ bestHamster.survivedGenerations < saveThresholdGenerations ? 'red' : 'green' }>{bestHamster.survivedGenerations} generations</Text>.
+        The best hamster ever survived <Text color={'green'}>{bestHamsterGenerationAtAll} generations</Text>.
       </>
     </Text>
     <Newline />
