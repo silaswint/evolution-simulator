@@ -77,7 +77,7 @@ const AppCli = ({ saveThresholdGenerations = 50, challenge = config.challenge }:
   }
 
   return <>
-      {hamsters.length > 0 && (
+      {hamsters.length > 0 && bestHamster && (
           <HamstersCalculation
               ticker={ticker}
               population={population}
