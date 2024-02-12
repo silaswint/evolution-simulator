@@ -15,6 +15,8 @@ import { WindowContext } from '@/components/WindowContextProvider'
 import { percentage } from '@/utils/math/percent'
 import {
   CHALLENGE_INNER_CIRCLE_SURVIVES,
+  CHALLENGE_LEFT_SIDE_20_SURVIVES,
+  CHALLENGE_LEFT_SIDE_SURVIVES,
   CHALLENGE_NONE,
   CHALLENGE_RIGHT_SIDE_20_SURVIVES,
   CHALLENGE_RIGHT_SIDE_SURVIVES
@@ -141,7 +143,9 @@ const App: React.FC = () => {
                                 { value: CHALLENGE_NONE, label: 'None' },
                                 { value: CHALLENGE_RIGHT_SIDE_SURVIVES, label: 'Right side survives' },
                                 { value: CHALLENGE_RIGHT_SIDE_20_SURVIVES, label: '20% of right side survives' },
-                                { value: CHALLENGE_INNER_CIRCLE_SURVIVES, label: 'Inner circle survives' }
+                                { value: CHALLENGE_INNER_CIRCLE_SURVIVES, label: 'Inner circle survives' },
+                                { value: CHALLENGE_LEFT_SIDE_SURVIVES, label: 'Left side survives' },
+                                { value: CHALLENGE_LEFT_SIDE_20_SURVIVES, label: '20% of left side survives' }
                               ].map(option => (
                                   <option key={option.value} value={option.value}>
                                       {option.label}
