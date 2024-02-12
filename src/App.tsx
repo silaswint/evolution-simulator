@@ -141,7 +141,7 @@ const App: React.FC = () => {
                                 { value: CHALLENGE_NONE, label: 'None' },
                                 { value: CHALLENGE_RIGHT_SIDE_SURVIVES, label: 'Right side survives' },
                                 { value: CHALLENGE_RIGHT_SIDE_20_SURVIVES, label: '20% of right side survives' },
-                                { value: CHALLENGE_INNER_CIRCLE_SURVIVES, label: 'Inner circle survives (EXPERIMENTAL)' }
+                                { value: CHALLENGE_INNER_CIRCLE_SURVIVES, label: 'Inner circle survives' }
                               ].map(option => (
                                   <option key={option.value} value={option.value}>
                                       {option.label}
@@ -171,7 +171,7 @@ const App: React.FC = () => {
               }}
           >
               <Stage width={mapSize.width} height={mapSize.height} options={{ backgroundAlpha: 0, antialias: true }}>
-                  <Background challenge={challenge}>
+                  <Background challenge={challenge} mapSize={mapSize}>
                       <CameraContainer hamster={bestHamster} active={isCameraActive}>
                           {hamsters.length > 0 && bestHamster && (
                               <Hamsters
